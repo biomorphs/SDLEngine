@@ -2,8 +2,8 @@
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="../build_configs.props" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{BBB12EF6-0588-4F64-A609-AE0E110DE163}</ProjectGuid>
-    <RootNamespace>platform</RootNamespace>
+    <ProjectGuid>{03ffcecd-38f1-48c3-be2b-5cfc42c34a8f}</ProjectGuid>
+    <RootNamespace>kernel</RootNamespace>
   </PropertyGroup>
   <Import Project="../library_build.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -15,10 +15,4 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ItemGroup>
-    <ClInclude Include="platform.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="platform.cpp" />
-  </ItemGroup>
 </Project>

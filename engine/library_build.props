@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- output paths -->
+	<PropertyGroup>
+		<OutDir>$(SolutionDir)temp/$(MSBuildProjectName)/$(Configuration)/</OutDir>
+		<IntDir>$(SolutionDir)temp/$(MSBuildProjectName)/$(Configuration)/</IntDir>
+		<BuildLog>
+			<Path>$(SolutionDir)temp/$(MSBuildProjectName)/$(Configuration)/$(MSBuildProjectName).build.log</Path>
+		</BuildLog>
+	</PropertyGroup>
+
+	<!-- build options -->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<UseDebugLibraries>true</UseDebugLibraries>
+		<PlatformToolset>v120</PlatformToolset>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<UseDebugLibraries>false</UseDebugLibraries>
+		<PlatformToolset>v120</PlatformToolset>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	
+	<!-- Compile options -->
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<ClCompile>
+			<WarningLevel>Level3</WarningLevel>
+			<Optimization>Disabled</Optimization>
+			<SDLCheck>true</SDLCheck>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<ClCompile>
+			<WarningLevel>Level3</WarningLevel>
+			<Optimization>MaxSpeed</Optimization>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<SDLCheck>true</SDLCheck>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<OptimizeReferences>true</OptimizeReferences>
+		</Link>
+	</ItemDefinitionGroup>
+</Project>
