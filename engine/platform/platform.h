@@ -2,6 +2,7 @@
 SDLEngine
 	Matt Hoyle
 */
+#pragma once
 
 // This class is responsible for initialising any platform stuff
 class Platform

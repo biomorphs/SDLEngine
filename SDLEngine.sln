@@ -16,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "platform", "engine\platform
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kernel", "engine\kernel\kernel.vcxproj", "{03FFCECD-38F1-48C3-BE2B-5CFC42C34A8F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render", "engine\render\render.vcxproj", "{492E3253-7F98-4F62-92AB-2C6F92CB2B27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -34,6 +36,10 @@ Global
 		{03FFCECD-38F1-48C3-BE2B-5CFC42C34A8F}.Debug|Win32.Build.0 = Debug|Win32
 		{03FFCECD-38F1-48C3-BE2B-5CFC42C34A8F}.Release|Win32.ActiveCfg = Release|Win32
 		{03FFCECD-38F1-48C3-BE2B-5CFC42C34A8F}.Release|Win32.Build.0 = Release|Win32
+		{492E3253-7F98-4F62-92AB-2C6F92CB2B27}.Debug|Win32.ActiveCfg = Debug|Win32
+		{492E3253-7F98-4F62-92AB-2C6F92CB2B27}.Debug|Win32.Build.0 = Debug|Win32
+		{492E3253-7F98-4F62-92AB-2C6F92CB2B27}.Release|Win32.ActiveCfg = Release|Win32
+		{492E3253-7F98-4F62-92AB-2C6F92CB2B27}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

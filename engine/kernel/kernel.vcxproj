@@ -7,7 +7,14 @@
   <Import Project="../build_configs.props" />
   <Import Project="../library_build.props" />
   <Import Project="../shared_preprocessor.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)engine/;$(IncludePath);</IncludePath>
+  </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="assert.h" />
+    <ClInclude Include="log.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="log.cpp" />
   </ItemGroup>
 </Project>
