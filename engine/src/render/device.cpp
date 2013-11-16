@@ -29,4 +29,15 @@ namespace Render
 		SDL_DestroyRenderer(m_renderer);
 		m_renderer = nullptr;
 	}
+
+	void Device::Clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+	{
+		SDL_SetRenderDrawColor(m_renderer, r, g, b, a);
+		SDL_RenderClear(m_renderer);
+	}
+
+	void Device::Present()
+	{
+		SDL_RenderPresent(m_renderer);
+	}
 }
