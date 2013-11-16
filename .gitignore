@@ -17,6 +17,7 @@
 *.opensdf
 *.sdf
 *.cachefile
+*.log
 
 # object files
 /temp/
