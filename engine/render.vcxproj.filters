@@ -4,9 +4,13 @@
     <ClInclude Include="include/render/window.h" />
     <ClInclude Include="include/render/device.h" />
     <ClInclude Include="include/render/utils.h" />
+    <ClInclude Include="include\render\texture_cache.h" />
+    <ClInclude Include="include\render\texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src/render/window.cpp" />
     <ClCompile Include="src/render/device.cpp" />
+    <ClCompile Include="src\render\texture_cache.cpp" />
+    <ClCompile Include="src\render\texture.cpp" />
   </ItemGroup>
 </Project>

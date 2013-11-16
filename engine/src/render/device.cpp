@@ -40,4 +40,9 @@ namespace Render
 	{
 		SDL_RenderPresent(m_renderer);
 	}
+
+	SDL_Renderer* Device::GetRenderer()
+	{
+		return m_renderer;
+	}
 }

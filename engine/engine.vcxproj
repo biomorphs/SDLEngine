@@ -9,7 +9,7 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\engine\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)engine\include\;$(SolutionDir)engine\include\engine\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="include\engine\engine_startup.h" />
