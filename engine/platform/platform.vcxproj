@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{BF67A039-3471-4B66-9473-07B709EDE4EF}</ProjectGuid>
-    <RootNamespace>SDLEngine</RootNamespace>
+    <ProjectGuid>{BBB12EF6-0588-4F64-A609-AE0E110DE163}</ProjectGuid>
+    <RootNamespace>platform</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -39,10 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)/bin/$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\temp\$(Configuration)\</IntDir>
-    <IncludePath>external\SDL2-2.0.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>external\SDL2-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)/temp/platform/$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)/temp/platform/$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -52,7 +50,6 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,7 +67,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\main\main.cpp" />
+    <ClInclude Include="platform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="platform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
