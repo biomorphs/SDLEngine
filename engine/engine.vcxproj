@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{c9be37af-362d-43a6-9151-72ee5390eae4}</ProjectGuid>
+    <RootNamespace>engine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\engine\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="include\engine\engine_startup.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\engine\engine_startup.cpp" />
+  </ItemGroup>
+</Project>

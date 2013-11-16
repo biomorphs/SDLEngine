@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{492e3253-7f98-4f62-92ab-2c6f92cb2b27}</ProjectGuid>
+    <RootNamespace>render</RootNamespace>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\render\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="include/render/device.h" />
+    <ClInclude Include="include/render/utils.h" />
+    <ClInclude Include="include/render/window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src/render/device.cpp" />
+    <ClCompile Include="src/render/window.cpp" />
+  </ItemGroup>
+</Project>

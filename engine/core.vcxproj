@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{d4656b9a-cf28-4719-b307-ba4fd577293b}</ProjectGuid>
+    <RootNamespace>core</RootNamespace>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\core\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="src/core/system_manager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include/core/system.h" />
+    <ClInclude Include="include/core/system_enumerator.h" />
+    <ClInclude Include="include/core/system_manager.h" />
+  </ItemGroup>
+</Project>

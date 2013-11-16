@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{87247ab8-1fca-46bf-a0e0-00030b70ef6b}</ProjectGuid>
+    <RootNamespace>framework</RootNamespace>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\framework\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="include/framework/event_listener.h" />
+    <ClInclude Include="include/framework/event_system.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src/framework/event_system.cpp" />
+  </ItemGroup>
+</Project>

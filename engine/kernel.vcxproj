@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{03ffcecd-38f1-48c3-be2b-5cfc42c34a8f}</ProjectGuid>
+    <RootNamespace>kernel</RootNamespace>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)engine\include\kernel\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="include/kernel/assert.h" />
+    <ClInclude Include="include/kernel/log.h" />
+    <ClInclude Include="include/kernel/string_hashing.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src/kernel/log.cpp" />
+  </ItemGroup>
+</Project>
