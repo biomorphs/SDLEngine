@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="../build_configs.props" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{03ffcecd-38f1-48c3-be2b-5cfc42c34a8f}</ProjectGuid>
     <RootNamespace>kernel</RootNamespace>
   </PropertyGroup>
+  <Import Project="../build_configs.props" />
   <Import Project="../library_build.props" />
+  <Import Project="../shared_preprocessor.props" />
+  <ItemGroup>
+    <ClInclude Include="assert.h" />
+  </ItemGroup>
 </Project>
