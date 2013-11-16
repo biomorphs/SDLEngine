@@ -19,6 +19,12 @@ public:
 		ShutdownOK
 	};
 
+	enum MsgPumpResult
+	{
+		PumpContinue,
+		PumpQuit
+	};
+
 	static InitResult Initialise(int argc, char* argv[]);
 	static ShutdownResult Shutdown();
 };

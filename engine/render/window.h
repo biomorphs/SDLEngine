@@ -14,11 +14,11 @@ namespace Render
 	public:
 		enum CreationFlags
 		{
-			CreateFullscreen = (1 << 0),
-			CreateFullscreenDesktop = (1 << 1),
-			CreateResizable = (1 << 2),
-			CreateMinimized = (1 << 3),
-			CreateMaximized = (1 << 4)
+			CreateFullscreen = (1 << 1),
+			CreateFullscreenDesktop = (1 << 2),
+			CreateResizable = (1 << 3),
+			CreateMinimized = (1 << 4),
+			CreateMaximized = (1 << 5)
 		};
 		class Properties
 		{
@@ -44,6 +44,8 @@ namespace Render
 
 		void Show();
 		void Hide();
+
+		SDL_Window* GetWindowHandle();
 
 	private:
 		SDL_Window* m_windowHandle;

@@ -5,7 +5,6 @@ SDLEngine
 
 #include "kernel/assert.h"
 #include "platform/platform.h"
-#include "render/window.h"
 
 // Application entry point
 int main(int argc, char* args[])
@@ -15,12 +14,6 @@ int main(int argc, char* args[])
 	if (result == Platform::InitFailed)
 	{
 		return 1;
-	}
-
-	{
-		Render::Window appWindow(Render::Window::Properties("SDLEngine", 800, 600));
-		appWindow.Show();
-		appWindow.Hide();
 	}
 
 	Platform::ShutdownResult shutdownResult = Platform::Shutdown();

@@ -11,9 +11,12 @@
     <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="device.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="device.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
 </Project>

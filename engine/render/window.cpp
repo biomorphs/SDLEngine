@@ -3,7 +3,7 @@ SDLEngine
 	Matt Hoyle
 */
 #include "window.h"
-#include "kernel/assert.h"
+#include "utils.h"
 #include "SDL.h"
 
 namespace Render
@@ -30,22 +30,29 @@ namespace Render
 		}
 
 		m_windowHandle = SDL_CreateWindow(props.m_title, windowPosX, windowPosY, props.m_sizeX, props.m_sizeY, windowFlags);
-		SDE_ASSERT(m_windowHandle);
+		SDE_RENDER_ASSERT(m_windowHandle);
 	}
 
 	Window::~Window()
 	{
 		SDL_DestroyWindow(m_windowHandle);
+		m_windowHandle = nullptr;
 	}
 
 	void Window::Show()
 	{
-		SDE_ASSERT(m_windowHandle);
+		SDE_RENDER_ASSERT(m_windowHandle);
 		SDL_ShowWindow(m_windowHandle);
 	}
+
 	void Window::Hide()
 	{
-		SDE_ASSERT(m_windowHandle);
+		SDE_RENDER_ASSERT(m_windowHandle);
 		SDL_HideWindow(m_windowHandle);
+	}
+
+	SDL_Window* Window::GetWindowHandle() 
+	{
+		return m_windowHandle;
 	}
 }

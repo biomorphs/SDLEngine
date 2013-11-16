@@ -32,7 +32,7 @@
     <LibraryPath>external\SDL2-2.0.1\lib\x86;$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
-	<PostBuildEvent>
+    <PostBuildEvent>
       <Command>copy "$(SolutionDir)external\SDL2-2.0.1-win32-x86\SDL2.dll" "$(OutputPath)SDL2.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -68,6 +68,9 @@
     <ClCompile Include="src\main\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="engine\core\core.vcxproj">
+      <Project>{d4656b9a-cf28-4719-b307-ba4fd577293b}</Project>
+    </ProjectReference>
     <ProjectReference Include="engine\kernel\kernel.vcxproj">
       <Project>{03ffcecd-38f1-48c3-be2b-5cfc42c34a8f}</Project>
     </ProjectReference>

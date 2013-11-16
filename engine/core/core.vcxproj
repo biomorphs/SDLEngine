@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{03ffcecd-38f1-48c3-be2b-5cfc42c34a8f}</ProjectGuid>
-    <RootNamespace>kernel</RootNamespace>
+    <ProjectGuid>{d4656b9a-cf28-4719-b307-ba4fd577293b}</ProjectGuid>
+    <RootNamespace>core</RootNamespace>
   </PropertyGroup>
   <Import Project="../build_configs.props" />
   <Import Project="../library_build.props" />
   <Import Project="../shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)engine/;$(IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine/;$(IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="assert.h" />
-    <ClInclude Include="log.h" />
-    <ClInclude Include="string_hashing.h" />
+    <ClCompile Include="system_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="log.cpp" />
+    <ClInclude Include="system.h" />
+    <ClInclude Include="system_enumerator.h" />
+    <ClInclude Include="system_manager.h" />
   </ItemGroup>
 </Project>
