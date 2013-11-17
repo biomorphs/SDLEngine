@@ -12,14 +12,12 @@ Handle<Internal>::Handle()
 
 template< class Internal >
 Handle<Internal>::Handle(const Handle<Internal>& other)
-: Handle()
 {
 	*this = other;
 }
 
 template< class Internal >
 Handle<Internal>::Handle(Handle<Internal>&& other)
-: Handle()
 {
 	*this = std::move(other);
 }
