@@ -28,7 +28,7 @@ namespace Core
 		virtual void OnEventRecieved(const EngineEvent& theEvent) = 0;
 	};
 
-	// This class represents the interface used to register even listeners
+	// This class represents the interface used to register event listeners
 	class IEvenListenerRegistrar
 	{
 	public:

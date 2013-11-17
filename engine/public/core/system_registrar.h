@@ -9,6 +9,7 @@ namespace Core
 {
 	class ISystem;
 
+	// This class acts as an interface allowing external apps to register systems with the engine
 	class ISystemRegistrar
 	{
 	public:

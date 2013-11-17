@@ -14,10 +14,17 @@
   <ItemGroup>
     <ClInclude Include="public\kernel\assert.h" />
     <ClInclude Include="public\kernel\handle.h" />
+    <ClInclude Include="public\kernel\object_bucket.h" />
+    <ClInclude Include="public\kernel\refcounted_data.h" />
     <ClInclude Include="public\kernel\log.h" />
     <ClInclude Include="public\kernel\string_hashing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\kernel\log.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="public\kernel\handle.inl" />
+    <None Include="public\kernel\object_bucket.inl" />
+    <None Include="public\kernel\refcounted_data.inl" />
   </ItemGroup>
 </Project>

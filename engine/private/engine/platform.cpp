@@ -4,11 +4,6 @@ SDLEngine
 */
 
 #include "platform.h"
-/*
-SDLEngine
-	Matt Hoyle
-*/
-
 #include "kernel/log.h"
 #include "kernel/assert.h"
 #include "SDL.h"
@@ -23,6 +18,7 @@ Platform::InitResult Platform::Initialise(int argc, char* argv[])
 	if (sdlResult != 0)
 	{
 		SDE_LOGC(Engine, "Failed to initialise SDL:\r\n\t%s", SDL_GetError());
+		return InitFailed;
 	}
 
 	return InitOK;
