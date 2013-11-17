@@ -8,6 +8,12 @@ Matt Hoyle
 
 namespace Render
 {
+	Texture::Texture()
+		: m_texture(nullptr)
+	{
+
+	}
+
 	Texture::Texture(SDL_Texture* theTexture)
 		: m_texture(theTexture)
 	{
@@ -16,6 +22,11 @@ namespace Render
 	}
 
 	Texture::~Texture()
+	{
+		m_texture = nullptr;
+	}
+
+	void Texture::Release()
 	{
 		SDE_ASSERT(m_texture);
 		SDL_DestroyTexture(m_texture);

@@ -4,6 +4,8 @@ Matt Hoyle
 */
 #pragma once
 
+#include <stdint.h>
+
 // This is a wrapper for reference counted data to be used by handles
 template<class DataType>
 class RefcountedData

@@ -24,6 +24,12 @@
     <ClInclude Include="private\render\utils.h">
       <Filter>private</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\sprite_definition.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\sprite_manager.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\texture_cache.cpp">
@@ -36,6 +42,9 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\render\texture.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\sprite_manager.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

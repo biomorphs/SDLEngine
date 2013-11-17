@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="public">
+      <UniqueIdentifier>{c655870e-6d55-4b21-8b0e-22732cf09514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="private">
+      <UniqueIdentifier>{7494643a-44df-496e-b26e-5025809f7d21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="public\math\vector2.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\math\math.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\math\rect.h">
+      <Filter>public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="public\math\vector2.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\math\math.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\math\rect.inl">
+      <Filter>public</Filter>
+    </None>
+  </ItemGroup>
+</Project>

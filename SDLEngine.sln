@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "engine\engine.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render", "engine\render.vcxproj", "{492E3253-7F98-4F62-92AB-2C6F92CB2B27}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "math", "engine\math.vcxproj", "{45777579-8F61-4869-ACC0-A990F625944F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -39,6 +41,10 @@ Global
 		{492E3253-7F98-4F62-92AB-2C6F92CB2B27}.Debug|Win32.Build.0 = Debug|Win32
 		{492E3253-7F98-4F62-92AB-2C6F92CB2B27}.Release|Win32.ActiveCfg = Release|Win32
 		{492E3253-7F98-4F62-92AB-2C6F92CB2B27}.Release|Win32.Build.0 = Release|Win32
+		{45777579-8F61-4869-ACC0-A990F625944F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{45777579-8F61-4869-ACC0-A990F625944F}.Debug|Win32.Build.0 = Debug|Win32
+		{45777579-8F61-4869-ACC0-A990F625944F}.Release|Win32.ActiveCfg = Release|Win32
+		{45777579-8F61-4869-ACC0-A990F625944F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

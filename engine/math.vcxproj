@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{45777579-8f61-4869-acc0-a990f625944f}</ProjectGuid>
+    <RootNamespace>math</RootNamespace>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)engine\public\math\;$(SolutionDir)engine\private\math\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="public\math\math.h" />
+    <ClInclude Include="public\math\rect.h" />
+    <ClInclude Include="public\math\vector2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="public\math\math.inl" />
+    <None Include="public\math\rect.inl" />
+    <None Include="public\math\vector2.inl" />
+  </ItemGroup>
+</Project>

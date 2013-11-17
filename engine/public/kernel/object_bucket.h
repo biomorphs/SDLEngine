@@ -41,6 +41,8 @@ public:
 
 	ObjectType* AddObject();
 	void RemoveObject(ObjectType* theObject);
+	
+	uint32_t Size()	{ return m_usedCount; }
 
 private:
 	ObjectBucket(const ObjectBucket& other);

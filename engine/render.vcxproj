@@ -14,12 +14,15 @@
   <ItemGroup>
     <ClInclude Include="private\render\utils.h" />
     <ClInclude Include="public\render\device.h" />
+    <ClInclude Include="public\render\sprite_definition.h" />
+    <ClInclude Include="public\render\sprite_manager.h" />
     <ClInclude Include="public\render\texture.h" />
     <ClInclude Include="public\render\texture_cache.h" />
     <ClInclude Include="public\render\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\device.cpp" />
+    <ClCompile Include="private\render\sprite_manager.cpp" />
     <ClCompile Include="private\render\texture.cpp" />
     <ClCompile Include="private\render\texture_cache.cpp" />
     <ClCompile Include="private\render\window.cpp" />

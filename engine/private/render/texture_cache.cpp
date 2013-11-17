@@ -23,7 +23,7 @@ namespace Render
 		SDE_ASSERT(m_textureMap.size() == 0, "There are still textures loaded!");
 	}
 
-	TextureCache::TextureHandle TextureCache::GetTexture(const char* path)
+	TextureHandle TextureCache::GetTexture(const char* path)
 	{
 		// If it already exists, return a handle to the existing one
 		StringHash pathHash = StringHashing::GetHash(path);
@@ -38,13 +38,11 @@ namespace Render
 		if (loadedTexture)
 		{
 			// Get a new data handle
-			TextureData* textureWrapper = m_textureBucket.AddObject();
+			RefcountedTexture* textureWrapper = m_textureBucket.AddObject();
 			SDE_ASSERT(textureWrapper);
 
 			// Create the texture and pass it to the data handle
-			Texture* texture = new Texture(loadedTexture);
-			SDE_ASSERT(texture);
-			*textureWrapper = std::move( TextureData(texture) );
+			*textureWrapper = std::move(RefcountedTexture(Texture(loadedTexture)));
 
 			// Add it to the name lookup
 			m_textureMap.insert(TexturePair(pathHash, textureWrapper));
@@ -57,7 +55,8 @@ namespace Render
 
 	void TextureCache::Flush()
 	{
-		for (auto it = m_textureBucket.Begin(); it != m_textureBucket.End(); ++it)
+		auto it = m_textureBucket.Begin();
+		while( it != m_textureBucket.End() )
 		{
 			if ((*it).GetReferenceCount() == 0)
 			{
@@ -70,14 +69,15 @@ namespace Render
 				}
 				m_textureMap.erase(mapIt);
 
-				// Delete the texture wrapper
-				delete (*it).GetData();
-
 				// Free the wrapped object
+				(*it).GetData().Release();
 				m_textureBucket.RemoveObject(&(*it));
 
 				it = m_textureBucket.Begin();
+
+				continue;
 			}
+			++it;
 		}
 	}
 }
