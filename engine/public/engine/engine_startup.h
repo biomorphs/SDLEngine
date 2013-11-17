@@ -7,18 +7,18 @@ SDLEngine
 
 namespace Core
 {
-	class SystemManager;
+	class ISystemRegistrar;
 }
 
 namespace Engine
 {
 	// This interface should be defined for each application / game / whatever
-	class ISystemRegistrar
+	class IAppSystemRegistrar
 	{
 	public:
-		virtual void RegisterSystems(Core::SystemManager& systemManager) = 0;
+		virtual void RegisterSystems(Core::ISystemRegistrar& registrar) = 0;
 	};
 
 	// This runs everything. Call it from main()!
-	int Run(ISystemRegistrar& sysRegistrar, int argc, char* args[]);
+	int Run(IAppSystemRegistrar& sysRegistrar, int argc, char* args[]);
 }

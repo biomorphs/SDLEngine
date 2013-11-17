@@ -9,14 +9,15 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)engine\include\kernel\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)engine\public\kernel\;$(SolutionDir)engine\private\kernel\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="include/kernel/assert.h" />
-    <ClInclude Include="include/kernel/log.h" />
-    <ClInclude Include="include/kernel/string_hashing.h" />
+    <ClInclude Include="public\kernel\assert.h" />
+    <ClInclude Include="public\kernel\handle.h" />
+    <ClInclude Include="public\kernel\log.h" />
+    <ClInclude Include="public\kernel\string_hashing.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src/kernel/log.cpp" />
+    <ClCompile Include="private\kernel\log.cpp" />
   </ItemGroup>
 </Project>

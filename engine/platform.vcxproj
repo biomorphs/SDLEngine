@@ -11,10 +11,4 @@
   <PropertyGroup>
     <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\platform\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemGroup>
-    <ClInclude Include="include/platform/platform.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src/platform/platform.cpp" />
-  </ItemGroup>
 </Project>

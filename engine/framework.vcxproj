@@ -9,13 +9,6 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\framework\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\framework\;$(SolutionDir)engine\private\framework\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemGroup>
-    <ClInclude Include="include/framework/event_listener.h" />
-    <ClInclude Include="include/framework/event_system.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src/framework/event_system.cpp" />
-  </ItemGroup>
 </Project>

@@ -3,19 +3,33 @@ SDLEngine
 Matt Hoyle
 */
 #include "system_manager.h"
+#include "event_system.h"
 #include "system.h"
 #include "kernel/assert.h"
 #include "kernel/log.h"
 
 namespace Core
 {
+	const char c_EventSystemName[] = "_Reserved_EventSystem";
 
 	SystemManager::SystemManager()
 	{
+		// The system manager always has an event system registered as the first thing
+		// to run per-frame. This is so any events can be dispatched to all systems asap
+		AddSystemInternal(c_EventSystemName, new EventSystem());
 	}
 
 	SystemManager::~SystemManager()
 	{
+	}
+
+	void SystemManager::RegisterSystem(const char* systemName, ISystem* theSystem)
+	{
+		AddSystemInternal(systemName, theSystem);
+
+		// All external systems receive engine events
+		EventSystem* events = (EventSystem*)GetSystem(c_EventSystemName);
+		events->RegisterListener(theSystem);
 	}
 
 	void SystemManager::AddSystemInternal(const char* name, ISystem* theSystem)

@@ -1,11 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="include/kernel/assert.h" />
-    <ClInclude Include="include/kernel/log.h" />
-    <ClInclude Include="include/kernel/string_hashing.h" />
+    <Filter Include="private">
+      <UniqueIdentifier>{f8767235-9781-40e4-8779-773756468e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public">
+      <UniqueIdentifier>{a546433d-c19e-43c1-b00f-b55cc84b65a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src/kernel/log.cpp" />
+    <ClInclude Include="public\kernel\handle.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\log.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\string_hashing.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\assert.h">
+      <Filter>public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="private\kernel\log.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

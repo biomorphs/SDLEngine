@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="include/framework/event_system.h" />
-    <ClInclude Include="include/framework/event_listener.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src/framework/event_system.cpp" />
+    <Filter Include="private">
+      <UniqueIdentifier>{7e097eeb-1891-4a61-9686-3ef79bed9c2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public">
+      <UniqueIdentifier>{97b874b7-fb4b-4e9e-8bab-40d7d7b4f516}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

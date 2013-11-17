@@ -4,25 +4,28 @@ Matt Hoyle
 */
 #pragma once
 
+#include "core/system_enumerator.h"
+#include "core/system_registrar.h"
+#include "kernel/string_hashing.h"
 #include <vector>
 #include <map>
-#include "kernel/string_hashing.h"
-#include "system_enumerator.h"
 
 namespace Core
 {
 	class ISystem;
 
 	// This class handles ownership and updates of systems
-	class SystemManager : public ISystemEnumerator
+	class SystemManager : public ISystemEnumerator, public ISystemRegistrar
 	{
 	public:
 		SystemManager();
 		~SystemManager();
 
-		template< class TheSystem >
-		void AddSystem(const char* name);
+		// ISystemEnumerator
 		virtual ISystem* GetSystem(const char* systemName);
+
+		// ISystemRegistrar
+		void RegisterSystem(const char* systemName, ISystem* theSystem);
 
 		bool Initialise();
 		bool Tick();
@@ -38,11 +41,4 @@ namespace Core
 		SystemArray m_systems;
 		SystemMap m_systemMap;
 	};
-
-	template< class TheSystem >
-	void SystemManager::AddSystem(const char* name)
-	{
-		TheSystem* sys = new TheSystem();
-		AddSystemInternal(name, sys);
-	}
 }

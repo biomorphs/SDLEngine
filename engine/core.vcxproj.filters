@@ -1,11 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="include/core/system.h" />
-    <ClInclude Include="include/core/system_manager.h" />
-    <ClInclude Include="include/core/system_enumerator.h" />
+    <Filter Include="public">
+      <UniqueIdentifier>{1e3feef5-d42b-4dbf-a2f8-8810b52a8c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="private">
+      <UniqueIdentifier>{fe26ef89-88af-449d-aed9-868ef52f1699}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src/core/system_manager.cpp" />
+    <ClInclude Include="public\core\event_listener.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\system.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\system_enumerator.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="private\core\system_manager.h">
+      <Filter>private</Filter>
+    </ClInclude>
+    <ClInclude Include="private\core\event_system.h">
+      <Filter>private</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\system_registrar.h">
+      <Filter>public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="private\core\system_manager.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\event_system.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

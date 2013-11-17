@@ -4,14 +4,14 @@ SDLEngine
 */
 
 #include "engine_startup.h"
-#include "kernel/assert.h"
-#include "platform/platform.h"
+#include "platform.h"
 #include "core/system_manager.h"
+#include "kernel/assert.h"
 
 namespace Engine
 {
 	// Application entry point
-	int Run(ISystemRegistrar& sysRegistrar, int argc, char* args[])
+	int Run(IAppSystemRegistrar& sysRegistrar, int argc, char* args[])
 	{
 		// Initialise platform stuff
 		Platform::InitResult result = Platform::Initialise(argc, args);

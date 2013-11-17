@@ -7,12 +7,13 @@ Matt Hoyle
 #include "core/system.h"
 #include <vector>
 
-namespace Framework
+namespace Core
 {
 	class IEventListener;
+	class EngineEvent;
 
 	// This class handles a list of systems that receive SDL events and 
-	// passes events on each tick any registered listeners
+	// passes engine events on each tick any registered listeners
 	class EventSystem : public Core::ISystem
 	{
 	public:
@@ -24,6 +25,8 @@ namespace Framework
 		void Shutdown();
 
 	private:
+		void OnEventRecieved(const EngineEvent& theEvent) { }
+		bool TranslateEvent(void* sdlEvent, EngineEvent& resultEvent);
 		typedef std::vector< IEventListener* > ListenerArray;
 		ListenerArray m_listeners;
 	};

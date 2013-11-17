@@ -9,12 +9,14 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)engine\include\;$(SolutionDir)engine\include\engine\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\private\;$(SolutionDir)engine\public\engine\;$(SolutionDir)engine\private\engine\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="include\engine\engine_startup.h" />
+    <ClInclude Include="private\engine\platform.h" />
+    <ClInclude Include="public\engine\engine_startup.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\engine_startup.cpp" />
+    <ClCompile Include="private\engine\engine_startup.cpp" />
+    <ClCompile Include="private\engine\platform.cpp" />
   </ItemGroup>
 </Project>

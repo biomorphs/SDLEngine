@@ -1,16 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="include/render/window.h" />
-    <ClInclude Include="include/render/device.h" />
-    <ClInclude Include="include/render/utils.h" />
-    <ClInclude Include="include\render\texture_cache.h" />
-    <ClInclude Include="include\render\texture.h" />
+    <Filter Include="private">
+      <UniqueIdentifier>{13fed39c-86aa-4bf4-81ee-28fbad17a16d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public">
+      <UniqueIdentifier>{b673c1e1-f67f-4084-a806-cc6c14d9ac1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src/render/window.cpp" />
-    <ClCompile Include="src/render/device.cpp" />
-    <ClCompile Include="src\render\texture_cache.cpp" />
-    <ClCompile Include="src\render\texture.cpp" />
+    <ClInclude Include="public\render\texture.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\texture_cache.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\window.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\device.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="private\render\utils.h">
+      <Filter>private</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="private\render\texture_cache.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\window.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\device.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\texture.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

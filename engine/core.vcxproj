@@ -9,14 +9,18 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\include\;$(SolutionDir)engine\include\core\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\core\;$(SolutionDir)engine\private\core\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="src/core/system_manager.cpp" />
+    <ClInclude Include="private\core\event_system.h" />
+    <ClInclude Include="private\core\system_manager.h" />
+    <ClInclude Include="public\core\event_listener.h" />
+    <ClInclude Include="public\core\system.h" />
+    <ClInclude Include="public\core\system_enumerator.h" />
+    <ClInclude Include="public\core\system_registrar.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include/core/system.h" />
-    <ClInclude Include="include/core/system_enumerator.h" />
-    <ClInclude Include="include/core/system_manager.h" />
+    <ClCompile Include="private\core\event_system.cpp" />
+    <ClCompile Include="private\core\system_manager.cpp" />
   </ItemGroup>
 </Project>
