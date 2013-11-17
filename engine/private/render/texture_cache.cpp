@@ -59,22 +59,22 @@ namespace Render
 	{
 		for (auto it = m_textureBucket.Begin(); it != m_textureBucket.End(); ++it)
 		{
-			if ((*it)->GetReferenceCount() == 0)
+			if ((*it).GetReferenceCount() == 0)
 			{
 				// First, remove it from the name lookup
 				auto mapIt = m_textureMap.begin();
 				for (; mapIt != m_textureMap.end(); ++mapIt)
 				{
-					if (mapIt->second == (*it))
+					if (mapIt->second == &(*it))
 						break;
 				}
 				m_textureMap.erase(mapIt);
 
 				// Delete the texture wrapper
-				delete (*it)->GetData();
+				delete (*it).GetData();
 
 				// Free the wrapped object
-				m_textureBucket.RemoveObject(*it);
+				m_textureBucket.RemoveObject(&(*it));
 
 				it = m_textureBucket.Begin();
 			}

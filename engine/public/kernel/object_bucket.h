@@ -88,13 +88,15 @@ public:
 				m_usedListIndex = (uint32_t)-1;
 			}
 		}
-		ObjectType* operator*()
+		ObjectType& operator*()
 		{
+			static ObjectType s_badObject;
+
 			if (m_parent && m_usedListIndex < m_parent->m_usedCount)
-				return &m_parent->m_objectBuffer[m_parent->m_usedList[m_usedListIndex]];
+				return m_parent->m_objectBuffer[m_parent->m_usedList[m_usedListIndex]];
 
 			SDE_ASSERT(false, "Bad iterator");
-			return nullptr;
+			return s_badObject;
 		}
 	private:
 		uint32_t m_usedListIndex;
@@ -106,6 +108,12 @@ public:
 		iterator it;
 		if (m_usedCount > 0)
 		{
+			// Resort the used list if required to ease cache thrashing
+			if (m_usedListDirty)
+			{
+				qsort(m_usedList, m_usedCount, sizeof(*m_usedList), CompareUsedList);
+				m_usedListDirty = false;
+			}
 			it.m_parent = this;
 			it.m_usedListIndex = 0;
 		}
@@ -115,6 +123,20 @@ public:
 	iterator End()
 	{
 		return iterator();
+	}
+
+private:
+	static int CompareUsedList(const void * a, const void * b)
+	{
+		uint32_t ia = *(uint32_t*)a;
+		uint32_t ib = *(uint32_t*)b;
+
+		if (ia < ib)
+			return -1;
+		else if (ia > ib)
+			return 1;
+		else
+			return 0;
 	}
 };
 
