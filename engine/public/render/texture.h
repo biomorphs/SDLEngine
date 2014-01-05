@@ -20,6 +20,7 @@ namespace Render
 
 		void Release();
 		SDL_Texture* GetTexture();
+		const SDL_Texture* GetTexture() const;
 
 	private:
 		int m_width;

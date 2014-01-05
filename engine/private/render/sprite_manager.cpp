@@ -14,6 +14,7 @@ namespace Render
 
 	SpriteManager::~SpriteManager()
 	{
+		Flush();
 		SDE_ASSERT(m_spriteBucket.Size() == 0, "There are still sprite definitions loaded!");
 	}
 

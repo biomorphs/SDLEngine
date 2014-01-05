@@ -80,3 +80,21 @@ const typename Internal::InternalType* Handle<Internal>::operator*() const
 
 	return nullptr;
 }
+
+template< class Internal >
+typename Internal::InternalType* Handle<Internal>::operator->()
+{
+	if (m_internalData)
+		return &m_internalData->GetData();
+
+	return nullptr;
+}
+
+template< class Internal >
+const typename Internal::InternalType* Handle<Internal>::operator->() const
+{
+	if (m_internalData)
+		return &m_internalData->GetData();
+
+	return nullptr;
+}

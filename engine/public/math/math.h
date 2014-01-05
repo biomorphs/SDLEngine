@@ -14,4 +14,4 @@ namespace Math
 	float Tan(float a);
 }
 
-#include "math.h"
+#include "math.inl"

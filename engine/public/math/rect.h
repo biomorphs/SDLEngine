@@ -14,7 +14,7 @@ namespace Math
 	public:
 		Rect();
 		Rect(Vector2 origin, Vector2 size);
-		Rect(float x, float y, float w, float h);
+		Rect(int32_t x, int32_t y, int32_t w, int32_t h);
 
 		bool operator!=(const Rect& t) const;
 		bool operator==(const Rect& t) const;

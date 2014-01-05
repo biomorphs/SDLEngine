@@ -37,4 +37,9 @@ namespace Render
 	{
 		return m_texture;
 	}
+
+	const SDL_Texture* Texture::GetTexture() const
+	{
+		return m_texture;
+	}
 }

@@ -12,6 +12,7 @@
     <IncludePath>$(SolutionDir)engine\public\kernel\;$(SolutionDir)engine\private\kernel\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="public\kernel\array.h" />
     <ClInclude Include="public\kernel\assert.h" />
     <ClInclude Include="public\kernel\handle.h" />
     <ClInclude Include="public\kernel\object_bucket.h" />
@@ -23,6 +24,7 @@
     <ClCompile Include="private\kernel\log.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="public\kernel\array.inl" />
     <None Include="public\kernel\handle.inl" />
     <None Include="public\kernel\object_bucket.inl" />
     <None Include="public\kernel\refcounted_data.inl" />

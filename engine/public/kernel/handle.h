@@ -22,6 +22,9 @@ public:
 	typename Internal::InternalType* operator*();
 	const typename Internal::InternalType* operator*() const;
 
+	typename Internal::InternalType* operator->();
+	const typename Internal::InternalType* operator->() const;
+
 private:
 	Internal* m_internalData;
 };

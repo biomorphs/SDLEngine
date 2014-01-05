@@ -13,8 +13,8 @@ namespace Math
 	{
 	public:
 		Vector2();
-		Vector2(float x, float y);
-		Vector2(float v);
+		Vector2(int32_t x, int32_t y);
+		Vector2(int32_t v);
 
 		bool operator!=(const Vector2& t) const;
 		bool operator==(const Vector2& t) const;
@@ -29,8 +29,8 @@ namespace Math
 		float Length() const;
 		Vector2 Normalised() const;
 
-		float m_x;
-		float m_y;
+		int32_t m_x;
+		int32_t m_y;
 	};
 }
 

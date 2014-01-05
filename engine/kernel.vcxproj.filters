@@ -27,6 +27,9 @@
     <ClInclude Include="public\kernel\object_bucket.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\kernel\array.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\kernel\log.cpp">
@@ -41,6 +44,9 @@
       <Filter>public</Filter>
     </None>
     <None Include="public\kernel\object_bucket.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\kernel\array.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>

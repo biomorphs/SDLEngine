@@ -20,6 +20,7 @@ namespace Render
 	
 	TextureCache::~TextureCache()
 	{
+		Flush();
 		SDE_ASSERT(m_textureMap.size() == 0, "There are still textures loaded!");
 	}
 
