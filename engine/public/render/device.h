@@ -5,6 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include <stdint.h>
+#include "SDL.h"
 
 struct SDL_Renderer;
 
@@ -17,16 +18,12 @@ namespace Render
 	class Device
 	{
 	public:
-		enum CreationFlags
-		{
-			UseVSync = (1<<1)
-		};
-		Device(Window& theWindow, int flags = 0);
+		Device(Window& theWindow);
 		~Device();
 		void Present();
-		SDL_Renderer* GetRenderer();
+		SDL_GLContext GetGLContext();
 	private:
 		Window& m_window;
-		SDL_Renderer* m_renderer;
+		SDL_GLContext m_context;
 	};
 }

@@ -10,33 +10,41 @@ Matt Hoyle
 
 namespace Render
 {
-	Device::Device(Window& theWindow, int flags)
+	Device::Device(Window& theWindow)
 		: m_window( theWindow )
 	{
 		SDL_Window* windowHandle = theWindow.GetWindowHandle();
 		SDE_RENDER_ASSERT(windowHandle);
 
-		int renderFlags = SDL_RENDERER_ACCELERATED;
-		if (flags & UseVSync)
-			renderFlags |= SDL_RENDERER_PRESENTVSYNC;
+		// Request opengl 4.4 context.
+		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
 
-		m_renderer = SDL_CreateRenderer(windowHandle, -1, renderFlags);
-		SDE_RENDER_ASSERT(m_renderer);
+		// Always doublebuffer + 24 bit depth
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+		m_context = SDL_GL_CreateContext(windowHandle);
+
+		SDL_GL_SetSwapInterval(1);	// Synchronise swap with monitor
+
+		SDE_RENDER_ASSERT(m_context)
 	}
 
 	Device::~Device()
 	{
-		SDL_DestroyRenderer(m_renderer);
-		m_renderer = nullptr;
+		SDL_GL_DeleteContext(m_context);
+		m_context = nullptr;
 	}
 
 	void Device::Present()
 	{
-		SDL_RenderPresent(m_renderer);
+		SDL_GL_SwapWindow(m_window.GetWindowHandle());
 	}
 
-	SDL_Renderer* Device::GetRenderer()
+	SDL_GLContext Device::GetGLContext()
 	{
-		return m_renderer;
+		return m_context;
 	}
 }

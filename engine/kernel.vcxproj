@@ -11,6 +11,11 @@
   <PropertyGroup>
     <IncludePath>$(SolutionDir)engine\public\kernel\;$(SolutionDir)engine\private\kernel\;$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\kernel\assert.h" />
     <ClInclude Include="public\kernel\log.h" />
