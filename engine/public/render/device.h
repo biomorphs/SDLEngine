@@ -13,7 +13,7 @@ namespace Render
 	class Window;
 	class Texture;
 
-	// This represents the renderer for a window
+	// This represents the GL context for a window
 	class Device
 	{
 	public:

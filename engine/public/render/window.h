@@ -4,6 +4,8 @@ SDLEngine
 */
 #pragma once
 
+#include <string>
+
 struct SDL_Window;
 
 // This is a wrapper for a render window. A device must be paired with the window
@@ -22,9 +24,8 @@ namespace Render
 		};
 		class Properties
 		{
-			friend class Window;
 		public:
-			Properties(const char* title, int sizeX = - 1, int sizeY = -1, int flags = 0)
+			Properties(const std::string& title, int sizeX = - 1, int sizeY = -1, int flags = 0)
 				: m_title( title )
 				, m_sizeX( sizeX )
 				, m_sizeY( sizeY )
@@ -32,8 +33,7 @@ namespace Render
 			{
 
 			}
-		private:
-			const char* m_title;
+			std::string m_title;
 			int m_sizeX;
 			int m_sizeY;
 			int m_flags;

@@ -4,6 +4,8 @@ Matt Hoyle
 */
 #pragma once
 
+#include <string>
+
 namespace Core
 {
 	class ISystem;
@@ -12,6 +14,6 @@ namespace Core
 	class ISystemEnumerator
 	{
 	public:
-		virtual ISystem* GetSystem(const char* systemName) = 0;
+		virtual ISystem* GetSystem(const std::string& systemName) = 0;
 	};
 }

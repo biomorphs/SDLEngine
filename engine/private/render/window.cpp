@@ -12,7 +12,7 @@ namespace Render
 	{
 		int windowPosX = SDL_WINDOWPOS_UNDEFINED;
 		int windowPosY = SDL_WINDOWPOS_UNDEFINED;
-		int windowFlags = SDL_WINDOW_HIDDEN;	// Always start hidden
+		int windowFlags = SDL_WINDOW_HIDDEN | SDL_WINDOW_OPENGL;	// Always start hidden, using opengl
 		
 		if (props.m_flags & CreateFullscreen)
 			windowFlags |= SDL_WINDOW_FULLSCREEN;
@@ -29,7 +29,7 @@ namespace Render
 				windowFlags |= SDL_WINDOW_MAXIMIZED;
 		}
 
-		m_windowHandle = SDL_CreateWindow(props.m_title, windowPosX, windowPosY, props.m_sizeX, props.m_sizeY, windowFlags);
+		m_windowHandle = SDL_CreateWindow(props.m_title.c_str(), windowPosX, windowPosY, props.m_sizeX, props.m_sizeY, windowFlags);
 		SDE_RENDER_ASSERT(m_windowHandle);
 	}
 

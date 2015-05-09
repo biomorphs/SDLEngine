@@ -23,7 +23,7 @@ namespace Core
 	{
 	}
 
-	void SystemManager::RegisterSystem(const char* systemName, ISystem* theSystem)
+	void SystemManager::RegisterSystem(const std::string& systemName, ISystem* theSystem)
 	{
 		AddSystemInternal(systemName, theSystem);
 
@@ -32,18 +32,18 @@ namespace Core
 		events->RegisterListener(theSystem);
 	}
 
-	void SystemManager::AddSystemInternal(const char* name, ISystem* theSystem)
+	void SystemManager::AddSystemInternal(const std::string& name, ISystem* theSystem)
 	{
 		SDE_ASSERT(theSystem);
-		StringHash nameHash = StringHashing::GetHash(name);
+		StringHash nameHash = StringHashing::GetHash(name.c_str());
 		SDE_ASSERT(m_systemMap.find(nameHash) == m_systemMap.end(), "A system already exists with this name");
 		m_systems.push_back(theSystem);
 		m_systemMap.insert(SystemPair(nameHash, theSystem));
 	}
 
-	ISystem* SystemManager::GetSystem(const char* systemName)
+	ISystem* SystemManager::GetSystem(const std::string& systemName)
 	{
-		SystemMap::iterator it = m_systemMap.find(StringHashing::GetHash(systemName));
+		SystemMap::iterator it = m_systemMap.find(StringHashing::GetHash(systemName.c_str()));
 		if (it != m_systemMap.end())
 		{
 			return it->second;
