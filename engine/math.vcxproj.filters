@@ -9,24 +9,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\math\vector2.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\math\math.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\math\rect.h">
       <Filter>public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="public\math\vector2.inl">
-      <Filter>public</Filter>
-    </None>
     <None Include="public\math\math.inl">
-      <Filter>public</Filter>
-    </None>
-    <None Include="public\math\rect.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>

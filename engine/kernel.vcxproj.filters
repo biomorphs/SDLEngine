@@ -18,36 +18,10 @@
     <ClInclude Include="public\kernel\assert.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="public\kernel\refcounted_data.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\kernel\handle.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\kernel\object_bucket.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\kernel\array.h">
-      <Filter>public</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\kernel\log.cpp">
       <Filter>private</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="public\kernel\refcounted_data.inl">
-      <Filter>public</Filter>
-    </None>
-    <None Include="public\kernel\handle.inl">
-      <Filter>public</Filter>
-    </None>
-    <None Include="public\kernel\object_bucket.inl">
-      <Filter>public</Filter>
-    </None>
-    <None Include="public\kernel\array.inl">
-      <Filter>public</Filter>
-    </None>
   </ItemGroup>
 </Project>

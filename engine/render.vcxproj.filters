@@ -9,12 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\render\texture.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\render\texture_cache.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\render\window.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -24,42 +18,12 @@
     <ClInclude Include="private\render\utils.h">
       <Filter>private</Filter>
     </ClInclude>
-    <ClInclude Include="public\render\sprite_definition.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\render\sprite_manager.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\render\sprite_instance.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\render\sprite_layer.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\render\sprite_render.h">
-      <Filter>public</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="private\render\texture_cache.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
     <ClCompile Include="private\render\window.cpp">
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\render\device.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\render\texture.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\render\sprite_manager.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\render\sprite_layer.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\render\sprite_render.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

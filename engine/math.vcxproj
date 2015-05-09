@@ -13,12 +13,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="public\math\math.h" />
-    <ClInclude Include="public\math\rect.h" />
-    <ClInclude Include="public\math\vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="public\math\math.inl" />
-    <None Include="public\math\rect.inl" />
-    <None Include="public\math\vector2.inl" />
   </ItemGroup>
 </Project>

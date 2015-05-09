@@ -9,27 +9,15 @@
   <Import Project="props/engine_lib_paths.props" />
   <Import Project="props/library_build.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\SDL2_image-2.0.0\include;$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\render\;$(SolutionDir)engine\private\;$(SolutionDir)engine\private\render\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\render\;$(SolutionDir)engine\private\;$(SolutionDir)engine\private\render\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="private\render\utils.h" />
     <ClInclude Include="public\render\device.h" />
-    <ClInclude Include="public\render\sprite_definition.h" />
-    <ClInclude Include="public\render\sprite_instance.h" />
-    <ClInclude Include="public\render\sprite_layer.h" />
-    <ClInclude Include="public\render\sprite_manager.h" />
-    <ClInclude Include="public\render\sprite_render.h" />
-    <ClInclude Include="public\render\texture.h" />
-    <ClInclude Include="public\render\texture_cache.h" />
     <ClInclude Include="public\render\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\device.cpp" />
-    <ClCompile Include="private\render\sprite_layer.cpp" />
-    <ClCompile Include="private\render\sprite_manager.cpp" />
-    <ClCompile Include="private\render\sprite_render.cpp" />
-    <ClCompile Include="private\render\texture.cpp" />
-    <ClCompile Include="private\render\texture_cache.cpp" />
     <ClCompile Include="private\render\window.cpp" />
   </ItemGroup>
 </Project>
