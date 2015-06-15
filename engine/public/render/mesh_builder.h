@@ -23,10 +23,10 @@ namespace Render
 		// Step 2: Define chunks
 		void BeginChunk();
 		
-		// Step 3: Add triangles to chunks
-		void AddTriangleData(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2);
-		void AddTriangleData(uint32_t vertexStream, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2);
-		void AddTriangleData(uint32_t vertexStream, const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2);
+		// Step 3: Add data to chunks
+		void AddTriangle(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2);
+		void AddTriangle(uint32_t vertexStream, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2);
+		void AddTriangle(uint32_t vertexStream, const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2);
 		
 		void EndChunk();
 

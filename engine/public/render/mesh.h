@@ -22,6 +22,8 @@ namespace Render
 		// this is shit, refactor!
 		inline std::vector<RenderBuffer>& GetStreams()	{ return m_vertexStreams; }
 		inline VertexArray& GetVertexArray() { return m_vertices; }
+		inline Material* GetMaterial() const { return m_material; }
+		inline void SetMaterial(Material* m) { m_material = m; }
 
 	private:
 		VertexArray m_vertices;

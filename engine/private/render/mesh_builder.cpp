@@ -16,7 +16,7 @@ namespace Render
 	{
 	}
 
-	void MeshBuilder::AddTriangleData(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2)
+	void MeshBuilder::AddTriangle(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
 		SDE_ASSERT(m_currentChunk.m_streamData.size() == m_streams.size());
@@ -33,7 +33,7 @@ namespace Render
 		m_currentChunk.m_streamData[vertexStream].m_lastEntry = streamData.size();
 	}
 
-	void MeshBuilder::AddTriangleData(uint32_t vertexStream, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2)
+	void MeshBuilder::AddTriangle(uint32_t vertexStream, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
 		SDE_ASSERT(m_currentChunk.m_streamData.size() == m_streams.size());
@@ -53,7 +53,7 @@ namespace Render
 		m_currentChunk.m_streamData[vertexStream].m_lastEntry = streamData.size();
 	}
 
-	void MeshBuilder::AddTriangleData(uint32_t vertexStream, const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2)
+	void MeshBuilder::AddTriangle(uint32_t vertexStream, const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
 		SDE_ASSERT(m_currentChunk.m_streamData.size() == m_streams.size());
