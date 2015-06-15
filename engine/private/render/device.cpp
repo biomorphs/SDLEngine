@@ -6,6 +6,8 @@ Matt Hoyle
 #include "device.h"
 #include "window.h"
 #include "utils.h"
+#include "vertex_array.h"
+#include "shader_program.h"
 #include <SDL.h>
 #include <glew.h>
 
@@ -59,5 +61,36 @@ namespace Render
 	SDL_GLContext Device::GetGLContext()
 	{
 		return m_context;
+	}
+
+	inline uint32_t Device::TranslatePrimitiveType(PrimitiveType type) const
+	{
+		switch (type)
+		{
+		case PrimitiveType::Triangles:
+			return GL_TRIANGLES;
+		default:
+			return -1;
+		}
+	}
+
+	void Device::BindShaderProgram(const ShaderProgram& program)
+	{
+		glUseProgram(program.GetHandle());
+		SDE_RENDER_PROCESS_GL_ERRORS("glUseProgram");
+	}
+
+	void Device::DrawArray(const VertexArray& srcArray, PrimitiveType primitive, uint32_t vertexStart, uint32_t vertexCount)
+	{
+		SDE_ASSERT(srcArray.GetHandle() != 0);
+		auto primitiveType = TranslatePrimitiveType(primitive);
+		SDE_ASSERT(primitiveType != -1);
+
+		glBindVertexArray(srcArray.GetHandle());
+		SDE_RENDER_PROCESS_GL_ERRORS("glBindVertexArray");
+		glDrawArrays(primitiveType, vertexStart, vertexCount);
+		SDE_RENDER_PROCESS_GL_ERRORS("glDrawArrays");
+		glBindVertexArray(0);
+		SDE_RENDER_PROCESS_GL_ERRORS("glBindVertexArray");
 	}
 }

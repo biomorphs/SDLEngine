@@ -24,6 +24,12 @@
     <ClInclude Include="public\render\vertex_array.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\shader_binary.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\shader_program.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\window.cpp">
@@ -36,6 +42,12 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\render\vertex_array.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\shader_binary.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\shader_program.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

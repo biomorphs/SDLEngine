@@ -16,10 +16,7 @@ namespace Render
 
 	RenderBuffer::~RenderBuffer()
 	{
-		if (m_bufferSize > 0 && m_handle != 0)
-		{
-			SDE_RENDER_ASSERT(false, "RenderBuffer leak. Destroy() must be called");
-		}
+		SDE_ASSERT(m_handle == 0, "RenderBuffer leaked");
 	}
 
 	bool RenderBuffer::Create(size_t bufferSize)

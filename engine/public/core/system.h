@@ -13,6 +13,7 @@ namespace Core
 	class ISystem : public IEventListener
 	{
 	public:
+		virtual ~ISystem() {}
 		virtual bool PreInit(ISystemEnumerator& systemEnumerator) { return true; }
 		virtual bool Initialise() { return true; }
 		virtual bool PostInit() { return true; }

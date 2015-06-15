@@ -15,6 +15,7 @@ namespace Render
 
 	VertexArray::~VertexArray()
 	{
+		SDE_ASSERT(m_handle == 0, "VertexArray leaked");
 	}
 
 	void VertexArray::AddBuffer(uint8_t attribIndex, const RenderBuffer* srcBuffer, VertexDataType srcType, uint8_t components, uint32_t offset, uint32_t stride)
@@ -89,5 +90,7 @@ namespace Render
 		// Note we do not destroy the buffers, only the VAO
 		glDeleteVertexArrays(1, &m_handle);
 		SDE_RENDER_PROCESS_GL_ERRORS("glDeleteVertexArrays");
+
+		m_handle = 0;
 	}
 }

@@ -20,12 +20,16 @@
     <ClInclude Include="private\render\utils.h" />
     <ClInclude Include="public\render\device.h" />
     <ClInclude Include="public\render\render_buffer.h" />
+    <ClInclude Include="public\render\shader_binary.h" />
+    <ClInclude Include="public\render\shader_program.h" />
     <ClInclude Include="public\render\vertex_array.h" />
     <ClInclude Include="public\render\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\device.cpp" />
     <ClCompile Include="private\render\render_buffer.cpp" />
+    <ClCompile Include="private\render\shader_binary.cpp" />
+    <ClCompile Include="private\render\shader_program.cpp" />
     <ClCompile Include="private\render\vertex_array.cpp" />
     <ClCompile Include="private\render\window.cpp" />
   </ItemGroup>

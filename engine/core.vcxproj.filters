@@ -27,12 +27,18 @@
     <ClInclude Include="public\core\system_registrar.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\core\file_io.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\system_manager.cpp">
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\core\event_system.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\file_io.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

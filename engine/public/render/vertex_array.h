@@ -28,7 +28,10 @@ namespace Render
 		bool Create();		// Initialises the GL-side state for rendering. Call after buffers have been added!
 		void Destroy();
 
+		inline uint32_t GetHandle() const { return m_handle; }
 	private:
+		uint32_t TranslateDataType(VertexDataType type) const;
+
 		struct VertexBufferDescriptor
 		{
 			const RenderBuffer* m_srcBuffer;
@@ -40,7 +43,5 @@ namespace Render
 		};
 		std::vector<VertexBufferDescriptor> m_descriptors;
 		uint32_t m_handle;	// gl handle
-
-		uint32_t TranslateDataType(VertexDataType type) const;
 	};
 }

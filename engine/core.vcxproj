@@ -20,12 +20,14 @@
     <ClInclude Include="private\core\event_system.h" />
     <ClInclude Include="private\core\system_manager.h" />
     <ClInclude Include="public\core\event_listener.h" />
+    <ClInclude Include="public\core\file_io.h" />
     <ClInclude Include="public\core\system.h" />
     <ClInclude Include="public\core\system_enumerator.h" />
     <ClInclude Include="public\core\system_registrar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\event_system.cpp" />
+    <ClCompile Include="private\core\file_io.cpp" />
     <ClCompile Include="private\core\system_manager.cpp" />
   </ItemGroup>
 </Project>
