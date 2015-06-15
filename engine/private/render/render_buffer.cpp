@@ -19,27 +19,43 @@ namespace Render
 		SDE_ASSERT(m_handle == 0, "RenderBuffer leaked");
 	}
 
-	bool RenderBuffer::Create(size_t bufferSize)
+	inline uint32_t RenderBuffer::TranslateBufferType(RenderBufferType type) const
+	{
+		switch (type)
+		{
+		case RenderBufferType::VertexData:
+			return GL_ARRAY_BUFFER;
+		case RenderBufferType::IndexData:
+			return GL_ELEMENT_ARRAY_BUFFER;
+		default:
+			return -1;
+		}
+	}
+
+	bool RenderBuffer::Create(size_t bufferSize, RenderBufferType type)
 	{
 		SDE_RENDER_ASSERT(bufferSize > 0, "Buffer size must be >0");
 
 		if (bufferSize > 0)
 		{
+			auto glBufferType = TranslateBufferType(type);
+
 			glGenBuffers(1, &m_handle);
 			SDE_RENDER_PROCESS_GL_ERRORS_RET("glGenBuffers");
 
-			glBindBuffer(GL_ARRAY_BUFFER, m_handle);
+			glBindBuffer(glBufferType, m_handle);
 			SDE_RENDER_PROCESS_GL_ERRORS_RET("glBindBuffer");
 
 			// We initialise the buffer memory to the correct size, but we do NOT populate it
-			glBufferData(GL_ARRAY_BUFFER, bufferSize, nullptr, GL_STATIC_DRAW);
+			glBufferData(glBufferType, bufferSize, nullptr, GL_STATIC_DRAW);
 			SDE_RENDER_PROCESS_GL_ERRORS_RET("glBufferData");
 
-			m_bufferSize = bufferSize;
-
 			// Reset state
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(glBufferType, 0);
 			SDE_RENDER_PROCESS_GL_ERRORS_RET("glBindBuffer");
+
+			m_bufferSize = bufferSize;
+			m_type = type;
 		}
 
 		return true;
@@ -47,18 +63,20 @@ namespace Render
 
 	void RenderBuffer::SetData(size_t offset, size_t size, void* srcData)
 	{
+		auto glBufferType = TranslateBufferType(m_type);
+
 		SDE_ASSERT(offset < m_bufferSize);
 		SDE_ASSERT((size + offset) <= m_bufferSize);
 		SDE_ASSERT(srcData != nullptr);
 		SDE_ASSERT(m_handle != 0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_handle);
+		glBindBuffer(glBufferType, m_handle);
 		SDE_RENDER_PROCESS_GL_ERRORS("glBindBuffer");
 
-		glBufferSubData(GL_ARRAY_BUFFER, offset, size, srcData);
+		glBufferSubData(glBufferType, offset, size, srcData);
 		SDE_RENDER_PROCESS_GL_ERRORS("glBufferSubData");
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);	// Reset state
+		glBindBuffer(glBufferType, 0);	// Reset state
 		SDE_RENDER_PROCESS_GL_ERRORS("glBindBuffer");
 	}
 

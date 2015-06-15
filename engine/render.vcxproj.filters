@@ -30,6 +30,15 @@
     <ClInclude Include="public\render\shader_program.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\mesh.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\material.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\mesh_builder.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\window.cpp">
@@ -48,6 +57,15 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\render\shader_program.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\mesh.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\material.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\mesh_builder.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>
