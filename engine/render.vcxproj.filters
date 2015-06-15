@@ -18,12 +18,24 @@
     <ClInclude Include="private\render\utils.h">
       <Filter>private</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\render_buffer.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\vertex_array.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\window.cpp">
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\render\device.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\render_buffer.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\vertex_array.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

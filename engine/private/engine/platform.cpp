@@ -6,7 +6,7 @@ SDLEngine
 #include "platform.h"
 #include "kernel/log.h"
 #include "kernel/assert.h"
-#include "SDL.h"
+#include <SDL.h>
 
 Platform::InitResult Platform::Initialise(int argc, char* argv[])
 {

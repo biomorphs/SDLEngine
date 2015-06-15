@@ -9,7 +9,7 @@
   <Import Project="props/engine_lib_paths.props" />
   <Import Project="props/library_build.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\render\;$(SolutionDir)engine\private\;$(SolutionDir)engine\private\render\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\glew-1.12.0-win32\glew-1.12.0\include\GL;$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\render\;$(SolutionDir)engine\private\;$(SolutionDir)engine\private\render\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -19,10 +19,14 @@
   <ItemGroup>
     <ClInclude Include="private\render\utils.h" />
     <ClInclude Include="public\render\device.h" />
+    <ClInclude Include="public\render\render_buffer.h" />
+    <ClInclude Include="public\render\vertex_array.h" />
     <ClInclude Include="public\render\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\device.cpp" />
+    <ClCompile Include="private\render\render_buffer.cpp" />
+    <ClCompile Include="private\render\vertex_array.cpp" />
     <ClCompile Include="private\render\window.cpp" />
   </ItemGroup>
 </Project>

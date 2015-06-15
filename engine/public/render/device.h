@@ -5,7 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include <stdint.h>
-#include "SDL.h"
+#include <SDL.h>
 
 struct SDL_Renderer;
 

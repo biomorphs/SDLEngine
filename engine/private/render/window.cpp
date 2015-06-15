@@ -4,7 +4,7 @@ SDLEngine
 */
 #include "window.h"
 #include "utils.h"
-#include "SDL.h"
+#include <SDL.h>
 
 namespace Render
 {
