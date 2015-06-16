@@ -20,12 +20,11 @@ namespace Vox
 		PagedBlocks();
 		~PagedBlocks();
 
-		// Block accessors (in block coords). Non-const version creates new
-		// blocks, so do NOT use it for iteration
+		// Block accessors (in block coords). If no block exists, one is created, so be careful
 		BlockType* BlockAt(uint32_t bx, uint32_t by, uint32_t bz);
 		const BlockType* BlockAt(uint32_t bx, uint32_t by, uint32_t bz) const;
 
-		// Clump accoessors (in clump coords). Same deal as above, no create in const version
+		// Clump accoessors (in clump coords).
 		typename BlockType::ClumpType* ClumpAt(uint32_t cx, uint32_t cy, uint32_t cz);
 		const typename BlockType::ClumpType* ClumpAt(uint32_t cx, uint32_t cy, uint32_t cz) const;
 
@@ -38,6 +37,10 @@ namespace Vox
 		// Stats
 		uint64_t TotalBlocks() const;
 		uint64_t TotalVoxelMemory() const;
+
+		// Block iterators
+		typename std::unordered_map<uint64_t, BlockType*>::iterator begin() const { return m_blockData.begin(); }
+		typename std::unordered_map<uint64_t, BlockType*>::iterator end() const { return m_blockData.end(); }
 
 	private:
 		uint64_t HashCoords(uint32_t bx, uint32_t by, uint32_t bz) const;

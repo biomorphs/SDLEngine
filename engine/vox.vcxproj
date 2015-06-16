@@ -14,10 +14,12 @@
   <ItemGroup>
     <ClInclude Include="public\vox\block.h" />
     <ClInclude Include="public\vox\clump.h" />
+    <ClInclude Include="public\vox\model.h" />
     <ClInclude Include="public\vox\paged_blocks.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="public\vox\block.inl" />
+    <None Include="public\vox\model.inl" />
     <None Include="public\vox\paged_blocks.inl" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

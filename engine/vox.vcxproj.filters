@@ -18,12 +18,18 @@
     <ClInclude Include="public\vox\paged_blocks.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\vox\model.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="public\vox\block.inl">
       <Filter>public</Filter>
     </None>
     <None Include="public\vox\paged_blocks.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\vox\model.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>
