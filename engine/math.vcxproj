@@ -13,8 +13,10 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="public\math\math.h" />
+    <ClInclude Include="public\math\morton_encoding.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="public\math\math.inl" />
+    <None Include="public\math\morton_encoding.inl" />
   </ItemGroup>
 </Project>

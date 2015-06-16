@@ -1,4 +1,5 @@
 #include <math.h>
+#include <intrin.h>
 
 namespace Math
 {
@@ -23,4 +24,10 @@ namespace Math
 		return tanf(a);
 	}
 
+	uint32_t Log2(uint32_t v)
+	{
+		// This should be supported on all modern-ish CPUs
+		unsigned long result = 0;
+		return _BitScanReverse(&result, v) != 0 ? result : 0;
+	}
 }

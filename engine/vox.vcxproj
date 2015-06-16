@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{f3a9213d-d6ad-439e-9664-76d605571414}</ProjectGuid>
+    <RootNamespace>render</RootNamespace>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)external\glm-0.9.6.3\glm\glm;$(SolutionDir)external\glew-1.12.0-win32\glew-1.12.0\include\GL;$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\vox\;$(SolutionDir)engine\private\;$(SolutionDir)engine\private\vox\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="public\vox\block.h" />
+    <ClInclude Include="public\vox\clump.h" />
+    <ClInclude Include="public\vox\paged_blocks.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="public\vox\block.inl" />
+    <None Include="public\vox\paged_blocks.inl" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

@@ -2,25 +2,28 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="public">
-      <UniqueIdentifier>{c655870e-6d55-4b21-8b0e-22732cf09514}</UniqueIdentifier>
+      <UniqueIdentifier>{60b51ae0-ed1c-4b39-86ab-b50cd1fa0fdd}</UniqueIdentifier>
     </Filter>
     <Filter Include="private">
-      <UniqueIdentifier>{7494643a-44df-496e-b26e-5025809f7d21}</UniqueIdentifier>
+      <UniqueIdentifier>{b49c4698-10f2-4a5a-beea-7ffc178554c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\math\math.h">
+    <ClInclude Include="public\vox\clump.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="public\math\morton_encoding.h">
+    <ClInclude Include="public\vox\block.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\vox\paged_blocks.h">
       <Filter>public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="public\math\math.inl">
+    <None Include="public\vox\block.inl">
       <Filter>public</Filter>
     </None>
-    <None Include="public\math\morton_encoding.inl">
+    <None Include="public\vox\paged_blocks.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>
