@@ -77,7 +77,7 @@ namespace Render
 
 	void Device::SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix)
 	{
-		SDE_ASSERT(uniformHandle != 0);
+		SDE_ASSERT(uniformHandle != -1);
 		glUniformMatrix4fv(uniformHandle, 1, GL_FALSE, glm::value_ptr(matrix));
 		SDE_RENDER_PROCESS_GL_ERRORS("glUniformMatrix4fv");
 	}

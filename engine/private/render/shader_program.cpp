@@ -50,6 +50,14 @@ namespace Render
 		return linkResult == GL_TRUE;
 	}
 
+	uint32_t ShaderProgram::GetUniformHandle(const char* uniformName) const
+	{
+		SDE_ASSERT(m_handle != 0);
+		uint32_t result = glGetUniformLocation(m_handle, uniformName);
+		SDE_RENDER_PROCESS_GL_ERRORS("glGetUniformLocation");
+		return result;
+	}
+
 	void ShaderProgram::Destroy()
 	{
 		if (m_handle != 0)

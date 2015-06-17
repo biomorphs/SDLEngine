@@ -5,6 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include <stdint.h>
+#include "kernel/assert.h"
 
 namespace Vox
 {

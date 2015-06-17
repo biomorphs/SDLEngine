@@ -13,8 +13,11 @@ namespace Render
 	class InstanceQueue
 	{
 	public:
-		InstanceQueue(uint32_t reservedSize = 1024);
-		~InstanceQueue();
+		InstanceQueue(uint32_t reservedSize = 1024)
+		{
+			m_instances.reserve(reservedSize);
+		}
+		~InstanceQueue()	{ }
 
 		inline void AddInstance(std::shared_ptr<Mesh>& mesh, const glm::mat4& transform)
 		{

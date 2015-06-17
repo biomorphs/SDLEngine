@@ -18,6 +18,8 @@ namespace Render
 		RenderPass();
 		~RenderPass();
 
+		inline Camera& GetCamera()	{ return m_camera; }
+
 		inline void AddInstance(std::shared_ptr<Mesh>& mesh, const glm::mat4& transform)	{ m_instances.AddInstance(mesh, transform); }
 		void Reset();
 		void RenderAll(Device& device);

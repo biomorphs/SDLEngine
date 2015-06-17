@@ -21,6 +21,7 @@ namespace Render
 		bool Create(const ShaderBinary& vertexShader, const ShaderBinary& fragmentShader, std::string& result);
 		void Destroy();
 
+		uint32_t GetUniformHandle(const char* uniformName) const;
 		inline uint32_t GetHandle() const { return m_handle; }
 
 	private:
