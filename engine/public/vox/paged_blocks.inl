@@ -40,20 +40,21 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	inline uint64_t PagedBlocks<BlockType>::HashCoords(uint32_t bx, uint32_t by, uint32_t bz) const 
+	inline uint64_t PagedBlocks<BlockType>::HashCoords(glm::ivec3 coords) const
 	{
-		// 20 bits per axis = max 1048576 ^ 3 entries
+		// 21 bits per axis - 20 + 1 sign bit, so we can store negative coords
 		const uint64_t c_20Bits = 0xfffff;
-		uint64_t hx = bx;
-		uint64_t hy = by;
-		uint64_t hz = bz;
-		return (hx & c_20Bits) | ((hy & c_20Bits) << 20) | ((hz & c_20Bits) << 40);
+		const uint64_t c_signBitMask = 0x80000000;
+		uint64_t hx = (coords.x & c_20Bits) | ((coords.x & c_signBitMask) >> 11);
+		uint64_t hy = (coords.y & c_20Bits) | ((coords.y & c_signBitMask) >> 11);
+		uint64_t hz = (coords.z & c_20Bits) | ((coords.z & c_signBitMask) >> 11);
+		return hx | (hy << 21) | (hz << 42);
 	}
 
 	template< class BlockType >
-	BlockType* PagedBlocks<BlockType>::BlockAt(uint32_t bx, uint32_t by, uint32_t bz)
+	BlockType* PagedBlocks<BlockType>::BlockAt(glm::ivec3 coords, bool createNewBlocks = true)
 	{
-		uint64_t key = HashCoords(bx, by, bz);
+		uint64_t key = HashCoords(coords);
 		auto it = m_blockData.find(key);
 		if (it != m_blockData.end())
 		{
@@ -61,17 +62,24 @@ namespace Vox
 		}
 		else
 		{
-			BlockType* newBlock = new BlockType();
-			SDE_ASSERT(newBlock);
-			m_blockData[key] = newBlock;
-			return newBlock;
+			if (!createNewBlocks)
+			{
+				return nullptr;
+			}
+			else
+			{
+				BlockType* newBlock = new BlockType();
+				SDE_ASSERT(newBlock);
+				m_blockData[key] = newBlock;
+				return newBlock;
+			}
 		}
 	}
 
 	template< class BlockType >
-	const BlockType* PagedBlocks<BlockType>::BlockAt(uint32_t bx, uint32_t by, uint32_t bz) const
+	const BlockType* PagedBlocks<BlockType>::BlockAt(glm::ivec3 coords) const
 	{
-		uint64_t key = HashCoords(bx, by, bz);
+		uint64_t key = HashCoords(coords);
 		const auto it = m_blockData.find(key);
 		if (it != m_blockData.end())
 		{
@@ -84,34 +92,44 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	typename BlockType::ClumpType* PagedBlocks<BlockType>::ClumpAt(uint32_t cx, uint32_t cy, uint32_t cz)
+	typename BlockType::ClumpType* PagedBlocks<BlockType>::ClumpAt(glm::ivec3 coords)
 	{
-		const uint32_t c_blockLookupShift = Math::Log2(typename BlockType::BlockDimensions);
-		const uint32_t c_blockLookupMask = typename BlockType::BlockDimensions - 1;
-		auto theBlock = BlockAt(cx >> c_blockLookupShift, cy >> c_blockLookupShift, cz >> c_blockLookupShift);
-		return &theBlock->ClumpAt(cx & c_blockLookupMask, cy & c_blockLookupMask, cz & c_blockLookupMask);
+		// split the chunk coords from the block coords, keeping the sign
+		const uint32_t c_chunkLookupShift = Math::Log2(typename BlockType::BlockDimensions);
+		const uint32_t c_chunkLookupMask = typename BlockType::BlockDimensions - 1;
+		const uint32_t c_blockLookupMaskNoSign = ~(0x80000000 | c_chunkLookupMask);
+		const uint32_t c_signBitMask = 0x80000000;
+
+		// extract block coords + sign bit so we can shift + reconstruct
+		glm::ivec3 blockCoords;
+		blockCoords.x = (coords.x & c_blockLookupMaskNoSign) >> c_chunkLookupShift;
+		blockCoords.y = (coords.y & c_blockLookupMaskNoSign) >> c_chunkLookupShift;
+		blockCoords.z = (coords.z & c_blockLookupMaskNoSign) >> c_chunkLookupShift;
+		blockCoords.x |= (coords.x & c_signBitMask);
+		blockCoords.y |= (coords.x & c_signBitMask);
+		blockCoords.z |= (coords.x & c_signBitMask);
+
+		// extract clump coords
+		glm::ivec3 chunkCoords;
+		chunkCoords.x = coords.x & c_chunkLookupMask;
+		chunkCoords.y = coords.y & c_chunkLookupMask;
+		chunkCoords.z = coords.z & c_chunkLookupMask;
+
+		auto theBlock = BlockAt(blockCoords);
+		return &theBlock->ClumpAt(chunkCoords.x, chunkCoords.y, chunkCoords.z);
 	}
 
 	template< class BlockType >
-	const typename BlockType::ClumpType* PagedBlocks<BlockType>::ClumpAt(uint32_t cx, uint32_t cy, uint32_t cz) const
+	typename BlockType::ClumpType::VoxelDataType* PagedBlocks<BlockType>::VoxelAt(glm::ivec3 coords)
 	{
-		const uint32_t c_blockLookupShift = Math::Log2(typename BlockType::BlockDimensions);
-		const uint32_t c_blockLookupMask = typename BlockType::BlockDimensions - 1;
-		auto theBlock = BlockAt(cx >> c_blockLookupShift, cy >> c_blockLookupShift, cz >> c_blockLookupShift);
-		if (theBlock != nullptr)
-		{
-			return &theBlock->ClumpAt(cx & c_blockLookupMask, cy & c_blockLookupMask, cz & c_blockLookupMask);
-		}
-		else
-		{
-			return nullptr;
-		}		
-	}
+		const uint32_t c_signBitMask = 0x80000000;
 
-	template< class BlockType >
-	typename BlockType::ClumpType::VoxelDataType* PagedBlocks<BlockType>::VoxelAt(uint32_t vx, uint32_t vy, uint32_t vz)
-	{
-		auto theClump = ClumpAt(vx >> 1, vy >> 1, vz >> 1);
-		return &theClump->VoxelAt(vx & 0x1, vy & 0x1, vz & 0x1);
+		glm::ivec3 clumpCoords;
+		clumpCoords.x = ((coords.x & ~c_signBitMask) >> 1) | (coords.x & c_signBitMask);
+		clumpCoords.y = ((coords.y & ~c_signBitMask) >> 1) | (coords.y & c_signBitMask);
+		clumpCoords.z = ((coords.z & ~c_signBitMask) >> 1) | (coords.z & c_signBitMask);
+
+		auto theClump = ClumpAt(clumpCoords);
+		return &theClump->VoxelAt(coords.x & 0x1, coords.y & 0x1, coords.z & 0x1);
 	}
 }

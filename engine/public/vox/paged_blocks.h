@@ -12,7 +12,6 @@ namespace Vox
 {
 	// Handles paging of blocks in arbitrary 3d space
 	// Only blocks containing data are stored
-	// Voxel data is assumed to be tightly packed in a grid
 	template< class BlockType >
 	class PagedBlocks
 	{
@@ -20,16 +19,15 @@ namespace Vox
 		PagedBlocks();
 		~PagedBlocks();
 
-		// Block accessors (in block coords). If no block exists, one is created, so be careful
-		BlockType* BlockAt(uint32_t bx, uint32_t by, uint32_t bz);
-		const BlockType* BlockAt(uint32_t bx, uint32_t by, uint32_t bz) const;
+		// Block accessors (in block coords).
+		BlockType* BlockAt(glm::ivec3 coords, bool createNewBlocks = true);
+		const BlockType* BlockAt(glm::ivec3 coords) const;
 
 		// Clump accoessors (in clump coords).
-		typename BlockType::ClumpType* ClumpAt(uint32_t cx, uint32_t cy, uint32_t cz);
-		const typename BlockType::ClumpType* ClumpAt(uint32_t cx, uint32_t cy, uint32_t cz) const;
+		typename BlockType::ClumpType* ClumpAt(glm::ivec3 coords);
 
 		// Voxel accessors (dito)
-		typename BlockType::ClumpType::VoxelDataType* VoxelAt(uint32_t vx, uint32_t vy, uint32_t vz);
+		typename BlockType::ClumpType::VoxelDataType* VoxelAt(glm::ivec3 coords);
 
 		// Remove all data
 		void Clear();
@@ -43,7 +41,7 @@ namespace Vox
 		typename std::unordered_map<uint64_t, BlockType*>::iterator end() const { return m_blockData.end(); }
 
 	private:
-		uint64_t HashCoords(uint32_t bx, uint32_t by, uint32_t bz) const;
+		uint64_t HashCoords(glm::ivec3 coords) const;
 		std::unordered_map<uint64_t, BlockType*> m_blockData;
 	};
 }
