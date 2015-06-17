@@ -39,6 +39,18 @@
     <ClInclude Include="public\render\mesh_builder.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\instance_queue.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\mesh_instance.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\render_pass.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\camera.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\window.cpp">
@@ -68,5 +80,13 @@
     <ClCompile Include="private\render\mesh_builder.cpp">
       <Filter>private</Filter>
     </ClCompile>
+    <ClCompile Include="private\render\render_pass.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="public\render\camera.inl">
+      <Filter>public</Filter>
+    </None>
   </ItemGroup>
 </Project>

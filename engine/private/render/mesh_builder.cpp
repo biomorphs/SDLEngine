@@ -5,10 +5,12 @@ Matt Hoyle
 
 #include "mesh_builder.h"
 #include "utils.h"
+#include <gtc/type_ptr.hpp>
 
 namespace Render
 {
 	MeshBuilder::MeshBuilder()
+		: m_currentVertexIndex(0)
 	{
 	}
 
@@ -16,70 +18,42 @@ namespace Render
 	{
 	}
 
-	void MeshBuilder::AddTriangle(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2)
+	void MeshBuilder::SetStreamData(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
-		SDE_ASSERT(m_currentChunk.m_streamData.size() == m_streams.size());
+		SDE_ASSERT(m_streams[vertexStream].m_componentCount == 2);
 
-		// this sucks
 		auto& streamData = m_streams[vertexStream].m_streamData;
-		streamData.reserve(streamData.size() + 6);
-		streamData.push_back(v0.x);
-		streamData.push_back(v0.y);
-		streamData.push_back(v1.x);
-		streamData.push_back(v1.y);
-		streamData.push_back(v2.x);
-		streamData.push_back(v2.y);
-		m_currentChunk.m_streamData[vertexStream].m_lastEntry = streamData.size();
+		streamData.insert(streamData.end(), glm::value_ptr(v0), glm::value_ptr(v0) + 2);
+		streamData.insert(streamData.end(), glm::value_ptr(v1), glm::value_ptr(v1) + 2);
+		streamData.insert(streamData.end(), glm::value_ptr(v2), glm::value_ptr(v2) + 2);
 	}
 
-	void MeshBuilder::AddTriangle(uint32_t vertexStream, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2)
+	void MeshBuilder::SetStreamData(uint32_t vertexStream, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
-		SDE_ASSERT(m_currentChunk.m_streamData.size() == m_streams.size());
+		SDE_ASSERT(m_streams[vertexStream].m_componentCount == 3);
 
-		// this sucks
 		auto& streamData = m_streams[vertexStream].m_streamData;
-		streamData.reserve(streamData.size() + 9);
-		streamData.push_back(v0.x);
-		streamData.push_back(v0.y);
-		streamData.push_back(v0.z);
-		streamData.push_back(v1.x);
-		streamData.push_back(v1.y);
-		streamData.push_back(v1.z);
-		streamData.push_back(v2.x);
-		streamData.push_back(v2.y);
-		streamData.push_back(v2.z);
-		m_currentChunk.m_streamData[vertexStream].m_lastEntry = streamData.size();
+		streamData.insert(streamData.end(), glm::value_ptr(v0), glm::value_ptr(v0) + 3);
+		streamData.insert(streamData.end(), glm::value_ptr(v1), glm::value_ptr(v1) + 3);
+		streamData.insert(streamData.end(), glm::value_ptr(v2), glm::value_ptr(v2) + 3);
 	}
 
-	void MeshBuilder::AddTriangle(uint32_t vertexStream, const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2)
+	void MeshBuilder::SetStreamData(uint32_t vertexStream, const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
-		SDE_ASSERT(m_currentChunk.m_streamData.size() == m_streams.size());
+		SDE_ASSERT(m_streams[vertexStream].m_componentCount == 4);
 
-		// this sucks
 		auto& streamData = m_streams[vertexStream].m_streamData;
-		streamData.reserve(streamData.size() + 12);
-		streamData.push_back(v0.x);
-		streamData.push_back(v0.y);
-		streamData.push_back(v0.z);
-		streamData.push_back(v0.w);
-		streamData.push_back(v1.x);
-		streamData.push_back(v1.y);
-		streamData.push_back(v1.z);
-		streamData.push_back(v1.w);
-		streamData.push_back(v2.x);
-		streamData.push_back(v2.y);
-		streamData.push_back(v2.z);
-		streamData.push_back(v2.w);
-		m_currentChunk.m_streamData[vertexStream].m_lastEntry = streamData.size();
+		streamData.insert(streamData.end(), glm::value_ptr(v0), glm::value_ptr(v0) + 4);
+		streamData.insert(streamData.end(), glm::value_ptr(v1), glm::value_ptr(v1) + 4);
+		streamData.insert(streamData.end(), glm::value_ptr(v2), glm::value_ptr(v2) + 4);
 	}
 
 	uint32_t MeshBuilder::AddVertexStream(int32_t componentCount)
 	{
 		SDE_ASSERT(componentCount < 4);
-		SDE_ASSERT(m_currentChunk.m_streamData.size() == 0);
 		SDE_ASSERT(m_chunks.size() == 0);
 		
 		StreamDesc newStream;
@@ -89,32 +63,45 @@ namespace Render
 		return m_streams.size() - 1;
 	}
 
+	void MeshBuilder::BeginTriangle()
+	{
+	}
+
+	void MeshBuilder::EndTriangle()
+	{
+		m_currentVertexIndex += 3;
+
+		// Make sure all streams have data
+#ifdef SDE_DEBUG
+		for (auto stream : m_streams)
+		{
+			SDE_ASSERT((stream.m_streamData.size() / stream.m_componentCount) == m_currentVertexIndex);
+		}
+#endif
+	}
+
 	void MeshBuilder::BeginChunk()
 	{
 		SDE_ASSERT(m_streams.size() > 0);
-		SDE_ASSERT(m_currentChunk.m_streamData.empty());
 
-		// Initialise chunk stream descriptors
-		m_currentChunk.m_streamData.reserve(m_streams.size());
-		for (const auto& it : m_streams)
-		{
-			ChunkStreamData newStreamData;
-			newStreamData.m_firstEntry = it.m_streamData.size();
-			newStreamData.m_lastEntry = newStreamData.m_firstEntry;
-			m_currentChunk.m_streamData.push_back(newStreamData);
-		}
+		m_currentChunk.m_firstVertex = m_currentVertexIndex;
+		m_currentChunk.m_lastVertex = m_currentVertexIndex;
 	}
 
 	void MeshBuilder::EndChunk()
 	{
-		m_chunks.push_back(m_currentChunk);
-		m_currentChunk.m_streamData.clear();
+		m_currentChunk.m_lastVertex = m_currentVertexIndex;
+		if ((m_currentChunk.m_lastVertex - m_currentChunk.m_firstVertex) > 0)
+		{
+			m_chunks.push_back(m_currentChunk);
+		}		
 	}
 
 	bool MeshBuilder::CreateMesh(Mesh& target)
 	{
 		auto& streams = target.GetStreams();
-		auto& vertexArray = target.GetVertexArray();;
+		auto& vertexArray = target.GetVertexArray();
+		auto& chunks = target.GetChunks();
 
 		// Fill buffers
 		streams.resize(m_streams.size());
@@ -136,6 +123,13 @@ namespace Render
 			++streamIndex;
 		}
 		vertexArray.Create();
+
+		// Populate chunks
+		chunks.resize(m_chunks.size());
+		for (const auto& chunk : m_chunks)
+		{
+			chunks.emplace_back(chunk.m_firstVertex, chunk.m_lastVertex - chunk.m_firstVertex);
+		}
 
 		return true;
 	}

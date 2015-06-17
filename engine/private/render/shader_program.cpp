@@ -15,7 +15,7 @@ namespace Render
 
 	ShaderProgram::~ShaderProgram()
 	{
-		SDE_ASSERT(m_handle == 0, "ShaderProgram leaked");
+		Destroy();
 	}
 
 	bool ShaderProgram::Create(const ShaderBinary& vertexShader, const ShaderBinary& fragmentShader, std::string& result)
@@ -52,8 +52,12 @@ namespace Render
 
 	void ShaderProgram::Destroy()
 	{
-		glDeleteProgram(m_handle);
-		SDE_RENDER_PROCESS_GL_ERRORS("glDeleteProgram");
+		if (m_handle != 0)
+		{
+			glDeleteProgram(m_handle);
+			SDE_RENDER_PROCESS_GL_ERRORS("glDeleteProgram");
+		}
+		
 		m_handle = 0;
 	}
 }

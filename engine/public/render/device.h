@@ -6,6 +6,7 @@ Matt Hoyle
 
 #include <stdint.h>
 #include <SDL.h>
+#include <glm.hpp>
 
 struct SDL_Renderer;
 
@@ -29,8 +30,11 @@ namespace Render
 		~Device();
 		void Present();
 		SDL_GLContext GetGLContext();
+
+		void SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix);
 		void BindShaderProgram(const ShaderProgram& program);
-		void DrawArray(const VertexArray& srcArray, PrimitiveType primitive, uint32_t vertexStart, uint32_t vertexCount);
+		void BindVertexArray(const VertexArray& srcArray);
+		void DrawPrimitives(PrimitiveType primitive, uint32_t vertexStart, uint32_t vertexCount);
 	private:
 		uint32_t TranslatePrimitiveType(PrimitiveType type) const;
 

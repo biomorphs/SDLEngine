@@ -18,11 +18,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="private\render\utils.h" />
+    <ClInclude Include="public\render\camera.h" />
     <ClInclude Include="public\render\device.h" />
     <ClInclude Include="public\render\material.h" />
     <ClInclude Include="public\render\mesh.h" />
     <ClInclude Include="public\render\mesh_builder.h" />
+    <ClInclude Include="public\render\mesh_instance.h" />
     <ClInclude Include="public\render\render_buffer.h" />
+    <ClInclude Include="public\render\instance_queue.h" />
+    <ClInclude Include="public\render\render_pass.h" />
     <ClInclude Include="public\render\shader_binary.h" />
     <ClInclude Include="public\render\shader_program.h" />
     <ClInclude Include="public\render\vertex_array.h" />
@@ -34,9 +38,13 @@
     <ClCompile Include="private\render\mesh.cpp" />
     <ClCompile Include="private\render\mesh_builder.cpp" />
     <ClCompile Include="private\render\render_buffer.cpp" />
+    <ClCompile Include="private\render\render_pass.cpp" />
     <ClCompile Include="private\render\shader_binary.cpp" />
     <ClCompile Include="private\render\shader_program.cpp" />
     <ClCompile Include="private\render\vertex_array.cpp" />
     <ClCompile Include="private\render\window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="public\render\camera.inl" />
   </ItemGroup>
 </Project>

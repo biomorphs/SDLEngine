@@ -12,6 +12,7 @@ namespace Render
 
 	Mesh::~Mesh()
 	{
+		Destroy();
 	}
 
 	void Mesh::Destroy()
@@ -20,6 +21,8 @@ namespace Render
 		{
 			it.Destroy();
 		}
+		m_vertexStreams.clear();
 		m_vertices.Destroy();
+		m_material = nullptr;
 	}
 }

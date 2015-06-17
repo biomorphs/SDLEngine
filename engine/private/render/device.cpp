@@ -10,6 +10,7 @@ Matt Hoyle
 #include "shader_program.h"
 #include <SDL.h>
 #include <glew.h>
+#include <gtc/type_ptr.hpp>
 
 namespace Render
 {
@@ -74,23 +75,32 @@ namespace Render
 		}
 	}
 
+	void Device::SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix)
+	{
+		SDE_ASSERT(uniformHandle != 0);
+		glUniformMatrix4fv(uniformHandle, 1, GL_FALSE, glm::value_ptr(matrix));
+		SDE_RENDER_PROCESS_GL_ERRORS("glUniformMatrix4fv");
+	}
+
 	void Device::BindShaderProgram(const ShaderProgram& program)
 	{
 		glUseProgram(program.GetHandle());
 		SDE_RENDER_PROCESS_GL_ERRORS("glUseProgram");
 	}
 
-	void Device::DrawArray(const VertexArray& srcArray, PrimitiveType primitive, uint32_t vertexStart, uint32_t vertexCount)
+	void Device::BindVertexArray(const VertexArray& srcArray)
 	{
 		SDE_ASSERT(srcArray.GetHandle() != 0);
+		glBindVertexArray(srcArray.GetHandle());
+		SDE_RENDER_PROCESS_GL_ERRORS("glBindVertexArray");
+	}
+
+	void Device::DrawPrimitives(PrimitiveType primitive, uint32_t vertexStart, uint32_t vertexCount)
+	{
 		auto primitiveType = TranslatePrimitiveType(primitive);
 		SDE_ASSERT(primitiveType != -1);
 
-		glBindVertexArray(srcArray.GetHandle());
-		SDE_RENDER_PROCESS_GL_ERRORS("glBindVertexArray");
 		glDrawArrays(primitiveType, vertexStart, vertexCount);
 		SDE_RENDER_PROCESS_GL_ERRORS("glDrawArrays");
-		glBindVertexArray(0);
-		SDE_RENDER_PROCESS_GL_ERRORS("glBindVertexArray");
 	}
 }

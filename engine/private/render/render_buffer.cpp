@@ -16,7 +16,7 @@ namespace Render
 
 	RenderBuffer::~RenderBuffer()
 	{
-		SDE_ASSERT(m_handle == 0, "RenderBuffer leaked");
+		Destroy();
 	}
 
 	inline uint32_t RenderBuffer::TranslateBufferType(RenderBufferType type) const
@@ -82,11 +82,12 @@ namespace Render
 
 	bool RenderBuffer::Destroy()
 	{
-		if (m_bufferSize > 0)
+		if (m_handle != 0)
 		{
 			glDeleteBuffers(1, &m_handle);
 			SDE_RENDER_PROCESS_GL_ERRORS("glDeleteBuffers");
 			m_handle = 0;
+			m_bufferSize = 0;
 		}
 
 		return true;

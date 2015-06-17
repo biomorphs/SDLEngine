@@ -15,7 +15,7 @@ namespace Render
 
 	ShaderBinary::~ShaderBinary()
 	{
-		SDE_ASSERT(m_handle == 0, "ShaderBinary leaked");
+		Destroy();
 	}
 
 	inline uint32_t ShaderBinary::TranslateShaderType(ShaderType type) const
@@ -77,8 +77,11 @@ namespace Render
 
 	void ShaderBinary::Destroy()
 	{
-		glDeleteShader(m_handle);
-		SDE_RENDER_PROCESS_GL_ERRORS("glDeleteShader");
+		if (m_handle != 0)
+		{
+			glDeleteShader(m_handle);
+			SDE_RENDER_PROCESS_GL_ERRORS("glDeleteShader");
+		}
 
 		m_handle = 0;
 	}
