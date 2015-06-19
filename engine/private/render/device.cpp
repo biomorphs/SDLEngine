@@ -31,7 +31,7 @@ namespace Render
 		m_context = SDL_GL_CreateContext(windowHandle);
 		SDE_RENDER_ASSERT(m_context);
 
-		SDL_GL_SetSwapInterval(1);	// Synchronise swap with monitor
+		SDL_GL_SetSwapInterval(1);	// 0 = no vsync, 1 = vsync
 
 		// glew initialises GL function pointers
 		glewExperimental = true;		// must be set for core profile and above
@@ -73,6 +73,14 @@ namespace Render
 		default:
 			return -1;
 		}
+	}
+
+	void Device::ClearColourDepthTarget(const glm::vec4& colour)
+	{
+		glClearColor(colour.r, colour.g, colour.b, colour.a);
+		SDE_RENDER_PROCESS_GL_ERRORS("glClearColor");
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		SDE_RENDER_PROCESS_GL_ERRORS("glClear");
 	}
 
 	void Device::SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix)

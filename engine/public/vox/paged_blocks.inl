@@ -40,7 +40,7 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	inline uint64_t PagedBlocks<BlockType>::HashCoords(glm::ivec3 coords) const
+	inline uint64_t PagedBlocks<BlockType>::HashCoords(const glm::ivec3& coords) const
 	{
 		// 21 bits per axis - 20 + 1 sign bit, so we can store negative coords
 		const uint64_t c_20Bits = 0xfffff;
@@ -52,7 +52,7 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	BlockType* PagedBlocks<BlockType>::BlockAt(glm::ivec3 coords, bool createNewBlocks = true)
+	BlockType* PagedBlocks<BlockType>::BlockAt(const glm::ivec3& coords, bool createNewBlocks = true)
 	{
 		uint64_t key = HashCoords(coords);
 		auto it = m_blockData.find(key);
@@ -77,7 +77,7 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	const BlockType* PagedBlocks<BlockType>::BlockAt(glm::ivec3 coords) const
+	const BlockType* PagedBlocks<BlockType>::BlockAt(const glm::ivec3& coords) const
 	{
 		uint64_t key = HashCoords(coords);
 		const auto it = m_blockData.find(key);
@@ -92,7 +92,7 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	typename BlockType::ClumpType* PagedBlocks<BlockType>::ClumpAt(glm::ivec3 coords)
+	typename BlockType::ClumpType* PagedBlocks<BlockType>::ClumpAt(const glm::ivec3& coords)
 	{
 		// split the chunk coords from the block coords, keeping the sign
 		const uint32_t c_chunkLookupShift = Math::Log2(typename BlockType::BlockDimensions);
@@ -120,7 +120,7 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	typename BlockType::ClumpType::VoxelDataType* PagedBlocks<BlockType>::VoxelAt(glm::ivec3 coords)
+	typename BlockType::ClumpType::VoxelDataType* PagedBlocks<BlockType>::VoxelAt(const glm::ivec3& coords)
 	{
 		const uint32_t c_signBitMask = 0x80000000;
 

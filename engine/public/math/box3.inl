@@ -17,7 +17,7 @@ namespace Math
 	{
 	}
 
-	inline Box3::Box3(glm::vec3 min, glm::vec3 max)
+	inline Box3::Box3(const glm::vec3& min, const glm::vec3& max)
 	{
 		m_min = min;
 		m_max = max;

@@ -48,25 +48,25 @@ namespace Render
 		RebuildProjectionMatrix();
 	}
 
-	inline void Camera::SetPosition(glm::vec3 pos)
+	inline void Camera::SetPosition(const glm::vec3& pos)
 	{
 		m_position = pos;
 		RebuildViewMatrix();
 	}
 
-	inline void Camera::SetUp(glm::vec3 up)
+	inline void Camera::SetUp(const glm::vec3& up)
 	{
 		m_up = up;
 		RebuildViewMatrix();
 	}
 
-	inline void Camera::SetTarget(glm::vec3 target)
+	inline void Camera::SetTarget(const glm::vec3& target)
 	{
 		m_target = target;
 		RebuildViewMatrix();
 	}
 
-	inline void Camera::LookAt(glm::vec3 pos, glm::vec3 target, glm::vec3 up)
+	inline void Camera::LookAt(const glm::vec3& pos, const glm::vec3& target, const glm::vec3& up)
 	{
 		m_position = pos;
 		m_up = up;
@@ -74,14 +74,14 @@ namespace Render
 		RebuildViewMatrix();
 	}
 
-	inline void Camera::LookAt(glm::vec3 target, glm::vec3 up)
+	inline void Camera::LookAt(const glm::vec3& target, const glm::vec3& up)
 	{
 		m_up = up;
 		m_target = target;
 		RebuildViewMatrix();
 	}
 
-	inline void Camera::LookAt(glm::vec3 target)
+	inline void Camera::LookAt(const glm::vec3& target)
 	{
 		m_target = target;
 		RebuildViewMatrix();

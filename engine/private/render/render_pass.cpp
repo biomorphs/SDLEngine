@@ -35,6 +35,10 @@ namespace Render
 		{
 			const glm::mat4& modelTransform = it.GetTransform();
 			const Mesh* theMesh = it.GetMesh();
+			if (theMesh == nullptr)
+			{
+				continue;	// Should never occur, but just to be safe
+			}
 			const Material* theMaterial = theMesh->GetMaterial();
 			const ShaderProgram* theShader = theMaterial->GetShaderProgram();
 

@@ -14,7 +14,7 @@ namespace Math
 	public:
 		Box3();
 		~Box3();
-		explicit Box3(glm::vec3 min, glm::vec3 max);
+		explicit Box3(const glm::vec3& min, const glm::vec3& max);
 		Box3(const Box3& other);
 		Box3& operator=(const Box3& other);
 

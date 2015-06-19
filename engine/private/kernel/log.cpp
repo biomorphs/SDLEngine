@@ -20,6 +20,7 @@ namespace LogInternals
 		vsprintf_s(logOutputBuffer, txt, vl);
 		va_end(vl);
 		strcat_s(logOutputBuffer, "\r\n");
+		logOutputBuffer[1023] = { '\0' };
 		OutputDebugString(logOutputBuffer);
 		printf_s("%s", logOutputBuffer);
 	}

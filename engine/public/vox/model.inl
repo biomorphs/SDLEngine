@@ -18,11 +18,11 @@ namespace Vox
 		}
 		~AreaIteratorParams()	{ }
 
-		inline const glm::ivec3 BlockIndex() const				{ return m_blockIndex; }
-		inline const glm::ivec3 ClumpStartIndices() const		{ return m_clumpStartIndex; }
-		inline const glm::ivec3 ClumpEndIndices() const			{ return m_clumpEndIndex; }
-		inline const Math::Box3 ClumpModelspaceBounds() const	{ return m_clumpBounds; }
-		inline const glm::vec3 VoxelDimensions() const			{ return m_voxelSize; }
+		inline const glm::ivec3& BlockIndex() const				{ return m_blockIndex; }
+		inline const glm::ivec3& ClumpStartIndices() const		{ return m_clumpStartIndex; }
+		inline const glm::ivec3& ClumpEndIndices() const		{ return m_clumpEndIndex; }
+		inline const Math::Box3& ClumpModelspaceBounds() const	{ return m_clumpBounds; }
+		inline const glm::vec3& VoxelDimensions() const			{ return m_voxelSize; }
 
 	private:
 		Model* m_target;

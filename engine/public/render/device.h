@@ -31,6 +31,7 @@ namespace Render
 		void Present();
 		SDL_GLContext GetGLContext();
 
+		void ClearColourDepthTarget(const glm::vec4& colour);
 		void SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix);
 		void BindShaderProgram(const ShaderProgram& program);
 		void BindVertexArray(const VertexArray& srcArray);
