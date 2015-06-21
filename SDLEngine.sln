@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sdlengine", "sdlengine.vcxproj", "{20A2FF29-5747-4D9F-AF36-8E18CED39727}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F3A9213D-D6AD-439E-9664-76D605571414} = {F3A9213D-D6AD-439E-9664-76D605571414}
+		{45777579-8F61-4869-ACC0-A990F625944F} = {45777579-8F61-4869-ACC0-A990F625944F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kernel", "engine\kernel.vcxproj", "{03FFCECD-38F1-48C3-BE2B-5CFC42C34A8F}"
 EndProject

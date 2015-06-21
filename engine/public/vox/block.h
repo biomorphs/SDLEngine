@@ -11,7 +11,7 @@ namespace Vox
 	// a block is a t_clumpDimensions^3 set of tightly packed clumps, 
 	// stored in morten order, dimensions MUST be power of two
 	// internal data is allocated in RAII fashion, but we can change that later
-	template<class DataType, uint32_t t_clumpDimensions>
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
 	class Block
 	{
 	public:

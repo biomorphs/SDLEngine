@@ -11,7 +11,7 @@ Matt Hoyle
 
 namespace Vox
 {
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	class Model
 	{
 	public:
@@ -20,7 +20,7 @@ namespace Vox
 		void SetVoxelSize(glm::vec3 voxelSize);
 
 		static const uint32_t c_clumpsPerBlock = t_blockDimensionVx >> 1;
-		typedef Block< VoxelDataType, c_clumpsPerBlock > BlockType;
+		typedef Block< VoxelDataType, c_clumpsPerBlock, BlockAllocator > BlockType;
 		
 		class ClumpDataAccessor;	// Has a single GetClump() function, use it to access data in iterator
 		typedef std::function<void(ClumpDataAccessor&, glm::vec3, glm::vec3, glm::vec3)> ClumpIterator;

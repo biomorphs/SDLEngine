@@ -44,6 +44,9 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+    <ProjectReference Include="engine\math.vcxproj">
+      <Project>{45777579-8f61-4869-acc0-a990f625944f}</Project>
+    </ProjectReference>
     <ProjectReference Include="engine\render.vcxproj">
       <Project>{492e3253-7f98-4f62-92ab-2c6f92cb2b27}</Project>
       <Private>false</Private>
@@ -51,6 +54,9 @@
       <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="engine\vox.vcxproj">
+      <Project>{f3a9213d-d6ad-439e-9664-76d605571414}</Project>
     </ProjectReference>
   </ItemGroup>
 </Project>

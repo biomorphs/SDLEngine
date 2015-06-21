@@ -8,24 +8,24 @@ Matt Hoyle
 
 namespace Vox
 {
-	template<class DataType, uint32_t t_clumpDimensions>
-	Block<DataType, t_clumpDimensions>::Block()
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	Block<DataType, t_clumpDimensions, Allocator>::Block()
 	{
 		SDE_ASSERT((t_clumpDimensions & (t_clumpDimensions - 1)) == 0);
-		m_clumpData = new ClumpType[c_maxEntries];
+		void* blockData = Allocator::AllocateBlock(c_maxEntries * sizeof(ClumpType));
+		m_clumpData = static_cast<ClumpType*>(blockData);
 		SDE_ASSERT(m_clumpData);
-		memset(m_clumpData, 0, sizeof(ClumpType)* c_maxEntries);
 	}
 
-	template<class DataType, uint32_t t_clumpDimensions>
-	Block<DataType, t_clumpDimensions>::~Block()
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	Block<DataType, t_clumpDimensions, Allocator>::~Block()
 	{
-		delete[] m_clumpData;
+		Allocator::FreeBlock(m_clumpData);
 		m_clumpData = nullptr;
 	}
 
-	template<class DataType, uint32_t t_clumpDimensions>
-	Block<DataType, t_clumpDimensions>::Block(Block<DataType, t_clumpDimensions>&& other)
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	Block<DataType, t_clumpDimensions, Allocator>::Block(Block<DataType, t_clumpDimensions, Allocator>&& other)
 	{
 		if (this != &other)
 		{
@@ -33,14 +33,15 @@ namespace Vox
 		}
 	}
 	
-	template<class DataType, uint32_t t_clumpDimensions>
-	Block<DataType, t_clumpDimensions>& Block<DataType, t_clumpDimensions>::operator=(Block<DataType, t_clumpDimensions>&& other)
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	Block<DataType, t_clumpDimensions, Allocator>& 
+		Block<DataType, t_clumpDimensions, Allocator>::operator=(Block<DataType, t_clumpDimensions, Allocator>&& other)
 	{
 		if (this != &other)
 		{
 			if (m_clumpData != nullptr)
 			{
-				delete[] m_clumpData;
+				Allocator::FreeBlock(m_clumpData);
 			}
 
 			m_clumpData = other.m_clumpData;
@@ -50,14 +51,15 @@ namespace Vox
 		return *this;
 	}
 
-	template<class DataType, uint32_t t_clumpDimensions>
-	inline bool Block<DataType, t_clumpDimensions>::IsClumpInBoundaries(uint32_t x, uint32_t y, uint32_t z) const
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	inline bool Block<DataType, t_clumpDimensions, Allocator>::IsClumpInBoundaries(uint32_t x, uint32_t y, uint32_t z) const
 	{
 		return (x < t_clumpDimensions) && (y < t_clumpDimensions) && (z < t_clumpDimensions);
 	}
 
-	template<class DataType, uint32_t t_clumpDimensions>
-	typename Block<DataType, t_clumpDimensions>::ClumpType& Block<DataType, t_clumpDimensions>::ClumpAt(uint32_t x, uint32_t y, uint32_t z)
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	typename Block<DataType, t_clumpDimensions, Allocator>::ClumpType& 
+		Block<DataType, t_clumpDimensions, Allocator>::ClumpAt(uint32_t x, uint32_t y, uint32_t z)
 	{
 		SDE_ASSERT(IsClumpInBoundaries(x, y, z));
 		SDE_ASSERT(m_clumpData != nullptr);
@@ -65,14 +67,15 @@ namespace Vox
 		return m_clumpData[mortonKey];
 	}
 
-	template<class DataType, uint32_t t_clumpDimensions>
-	const typename Block<DataType, t_clumpDimensions>::ClumpType& Block<DataType, t_clumpDimensions>::ClumpAt(uint32_t x, uint32_t y, uint32_t z) const
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	const typename Block<DataType, t_clumpDimensions, Allocator>::ClumpType& 
+		Block<DataType, t_clumpDimensions, Allocator>::ClumpAt(uint32_t x, uint32_t y, uint32_t z) const
 	{
-		return const_cast<Block<DataType, t_clumpDimensions>*>(this)->ClumpAt(x, y, z);
+		return const_cast<Block<DataType, t_clumpDimensions, Allocator>*>(this)->ClumpAt(x, y, z);
 	}
 
-	template<class DataType, uint32_t t_clumpDimensions>
-	DataType& Block<DataType, t_clumpDimensions>::VoxelAt(uint32_t vx, uint32_t vy, uint32_t vz)
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	DataType& Block<DataType, t_clumpDimensions, Allocator>::VoxelAt(uint32_t vx, uint32_t vy, uint32_t vz)
 	{
 		// Find the matching clump
 		uint32_t clumpX = vx >> 1;
@@ -89,9 +92,9 @@ namespace Vox
 		return theClump.VoxelAt(voxInClumpX, voxInClumpY, voxInClumpZ);
 	}
 
-	template<class DataType, uint32_t t_clumpDimensions>
-	const DataType& Block<DataType, t_clumpDimensions>::VoxelAt(uint32_t vx, uint32_t vy, uint32_t vz) const
+	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
+	const DataType& Block<DataType, t_clumpDimensions, Allocator>::VoxelAt(uint32_t vx, uint32_t vy, uint32_t vz) const
 	{
-		return const_cast<Block<DataType, t_clumpDimensions>*>(this)->VoxelAt(vx, vy, vz);
+		return const_cast<Block<DataType, t_clumpDimensions, Allocator>*>(this)->VoxelAt(vx, vy, vz);
 	}
 }

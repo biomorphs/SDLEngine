@@ -6,8 +6,8 @@ Matt Hoyle
 namespace Vox
 {
 	// Helper for area iteration
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	class Model<VoxelDataType, t_blockDimensionVx>::AreaIteratorParams
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	class Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::AreaIteratorParams
 	{
 	public:
 		AreaIteratorParams(Model* m, glm::ivec3 block, glm::ivec3 clumpStart, glm::ivec3 clumpEnd, Math::Box3 clumpBounds)
@@ -34,8 +34,8 @@ namespace Vox
 	};
 
 	// caches block and clump to avoid thrashing page lookups,
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	class Model<VoxelDataType, t_blockDimensionVx>::ClumpDataAccessor
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	class Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ClumpDataAccessor
 	{
 	public:
 		ClumpDataAccessor(Model* target, glm::ivec3 blockIndex)
@@ -81,31 +81,31 @@ namespace Vox
 		glm::ivec3 m_targetClumpIndex;
 	};
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	Model<VoxelDataType, t_blockDimensionVx>::Model()
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::Model()
 	{
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	Model<VoxelDataType, t_blockDimensionVx>::~Model()
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::~Model()
 	{
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	void Model<VoxelDataType, t_blockDimensionVx>::SetVoxelSize(glm::vec3 voxelSize)
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::SetVoxelSize(glm::vec3 voxelSize)
 	{
 		m_voxelDimensions = voxelSize;
 		m_blockDimensions = m_voxelDimensions * 2.0f * (float)BlockType::BlockDimensions;
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	glm::ivec3 Model<VoxelDataType, t_blockDimensionVx>::ModelspaceToBlockIndices(glm::vec3 coordinate)
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	glm::ivec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ModelspaceToBlockIndices(glm::vec3 coordinate)
 	{
 		return glm::floor(coordinate / m_blockDimensions);
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	void Model<VoxelDataType, t_blockDimensionVx>::IterateClumpsInArea(AreaIteratorParams& params, ClumpIterator iterator)
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::IterateClumpsInArea(AreaIteratorParams& params, ClumpIterator iterator)
 	{
 		ClumpDataAccessor clumpPolicy(this, params.BlockIndex());
 
@@ -127,8 +127,8 @@ namespace Vox
 		}
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx >
-	void Model<VoxelDataType, t_blockDimensionVx>::IterateForArea(Math::Box3 modelSpaceBounds, IteratorAccess itType, ClumpIterator iterator)
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::IterateForArea(Math::Box3 modelSpaceBounds, IteratorAccess itType, ClumpIterator iterator)
 	{
 		// Find block indices for iteration
 		const glm::ivec3 c_startBlockIndices = ModelspaceToBlockIndices(modelSpaceBounds.Min());
