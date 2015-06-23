@@ -60,7 +60,7 @@ namespace Render
 		newStream.m_componentCount = componentCount;
 		m_streams.push_back(newStream);
 
-		return m_streams.size() - 1;
+		return static_cast<uint32_t>( m_streams.size() - 1 );
 	}
 
 	void MeshBuilder::BeginTriangle()

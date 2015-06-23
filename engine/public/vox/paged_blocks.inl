@@ -52,7 +52,7 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	BlockType* PagedBlocks<BlockType>::BlockAt(const glm::ivec3& coords, bool createNewBlocks = true)
+	inline BlockType* PagedBlocks<BlockType>::BlockAt(const glm::ivec3& coords, bool createNewBlocks = true)
 	{
 		uint64_t key = HashCoords(coords);
 		auto it = m_blockData.find(key);
@@ -77,7 +77,7 @@ namespace Vox
 	}
 
 	template< class BlockType >
-	const BlockType* PagedBlocks<BlockType>::BlockAt(const glm::ivec3& coords) const
+	inline const BlockType* PagedBlocks<BlockType>::BlockAt(const glm::ivec3& coords) const
 	{
 		uint64_t key = HashCoords(coords);
 		const auto it = m_blockData.find(key);

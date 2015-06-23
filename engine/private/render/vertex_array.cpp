@@ -67,7 +67,7 @@ namespace Render
 			SDE_ASSERT(glDataType != -1);
 
 			// cache the attributes in this VAO
-			glVertexAttribPointer(it->m_attribIndex, it->m_componentCount, glDataType, false, it->m_stride, (void*)it->m_offset);
+			glVertexAttribPointer(it->m_attribIndex, it->m_componentCount, glDataType, false, it->m_stride, reinterpret_cast<void*>(it->m_offset));
 			SDE_RENDER_PROCESS_GL_ERRORS_RET("glVertexAttribPointer");
 
 			// Enable the stream

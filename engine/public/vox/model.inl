@@ -45,12 +45,12 @@ namespace Vox
 			, m_targetBlockIndex(blockIndex)
 		{
 		}
-		void SetClumpIndex(glm::ivec3 clumpIndex)
+		inline void SetClumpIndex(glm::ivec3 clumpIndex)
 		{
 			m_targetClump = nullptr;
 			m_targetClumpIndex = clumpIndex;
 		}
-		typename BlockType::ClumpType* GetClump()
+		inline typename BlockType::ClumpType* GetClump()
 		{
 			if (m_targetClump != nullptr)	// clump cached, fastpath
 			{
@@ -172,6 +172,6 @@ namespace Vox
 			}
 		}
 
-		SDE_LOG("%lld blocks, %lld bytes after population", m_voxelData.TotalBlocks(), m_voxelData.TotalVoxelMemory());
+		//SDE_LOG("%lld blocks, %lld bytes after population", m_voxelData.TotalBlocks(), m_voxelData.TotalVoxelMemory());
 	}
 }

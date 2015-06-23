@@ -35,8 +35,8 @@ namespace Render
 		struct VertexBufferDescriptor
 		{
 			const RenderBuffer* m_srcBuffer;
+			size_t m_offset;
 			uint32_t m_stride;
-			uint32_t m_offset;
 			VertexDataType m_dataType;
 			uint8_t m_componentCount;
 			uint8_t m_attribIndex;

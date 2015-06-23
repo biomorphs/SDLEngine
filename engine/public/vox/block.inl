@@ -58,7 +58,7 @@ namespace Vox
 	}
 
 	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
-	typename Block<DataType, t_clumpDimensions, Allocator>::ClumpType& 
+	inline typename Block<DataType, t_clumpDimensions, Allocator>::ClumpType& 
 		Block<DataType, t_clumpDimensions, Allocator>::ClumpAt(uint32_t x, uint32_t y, uint32_t z)
 	{
 		SDE_ASSERT(IsClumpInBoundaries(x, y, z));
@@ -68,7 +68,7 @@ namespace Vox
 	}
 
 	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
-	const typename Block<DataType, t_clumpDimensions, Allocator>::ClumpType& 
+	inline const typename Block<DataType, t_clumpDimensions, Allocator>::ClumpType& 
 		Block<DataType, t_clumpDimensions, Allocator>::ClumpAt(uint32_t x, uint32_t y, uint32_t z) const
 	{
 		return const_cast<Block<DataType, t_clumpDimensions, Allocator>*>(this)->ClumpAt(x, y, z);

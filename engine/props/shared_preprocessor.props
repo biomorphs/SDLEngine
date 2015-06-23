@@ -10,4 +10,14 @@
 			<PreprocessorDefinitions>_MBCS</PreprocessorDefinitions>
 		</ClCompile>
 	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<ClCompile>
+			<PreprocessorDefinitions>_MBCS;SDE_DEBUG</PreprocessorDefinitions>
+		</ClCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<ClCompile>
+			<PreprocessorDefinitions>_MBCS</PreprocessorDefinitions>
+		</ClCompile>
+	</ItemDefinitionGroup>
 </Project>
