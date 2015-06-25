@@ -15,12 +15,18 @@
     <ClInclude Include="private\engine\platform.h">
       <Filter>private</Filter>
     </ClInclude>
+    <ClInclude Include="public\engine\input_system.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\engine\engine_startup.cpp">
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\engine\platform.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\engine\input_system.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>
