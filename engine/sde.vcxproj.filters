@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="public">
+      <UniqueIdentifier>{ee7e021e-5595-402d-9fb4-a2362aac0307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="private">
+      <UniqueIdentifier>{7b8b24c8-e5c5-44c8-9628-27a85f1a8a61}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="public\sde\camera_controller.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\sde\debug_camera_controller.h">
+      <Filter>public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="private\sde\debug_camera_controller.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -10,6 +10,7 @@ Matt Hoyle
 namespace Engine
 {
 	InputSystem::InputSystem()
+		: m_controllerAxisDeadZone( 0.15f )
 	{
 	}
 
@@ -23,7 +24,7 @@ namespace Engine
 		return true;
 	}
 
-	const InputSystem::ControllerRawState* InputSystem::ControllerState(uint32_t padIndex) const
+	const ControllerRawState* InputSystem::ControllerState(uint32_t padIndex) const
 	{
 		SDE_ASSERT(padIndex < m_controllers.size());
 		return &m_controllers[padIndex].m_padState;
@@ -37,9 +38,9 @@ namespace Engine
 
 			// helper macros for button / axis stuff
 			#define GET_SDL_BUTTON_STATE(sdlBtn, sdeBtn)	\
-				SDL_GameControllerGetButton(controller, sdlBtn) ? sdeBtn : 0;
+				SDL_GameControllerGetButton(controller, sdlBtn) ? sdeBtn : 0
 			#define GET_SDL_AXIS_STATE(sdlAxis)				\
-				(float)SDL_GameControllerGetAxis(controller, sdlAxis) / 32768.0f;
+				((float)SDL_GameControllerGetAxis(controller, sdlAxis) / 32768.0f)
 
 			uint32_t buttonState = 0;
 			buttonState |= GET_SDL_BUTTON_STATE( SDL_CONTROLLER_BUTTON_A, ControllerButtons::A);
@@ -62,10 +63,22 @@ namespace Engine
 			// Triggers are 0 - 32k, sticks are -32k to 32k, normalised
 			padDesc.m_padState.m_leftTrigger = GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
 			padDesc.m_padState.m_rightTrigger = GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-			padDesc.m_padState.m_leftStickAxes[0] = GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_LEFTX);
-			padDesc.m_padState.m_leftStickAxes[1] = -GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_LEFTY);
-			padDesc.m_padState.m_rightStickAxes[0] = GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_RIGHTX);
-			padDesc.m_padState.m_rightStickAxes[1] = -GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_RIGHTY);
+			padDesc.m_padState.m_leftStickAxes[0] = ApplyDeadZone(GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_LEFTX), m_controllerAxisDeadZone);
+			padDesc.m_padState.m_leftStickAxes[1] = -ApplyDeadZone(GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_LEFTY), m_controllerAxisDeadZone);
+			padDesc.m_padState.m_rightStickAxes[0] = ApplyDeadZone(GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_RIGHTX), m_controllerAxisDeadZone);
+			padDesc.m_padState.m_rightStickAxes[1] = -ApplyDeadZone(GET_SDL_AXIS_STATE(SDL_CONTROLLER_AXIS_RIGHTY), m_controllerAxisDeadZone);
+		}
+	}
+
+	inline float InputSystem::ApplyDeadZone(float input, float deadZone) const
+	{
+		if (input < deadZone && input > -deadZone)
+		{
+			return 0.0f;
+		}
+		else
+		{
+			return input;
 		}
 	}
 

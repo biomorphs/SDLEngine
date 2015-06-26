@@ -5,6 +5,7 @@ VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sdlengine", "sdlengine.vcxproj", "{20A2FF29-5747-4D9F-AF36-8E18CED39727}"
 	ProjectSection(ProjectDependencies) = postProject
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02} = {1C57D21C-A571-421F-983F-B1CD9ED07F02}
 		{F3A9213D-D6AD-439E-9664-76D605571414} = {F3A9213D-D6AD-439E-9664-76D605571414}
 		{45777579-8F61-4869-ACC0-A990F625944F} = {45777579-8F61-4869-ACC0-A990F625944F}
 	EndProjectSection
@@ -33,6 +34,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "math", "engine\math.vcxproj", "{45777579-8F61-4869-ACC0-A990F625944F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vox", "engine\vox.vcxproj", "{F3A9213D-D6AD-439E-9664-76D605571414}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sde", "engine\sde.vcxproj", "{1C57D21C-A571-421F-983F-B1CD9ED07F02}"
+	ProjectSection(ProjectDependencies) = postProject
+		{492E3253-7F98-4F62-92AB-2C6F92CB2B27} = {492E3253-7F98-4F62-92AB-2C6F92CB2B27}
+		{C9BE37AF-362D-43A6-9151-72EE5390EAE4} = {C9BE37AF-362D-43A6-9151-72EE5390EAE4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +105,14 @@ Global
 		{F3A9213D-D6AD-439E-9664-76D605571414}.Release|Win32.Build.0 = Release|Win32
 		{F3A9213D-D6AD-439E-9664-76D605571414}.Release|x64.ActiveCfg = Release|x64
 		{F3A9213D-D6AD-439E-9664-76D605571414}.Release|x64.Build.0 = Release|x64
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Debug|Win32.Build.0 = Debug|Win32
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Debug|x64.ActiveCfg = Debug|x64
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Debug|x64.Build.0 = Debug|x64
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Release|Win32.ActiveCfg = Release|Win32
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Release|Win32.Build.0 = Release|Win32
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Release|x64.ActiveCfg = Release|x64
+		{1C57D21C-A571-421F-983F-B1CD9ED07F02}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

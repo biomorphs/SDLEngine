@@ -60,6 +60,14 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+    <ProjectReference Include="engine\sde.vcxproj">
+      <Project>{1c57d21c-a571-421f-983f-b1cd9ed07f02}</Project>
+	  <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
     <ProjectReference Include="engine\vox.vcxproj">
       <Project>{f3a9213d-d6ad-439e-9664-76d605571414}</Project>
     </ProjectReference>

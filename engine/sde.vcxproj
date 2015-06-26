@@ -1,16 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{c9be37af-362d-43a6-9151-72ee5390eae4}</ProjectGuid>
-    <RootNamespace>engine</RootNamespace>
+    <ProjectGuid>{1c57d21c-a571-421f-983f-b1cd9ed07f02}</ProjectGuid>
+    <RootNamespace>sde</RootNamespace>
   </PropertyGroup>
   <Import Project="props/build_configs.props" />
   <Import Project="props/engine_lib_paths.props" />
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\private\;$(SolutionDir)engine\public\engine\;$(SolutionDir)engine\private\engine\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\glm-0.9.6.3\glm\glm;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\sde\;$(SolutionDir)engine\private\sde\;$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="public\sde\camera_controller.h" />
+    <ClInclude Include="public\sde\debug_camera_controller.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="private\sde\debug_camera_controller.cpp" />
+  </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -21,15 +28,4 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="private\engine\platform.h" />
-    <ClInclude Include="public\engine\controller_state.h" />
-    <ClInclude Include="public\engine\engine_startup.h" />
-    <ClInclude Include="public\engine\input_system.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="private\engine\engine_startup.cpp" />
-    <ClCompile Include="private\engine\input_system.cpp" />
-    <ClCompile Include="private\engine\platform.cpp" />
-  </ItemGroup>
 </Project>
