@@ -5,13 +5,16 @@ Matt Hoyle
 #include "debug_camera_controller.h"
 #include "engine/controller_state.h"
 #include "render/camera.h"
+#include <gtx\rotate_vector.hpp>
+
+#define PI 3.14159265358f
 
 namespace SDE
 {
 	DebugCameraController::DebugCameraController()
-		: m_position(0.0f)
-		, m_lookAt(0.0f, 0.0f, 1.0f)
-		, m_up(0.0f, 1.0f, 0.0f)
+		: m_position(0.0f, 0.0f, 1.0f)
+		, m_pitch(0.0f)
+		, m_yaw(PI)
 	{
 
 	}
@@ -23,34 +26,47 @@ namespace SDE
 
 	void DebugCameraController::ApplyToCamera(Render::Camera& target)
 	{
-		target.LookAt(m_position, m_position + m_lookAt, m_up);
+		glm::vec3 up(0.0f, 1.0f, 0.0f);
+		target.LookAt(m_position, m_position + m_lookDirection, up);
 	}
 
 	void DebugCameraController::Update(const Engine::ControllerRawState& controllerState, double timeDelta)
 	{
-		static float s_yAxisRotSpeed = 2.0f;
-		static float s_xAxisRotSpeed = 2.0f;
-		static float s_xAxisMoveSpeed = 1.0f;
-		static float s_zAxisMoveSpeed = 1.0f;
+		static float s_yawRotSpeed = 2.0f;
+		static float s_pitchRotSpeed = 2.0f;
+		static float s_forwardSpeed = 1.0f;
+		static float s_strafeSpeed = 1.0f;
+		static float s_speedMultiplier = 10.0f;
 
 		const float timeDeltaF = (float)timeDelta;
-		const float yAxisRight = controllerState.m_rightStickAxes[0];
-		const float xAxisRight = controllerState.m_rightStickAxes[1];
+		const float xAxisRight = controllerState.m_rightStickAxes[0];
+		const float yAxisRight = controllerState.m_rightStickAxes[1];
 		const float xAxisLeft = controllerState.m_leftStickAxes[0];
-		const float zAxisLeft = controllerState.m_leftStickAxes[1];
+		const float yAxisLeft = controllerState.m_leftStickAxes[1];
 
-		const float yAxisRotation = -yAxisRight * s_yAxisRotSpeed * timeDeltaF;
-		const float xAxisRotation = -xAxisRight * s_xAxisRotSpeed * timeDeltaF;
+		float moveSpeedMulti = 1.0f + (controllerState.m_rightTrigger * s_speedMultiplier);
 
-		glm::mat4 rotateY = glm::rotate(glm::mat4(), yAxisRotation, glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 rotateX = glm::rotate(glm::mat4(), xAxisRotation, glm::vec3(1.0f, 0.0f, 0.0f));
-		glm::mat4 rotator = rotateY * rotateX;
+		const float yawRotation = -xAxisRight * s_yawRotSpeed * timeDeltaF;
+		m_yaw += yawRotation;
 
-		m_lookAt = glm::vec3(rotator * glm::vec4(m_lookAt, 0.0f));
-		
-		m_lookAt = glm::normalize(m_lookAt);
-		m_up = glm::normalize(m_up);
+		const float pitchRotation = -yAxisRight * s_pitchRotSpeed * timeDeltaF;
+		m_pitch += pitchRotation;
 
-		m_position += m_lookAt * zAxisLeft * s_zAxisMoveSpeed * timeDeltaF;
+		// build direction from pitch, yaw
+		glm::vec3 downZ(0.0f, 0.0f, 1.0f);
+		m_lookDirection = glm::normalize(glm::rotateX(downZ, m_pitch));		
+		m_lookDirection = glm::normalize(glm::rotateY(m_lookDirection, m_yaw));
+
+		// build right + up vectors
+		const glm::vec3 upY(0.0f, 1.0f, 0.0f);
+		m_right = glm::cross(m_lookDirection, upY);
+
+		// move forward
+		const float forward = yAxisLeft * s_forwardSpeed  * moveSpeedMulti * timeDeltaF;
+		m_position += m_lookDirection * forward;
+
+		// strafe
+		const float strafe = xAxisLeft * s_strafeSpeed * moveSpeedMulti * timeDeltaF;
+		m_position += m_right * strafe;
 	}
 }

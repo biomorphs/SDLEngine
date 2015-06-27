@@ -10,7 +10,7 @@ Matt Hoyle
 namespace Engine
 {
 	InputSystem::InputSystem()
-		: m_controllerAxisDeadZone( 0.15f )
+		: m_controllerAxisDeadZone( 0.5f )
 	{
 	}
 
