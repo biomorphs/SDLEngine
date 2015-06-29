@@ -14,9 +14,11 @@
   <ItemGroup>
     <ClInclude Include="public\sde\camera_controller.h" />
     <ClInclude Include="public\sde\debug_camera_controller.h" />
+    <ClInclude Include="public\sde\render_system.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\sde\debug_camera_controller.cpp" />
+    <ClCompile Include="private\sde\render_system.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

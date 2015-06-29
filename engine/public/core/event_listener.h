@@ -4,8 +4,6 @@ Matt Hoyle
 */
 #pragma once
 
-#include "SDL_events.h"
-
 namespace Core
 {
 	// This class represents an engine-wide event. passed to all systems

@@ -5,6 +5,7 @@ Matt Hoyle
 #include "event_system.h"
 #include "event_listener.h"
 #include "kernel/assert.h"
+#include "SDL_events.h"
 
 namespace Core
 {

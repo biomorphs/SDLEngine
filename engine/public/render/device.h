@@ -5,10 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include <stdint.h>
-#include <SDL.h>
 #include <glm.hpp>
-
-struct SDL_Renderer;
 
 namespace Render
 {
@@ -29,7 +26,7 @@ namespace Render
 		Device(Window& theWindow);
 		~Device();
 		void Present();
-		SDL_GLContext GetGLContext();
+		void* GetGLContext();
 
 		void ClearColourDepthTarget(const glm::vec4& colour);
 		void SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix);
@@ -40,6 +37,6 @@ namespace Render
 		uint32_t TranslatePrimitiveType(PrimitiveType type) const;
 
 		Window& m_window;
-		SDL_GLContext m_context;
+		void* m_context;
 	};
 }
