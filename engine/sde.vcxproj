@@ -9,7 +9,7 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\glm-0.9.6.3\glm\glm;$(SolutionDir)engine\public\;$(SolutionDir)engine\public\sde\;$(SolutionDir)engine\private\sde\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)public\;$(ProjectDir)public\sde\;$(ProjectDir)private\sde\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="public\sde\camera_controller.h" />

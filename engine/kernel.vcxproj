@@ -9,7 +9,7 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)engine\public\kernel\;$(SolutionDir)engine\private\kernel\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)public\kernel\;$(ProjectDir)private\kernel\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

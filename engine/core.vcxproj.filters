@@ -18,9 +18,6 @@
     <ClInclude Include="public\core\system_enumerator.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="private\core\system_manager.h">
-      <Filter>private</Filter>
-    </ClInclude>
     <ClInclude Include="private\core\event_system.h">
       <Filter>private</Filter>
     </ClInclude>
@@ -28,6 +25,9 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="public\core\file_io.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\system_manager.h">
       <Filter>public</Filter>
     </ClInclude>
   </ItemGroup>

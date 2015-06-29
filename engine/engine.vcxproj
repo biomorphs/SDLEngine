@@ -9,7 +9,7 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)external\SDL2-2.0.1\include;$(SolutionDir)engine\public\;$(SolutionDir)engine\private\;$(SolutionDir)engine\public\engine\;$(SolutionDir)engine\private\engine\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\;$(ProjectDir)public\engine\;$(ProjectDir)private\engine\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
