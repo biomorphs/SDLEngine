@@ -16,8 +16,8 @@ namespace Core
 		AssetDatabase();
 		~AssetDatabase();
 
-		std::weak_ptr<Asset> AddAsset(std::shared_ptr<Asset> theAsset);
-		std::weak_ptr<Asset> GetAsset(std::string assetId) const;
+		void AddAsset(Asset* theAsset);		// database takes ownership
+		std::shared_ptr<Asset> GetAsset(std::string assetId) const;
 
 	private:
 		std::unordered_map<uint32_t, std::shared_ptr<Asset>> m_assets;

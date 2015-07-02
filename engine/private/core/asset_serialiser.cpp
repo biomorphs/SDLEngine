@@ -41,7 +41,7 @@ namespace Core
 		{
 			SDE_ASSERT(dep->IsString());
 			std::string dependency = dep->GetString();
-			if (m_db.GetAsset(dependency).lock() == nullptr)
+			if (m_db.GetAsset(dependency) == nullptr)
 			{
 				AssetSerialiser depSerialiser(m_db, m_assetCreator);
 				if (!depSerialiser.Load(assetsRoot, dependency.c_str()))
@@ -69,7 +69,7 @@ namespace Core
 		}
 		// early-out if its in the db already
 		std::string assetName = nameMember->value.GetString();
-		if (m_db.GetAsset(assetName).lock() != nullptr)
+		if (m_db.GetAsset(assetName) != nullptr)
 		{
 			SDE_LOGC(Core, "Asset %s already loaded", assetName.c_str());
 			return false;

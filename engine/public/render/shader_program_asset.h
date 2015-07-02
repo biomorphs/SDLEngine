@@ -15,7 +15,7 @@ namespace Render
 	{
 	public:
 		virtual ~ShaderProgramAssetFactory() { };
-		std::shared_ptr<Core::Asset> CreateAsset(std::string id) override;
+		Core::Asset* CreateAsset(std::string id) override;
 	};
 
 	class ShaderProgramAsset : public Core::Asset
@@ -24,12 +24,18 @@ namespace Render
 		ShaderProgramAsset(std::string id);
 		~ShaderProgramAsset();
 
+		inline const ShaderProgram* GetShaderProgram() const { return m_program.get(); }
+
+		// Global param uniform names are stored in the asset since they are tied to the shaders
+		inline const std::string& GetMVPUniformName() const { return m_mvpUniformName; }
+
 		static const Core::Shortname c_assetType;
 
 	private:
 		bool Load(const rapidjson::Value& assetNode, const Core::AssetDatabase& db) override;
 		std::string m_vertexShader;
 		std::string m_fragmentShader;
-		std::shared_ptr<ShaderProgram> m_program;
+		std::string m_mvpUniformName;
+		std::unique_ptr<ShaderProgram> m_program;
 	};
 }

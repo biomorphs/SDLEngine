@@ -19,7 +19,7 @@ namespace Render
 		}
 		~InstanceQueue()	{ }
 
-		inline void AddInstance(std::shared_ptr<Mesh>& mesh, const glm::mat4& transform)
+		inline void AddInstance(const Mesh* mesh, const glm::mat4& transform)
 		{
 			m_instances.emplace_back(mesh, transform);
 		}

@@ -19,20 +19,26 @@ namespace Core
 
 	}
 
-	std::weak_ptr<Asset> AssetDatabase::AddAsset(std::shared_ptr<Asset> theAsset)
+	void AssetDatabase::AddAsset(Asset* theAsset)
 	{
 		SDE_ASSERT(theAsset != nullptr);
 		uint32_t assetIdHash = StringHashing::GetHash(theAsset->GetID().c_str());
 		SDE_ASSERT(m_assets.find(assetIdHash) == m_assets.end());
-		m_assets.insert({ assetIdHash, theAsset });
-		return theAsset;
+		m_assets.insert({ assetIdHash, std::shared_ptr<Asset>(theAsset) });		// take ownership here
 	}
 
-	std::weak_ptr<Asset> AssetDatabase::GetAsset(std::string assetId) const
+	std::shared_ptr<Asset> AssetDatabase::GetAsset(std::string assetId) const
 	{
 		uint32_t assetIdHash = StringHashing::GetHash(assetId.c_str());
 		auto theAsset = m_assets.find(assetIdHash);
-		return theAsset->second;
+		if (theAsset != m_assets.end())
+		{
+			return theAsset->second;
+		}
+		else
+		{
+			return nullptr;
+		}
 	}
 
 }

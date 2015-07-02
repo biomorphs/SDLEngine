@@ -13,6 +13,6 @@ namespace Core
 	public:
 		AssetFactory() { }
 		virtual ~AssetFactory() { }
-		virtual std::shared_ptr<Asset> CreateAsset(std::string id) = 0;
+		virtual Asset* CreateAsset(std::string id) = 0;
 	};
 }

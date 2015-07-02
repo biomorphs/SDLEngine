@@ -20,16 +20,20 @@ namespace Render
 		// This struct contains uniform handles for data passed to *all* shaders
 		struct GlobalParameterDefinitions
 		{
+			GlobalParameterDefinitions()
+				: m_mvpUniformHandle(-1)
+			{
+			}
 			uint32_t m_mvpUniformHandle;
 		};
 
-		inline void SetShaderProgram(std::shared_ptr<ShaderProgram>& program)	{ m_shader = program; }
-		inline const ShaderProgram* GetShaderProgram() const					{ return m_shader.get(); }
+		inline void SetShaderProgram(const ShaderProgram* program)				{ m_shader = program; }
+		inline const ShaderProgram* GetShaderProgram() const					{ return m_shader; }
 		GlobalParameterDefinitions& GlobalDefinitions()							{ return m_globalDefinitions; }
 		const GlobalParameterDefinitions& GlobalDefinitions() const				{ return m_globalDefinitions; }
 
 	private:
-		std::shared_ptr<ShaderProgram> m_shader;
+		const ShaderProgram* m_shader;
 		GlobalParameterDefinitions m_globalDefinitions;
 	};
 }

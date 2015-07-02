@@ -10,12 +10,13 @@ Matt Hoyle
 namespace Render
 {
 	class Material;
+	class ShaderProgramAsset;
 
 	class MaterialAssetFactory : public Core::AssetFactory
 	{
 	public:
 		virtual ~MaterialAssetFactory() { };
-		std::shared_ptr<Core::Asset> CreateAsset(std::string id) override;
+		Core::Asset* CreateAsset(std::string id) override;
 	};
 
 	class MaterialAsset : public Core::Asset
@@ -25,10 +26,12 @@ namespace Render
 		~MaterialAsset();
 
 		static const Core::Shortname c_assetType;
+		inline const Material* GetMaterial() const { return m_renderMaterial.get(); }
 
 	private:
 		bool Load(const rapidjson::Value& assetNode, const Core::AssetDatabase& db) override;
 		std::string m_shaderProgramId;
-		std::weak_ptr<Asset> m_shaderProgramAsset;
+		std::shared_ptr<Asset> m_shaderProgramAsset;
+		std::unique_ptr<Material> m_renderMaterial;
 	};
 }

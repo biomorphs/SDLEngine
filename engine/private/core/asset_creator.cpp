@@ -15,9 +15,9 @@ namespace Core
 	{
 	}
 
-	std::shared_ptr<Asset> AssetCreator::CreateAsset(std::string id, Shortname assetType)
+	Asset* AssetCreator::CreateAsset(std::string id, Shortname assetType)
 	{
-		std::shared_ptr<Asset> theAsset = nullptr;
+		Asset* theAsset = nullptr;
 		auto factoryIt = m_factories.find(assetType);
 		if (factoryIt == m_factories.end())
 		{

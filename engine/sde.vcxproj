@@ -9,14 +9,16 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)public\;$(ProjectDir)public\sde\;$(ProjectDir)private\sde\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\external\rapidjson\include;$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)public\;$(ProjectDir)public\sde\;$(ProjectDir)private\sde\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="public\sde\asset_system.h" />
     <ClInclude Include="public\sde\camera_controller.h" />
     <ClInclude Include="public\sde\debug_camera_controller.h" />
     <ClInclude Include="public\sde\render_system.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="private\sde\asset_system.cpp" />
     <ClCompile Include="private\sde\debug_camera_controller.cpp" />
     <ClCompile Include="private\sde\render_system.cpp" />
   </ItemGroup>

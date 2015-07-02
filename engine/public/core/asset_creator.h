@@ -21,7 +21,7 @@ namespace Core
 		template<class FactoryType>
 		void RegisterFactory(Shortname typeName);
 
-		std::shared_ptr<Asset> CreateAsset(std::string id, Shortname assetType);
+		Asset* CreateAsset(std::string id, Shortname assetType);
 
 	private:
 		std::unordered_map< Shortname, std::unique_ptr<AssetFactory> > m_factories;

@@ -11,10 +11,9 @@ namespace Render
 {
 	const Core::Shortname ShaderProgramAsset::c_assetType("RSHP");
 
-	std::shared_ptr<Core::Asset> ShaderProgramAssetFactory::CreateAsset(std::string id)
+	Core::Asset* ShaderProgramAssetFactory::CreateAsset(std::string id)
 	{
-		auto theAsset = std::make_shared<ShaderProgramAsset>(id);
-		return theAsset;
+		return new ShaderProgramAsset(id);
 	}
 
 	ShaderProgramAsset::ShaderProgramAsset(std::string id)
@@ -48,12 +47,19 @@ namespace Render
 			return false;
 		}
 
-		m_program = std::make_shared<Render::ShaderProgram>();
+		m_program = std::make_unique<Render::ShaderProgram>();
 		if (!m_program->Create(vertexShader, fragmentShader, compileResult))
 		{
 			SDE_LOG("Failed to link shaders: \r\n\t%s", compileResult.c_str());
 			return false;
 		}
+
+		// load any global parameter names
+		auto globalParamsObject = assetNode.FindMember("globaluniforms");
+		SDE_ASSERT(globalParamsObject != assetNode.MemberEnd() && globalParamsObject->value.IsObject());
+		auto mvpUniformMember = globalParamsObject->value.FindMember("modelviewproj");
+		SDE_ASSERT(mvpUniformMember != globalParamsObject->value.MemberEnd());
+		m_mvpUniformName = mvpUniformMember->value.GetString();
 
 		return true;
 	}

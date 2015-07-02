@@ -31,19 +31,19 @@ namespace Render
 
 		inline const std::vector<RenderBuffer>& GetStreams() const	{ return m_vertexStreams; }
 		inline const VertexArray& GetVertexArray() const			{ return m_vertices; }
-		inline const Material* GetMaterial() const					{ return m_material.get(); }
+		inline const Material* GetMaterial() const					{ return m_material; }
 		inline const std::vector<MeshChunk>& GetChunks() const		{ return m_chunks; }
 
 		// this is shit, refactor!
-		inline void SetMaterial(std::shared_ptr<Material>& m)		{ m_material = m; }
+		inline void SetMaterial(const Material* m)					{ m_material = m; }
 		inline std::vector<RenderBuffer>& GetStreams()				{ return m_vertexStreams; }
 		inline VertexArray& GetVertexArray()						{ return m_vertices; }		
 		inline std::vector<MeshChunk>& GetChunks()					{ return m_chunks; }
 
 	private:
 		VertexArray m_vertices;
+		const Material* m_material;
 		std::vector<RenderBuffer> m_vertexStreams;
-		std::shared_ptr<Material> m_material;
 		std::vector<MeshChunk> m_chunks;
 	};
 }
