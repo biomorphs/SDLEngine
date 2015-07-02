@@ -9,7 +9,7 @@
   <Import Project="props/engine_lib_paths.props" />
   <Import Project="props/library_build.props" />
   <PropertyGroup>
-    <IncludePath>$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)..\external\glew-1.12.0-win32\glew-1.12.0\include\GL;$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\;$(ProjectDir)public\render\;$(ProjectDir)private\render\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\external\rapidjson\include;$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)..\external\glew-1.12.0-win32\glew-1.12.0\include\GL;$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\;$(ProjectDir)public\render\;$(ProjectDir)private\render\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -26,6 +26,7 @@
     <ClInclude Include="public\render\camera.h" />
     <ClInclude Include="public\render\device.h" />
     <ClInclude Include="public\render\material.h" />
+    <ClInclude Include="public\render\material_asset.h" />
     <ClInclude Include="public\render\mesh.h" />
     <ClInclude Include="public\render\mesh_builder.h" />
     <ClInclude Include="public\render\mesh_instance.h" />
@@ -34,18 +35,21 @@
     <ClInclude Include="public\render\render_pass.h" />
     <ClInclude Include="public\render\shader_binary.h" />
     <ClInclude Include="public\render\shader_program.h" />
+    <ClInclude Include="public\render\shader_program_asset.h" />
     <ClInclude Include="public\render\vertex_array.h" />
     <ClInclude Include="public\render\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\device.cpp" />
     <ClCompile Include="private\render\material.cpp" />
+    <ClCompile Include="private\render\material_asset.cpp" />
     <ClCompile Include="private\render\mesh.cpp" />
     <ClCompile Include="private\render\mesh_builder.cpp" />
     <ClCompile Include="private\render\render_buffer.cpp" />
     <ClCompile Include="private\render\render_pass.cpp" />
     <ClCompile Include="private\render\shader_binary.cpp" />
     <ClCompile Include="private\render\shader_program.cpp" />
+    <ClCompile Include="private\render\shader_program_asset.cpp" />
     <ClCompile Include="private\render\vertex_array.cpp" />
     <ClCompile Include="private\render\window.cpp" />
   </ItemGroup>

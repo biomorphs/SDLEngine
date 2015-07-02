@@ -6,7 +6,6 @@ Matt Hoyle
 
 #include "core/system_enumerator.h"
 #include "core/system_registrar.h"
-#include "kernel/string_hashing.h"
 #include <vector>
 #include <map>
 
@@ -35,8 +34,8 @@ namespace Core
 		void AddSystemInternal(const std::string& name, ISystem* theSystem);
 
 		typedef std::vector<ISystem*> SystemArray;
-		typedef std::map<StringHash, ISystem*> SystemMap;
-		typedef std::pair<StringHash, ISystem*> SystemPair;
+		typedef std::map<uint32_t, ISystem*> SystemMap;
+		typedef std::pair<uint32_t, ISystem*> SystemPair;
 
 		SystemArray m_systems;
 		SystemMap m_systemMap;

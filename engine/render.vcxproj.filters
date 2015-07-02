@@ -51,6 +51,12 @@
     <ClInclude Include="public\render\camera.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\material_asset.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\shader_program_asset.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\window.cpp">
@@ -81,6 +87,12 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\render\render_pass.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\material_asset.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\shader_program_asset.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

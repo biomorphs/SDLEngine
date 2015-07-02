@@ -6,15 +6,13 @@ Matt Hoyle
 
 #include <stdint.h>
 
-typedef uint32_t StringHash;
-
 class StringHashing
 {
 public:
 	// djb2 hash
-	static inline StringHash GetHash(const char* str)
+	static inline uint32_t GetHash(const char* str)
 	{
-		StringHash hash = 5381;
+		uint32_t hash = 5381;
 
 		int c=0;
 		while( c = *str++ )

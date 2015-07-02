@@ -6,6 +6,7 @@ Matt Hoyle
 #include "event_system.h"
 #include "system.h"
 #include "kernel/assert.h"
+#include "kernel/string_hashing.h"
 #include "kernel/log.h"
 
 namespace Core
@@ -35,7 +36,7 @@ namespace Core
 	void SystemManager::AddSystemInternal(const std::string& name, ISystem* theSystem)
 	{
 		SDE_ASSERT(theSystem);
-		StringHash nameHash = StringHashing::GetHash(name.c_str());
+		uint32_t nameHash = StringHashing::GetHash(name.c_str());
 		SDE_ASSERT(m_systemMap.find(nameHash) == m_systemMap.end(), "A system already exists with this name");
 		m_systems.push_back(theSystem);
 		m_systemMap.insert(SystemPair(nameHash, theSystem));

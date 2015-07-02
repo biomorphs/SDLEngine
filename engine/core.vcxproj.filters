@@ -30,6 +30,24 @@
     <ClInclude Include="public\core\system_manager.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\core\asset.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\shortname.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\asset_factory.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\asset_creator.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\asset_serialiser.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\core\asset_database.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\system_manager.cpp">
@@ -41,5 +59,22 @@
     <ClCompile Include="private\core\file_io.cpp">
       <Filter>private</Filter>
     </ClCompile>
+    <ClCompile Include="private\core\asset.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\asset_creator.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\asset_serialiser.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\asset_database.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="public\core\shortname.inl">
+      <Filter>public</Filter>
+    </None>
   </ItemGroup>
 </Project>
