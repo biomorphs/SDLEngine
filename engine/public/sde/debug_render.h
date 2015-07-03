@@ -28,7 +28,8 @@ namespace SDE
 		void Destroy();
 		void PushToRenderPass(Render::RenderPass& targetPass);
 
-		void AddLine(glm::vec3 v0, glm::vec3 v1, glm::vec4 c0 = glm::vec4(1.0f), glm::vec4 c1 = glm::vec4(1.0f));
+		void AddLine(const glm::vec3& v0, const glm::vec3& v1);
+		void AddLine(const glm::vec3& v0, const glm::vec3& v1, const glm::vec4& c0, const glm::vec4& c1);
 		void AddAxisAtPoint(glm::vec3 point, float scale = 1.0f);
 
 	private:

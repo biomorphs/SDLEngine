@@ -19,16 +19,84 @@ namespace Vox
 	}
 
 	template<class ModelType>
+	void QuadExtractor<ModelType>::ExtractQuadsForVoxel(const typename ModelType::BlockType::ClumpType::VoxelDataType(&data)[3][3][3],
+		const glm::vec3& voxelCenter)
+	{
+		const glm::vec3 c_halfVoxelSize = m_targetModel.GetVoxelSize() * 0.5f;
+
+		if (data[1][1][0] == 0)	//z-1, 'front' face
+		{
+			QuadDescriptor quad;
+			quad.m_vertices[0] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			m_zAxisQuads.push_back(quad);
+		}
+
+		if (data[1][1][2] == 0)	//z+1, 'back' face
+		{
+			QuadDescriptor quad;
+			quad.m_vertices[0] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
+			m_zAxisQuads.push_back(quad);
+		}
+
+		if (data[0][1][1] == 0)	//x-1, 'left' face
+		{
+			QuadDescriptor quad;
+			quad.m_vertices[0] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[1] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[2] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			m_yAxisQuads.push_back(quad);
+		}
+
+		if (data[2][1][1] == 0)	//x-1, 'right' face
+		{
+			QuadDescriptor quad;
+			quad.m_vertices[0] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[3] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			m_yAxisQuads.push_back(quad);
+		}
+
+		if (data[1][2][1] == 0)	//y+1, 'top' face
+		{
+			QuadDescriptor quad;
+			quad.m_vertices[0] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
+			m_xAxisQuads.push_back(quad);
+		}
+
+		if (data[1][0][1] == 0)	//y+1, 'top' face
+		{
+			QuadDescriptor quad;
+			quad.m_vertices[0] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
+			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
+			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
+			m_xAxisQuads.push_back(quad);
+		}
+	}
+
+	template<class ModelType>
 	void QuadExtractor<ModelType>::ExtractQuadsFromBlock(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump)
 	{
 		ModelType::ModelDataAccessor dataAccessor(m_targetModel);
 
-		// von-neumann neighbourhood storage
+		// moore neighbourhood storage
 		typename ModelType::BlockType::ClumpType::VoxelDataType neighbourhood[3][3][3];
 
 		// calculate voxel indices so we don't need to look through clumps separately (avoid tight loop)
 		const glm::ivec3 voxelStartIndices = startClump * 2;
 		const glm::ivec3 voxelEndIndices = endClump * 2;
+		const glm::vec3 voxelSize = m_targetModel.GetVoxelSize();
 		for (int32_t vz = voxelStartIndices.z; vz < voxelEndIndices.z; ++vz)
 		{
 			for (int32_t vy = voxelStartIndices.y; vy < voxelEndIndices.y; ++vy)
@@ -43,8 +111,13 @@ namespace Vox
 						continue;
 					}
 
+					const glm::vec3 voxelCenter = m_targetModel.GetVoxelCenterPosition(blockIndex, voxelIndex);
+
 					// extract von-neumann neighbourhood for this voxel
-					dataAccessor.GetVonNeumann(blockIndex, voxelIndex, neighbourhood);
+					dataAccessor.GetMooreNeighbours(blockIndex, voxelIndex, neighbourhood);
+
+					// finally, get the quads
+					ExtractQuadsForVoxel(neighbourhood, voxelCenter);
 				}
 			}
 		}

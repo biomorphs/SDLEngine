@@ -137,7 +137,18 @@ namespace SDE
 		m_shader = nullptr;
 	}
 
-	void DebugRender::AddLine(glm::vec3 v0, glm::vec3 v1, glm::vec4 c0, glm::vec4 c1)
+	void DebugRender::AddLine(const glm::vec3& v0, const glm::vec3& v1)
+	{
+		const glm::vec4 c_colour(1.0f);
+		LineDefinition lineDef;
+		lineDef.m_points[0] = v0;
+		lineDef.m_points[1] = v1;
+		lineDef.m_colours[0] = c_colour;
+		lineDef.m_colours[1] = c_colour;
+		m_linesToDraw.push_back(lineDef);
+	}
+
+	void DebugRender::AddLine(const glm::vec3& v0, const glm::vec3& v1, const glm::vec4& c0, const glm::vec4& c1)
 	{
 		LineDefinition lineDef;
 		lineDef.m_points[0] = v0;

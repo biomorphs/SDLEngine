@@ -18,6 +18,7 @@ namespace Vox
 		Model();
 		~Model();
 		void SetVoxelSize(const glm::vec3& voxelSize);
+		inline const glm::vec3& GetVoxelSize() const { return m_voxelDimensions; }
 
 		static const uint32_t c_clumpsPerBlock = t_blockDimensionVx >> 1;
 		typedef Block< VoxelDataType, c_clumpsPerBlock, BlockAllocator > BlockType;
@@ -34,6 +35,7 @@ namespace Vox
 
 		void GetBlockIterationParameters(const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end);
 		void GetClumpIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end);
+		glm::vec3 GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex);
 
 	private:
 		class AreaIteratorParams;				// Parameter helper object for area iteration

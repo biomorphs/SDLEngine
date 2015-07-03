@@ -29,7 +29,7 @@ namespace Vox
 			return 0;
 		}
 
-		inline void GetVonNeumann(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex, VoxelDataType (&data)[3][3][3])
+		inline void GetMooreNeighbours(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex, VoxelDataType (&data)[3][3][3])
 		{
 			glm::ivec3 thisVoxelIndex;
 			glm::ivec3 thisBlockIndex;
@@ -225,7 +225,17 @@ namespace Vox
 	}
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::IterateForArea(Math::Box3 modelSpaceBounds, IteratorAccess itType, ClumpIterator iterator)
+	glm::vec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+		GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)
+	{
+		const glm::vec3 blockPosition = glm::vec3(blockIndex) * m_blockDimensions;
+		const glm::vec3 voxelCornerPos = blockPosition + (glm::vec3(voxelIndex) * m_voxelDimensions);
+		return voxelCornerPos + (m_voxelDimensions * 0.5f);
+	}
+
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+		IterateForArea(Math::Box3 modelSpaceBounds, IteratorAccess itType, ClumpIterator iterator)
 	{
 		// Find block indices for iteration
 		const glm::ivec3 c_startBlockIndices = ModelspaceToBlockIndices(modelSpaceBounds.Min());
