@@ -5,6 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include "vertex_array.h"
+#include "device.h"	// move primitive type from here!
 #include "render_buffer.h"
 #include <memory>
 
@@ -14,11 +15,13 @@ namespace Render
 
 	struct MeshChunk
 	{
-		MeshChunk() : m_firstVertex(0), m_vertexCount(0) { }
-		MeshChunk(uint32_t fv, uint32_t count) : m_firstVertex(fv), m_vertexCount(count) { }
-
+		MeshChunk() 
+			: m_firstVertex(0), m_vertexCount(0), m_primitiveType(Render::PrimitiveType::Triangles) { }
+		MeshChunk(uint32_t fv, uint32_t count, Render::PrimitiveType primitive) 
+			: m_firstVertex(fv), m_vertexCount(count), m_primitiveType(primitive) { }
 		uint32_t m_firstVertex;
 		uint32_t m_vertexCount;
+		Render::PrimitiveType m_primitiveType;
 	};
 
 	class Mesh

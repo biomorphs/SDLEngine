@@ -16,7 +16,8 @@ namespace Render
 
 	enum class PrimitiveType : uint32_t
 	{
-		Triangles
+		Triangles,
+		Lines
 	};
 
 	// This represents the GL context for a window
@@ -28,6 +29,7 @@ namespace Render
 		void Present();
 		void* GetGLContext();
 
+		void SetDepthState(bool enabled, bool writeEnabled);
 		void ClearColourDepthTarget(const glm::vec4& colour);
 		void SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix);
 		void BindShaderProgram(const ShaderProgram& program);

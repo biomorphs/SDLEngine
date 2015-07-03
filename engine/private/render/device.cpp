@@ -70,9 +70,25 @@ namespace Render
 		{
 		case PrimitiveType::Triangles:
 			return GL_TRIANGLES;
+		case PrimitiveType::Lines:
+			return GL_LINES;
 		default:
 			return -1;
 		}
+	}
+
+	void Device::SetDepthState(bool enabled, bool writeEnabled)
+	{
+		if (enabled)
+		{
+			glEnable(GL_DEPTH_TEST);
+		}
+		else
+		{
+			glDisable(GL_DEPTH_TEST);
+		}
+
+		glDepthMask(writeEnabled);
 	}
 
 	void Device::ClearColourDepthTarget(const glm::vec4& colour)

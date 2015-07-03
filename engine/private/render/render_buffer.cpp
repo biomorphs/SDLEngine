@@ -32,7 +32,20 @@ namespace Render
 		}
 	}
 
-	bool RenderBuffer::Create(size_t bufferSize, RenderBufferType type)
+	uint32_t RenderBuffer::TranslateModificationType(RenderBufferModification type) const
+	{
+		switch (type)
+		{
+		case RenderBufferModification::Static:
+			return GL_STATIC_DRAW;
+		case RenderBufferModification::Dynamic:
+			return GL_DYNAMIC_DRAW;
+		default:
+			return -1;
+		}
+	}
+
+	bool RenderBuffer::Create(size_t bufferSize, RenderBufferType type, RenderBufferModification modification)
 	{
 		SDE_RENDER_ASSERT(bufferSize > 0, "Buffer size must be >0");
 

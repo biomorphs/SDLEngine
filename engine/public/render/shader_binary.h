@@ -23,6 +23,7 @@ namespace Render
 		ShaderBinary();
 		~ShaderBinary();
 
+		bool CompileFromBuffer(ShaderType type, const std::string& source, std::string& resultText);
 		bool CompileFromFile(ShaderType type, const char* srcLocation, std::string& resultText);
 		void Destroy();
 

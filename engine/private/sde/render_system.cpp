@@ -6,6 +6,7 @@ Matt Hoyle
 #include "kernel/assert.h"
 #include "render/window.h"
 #include "render/device.h"
+#include "debug_render.h"
 
 namespace SDE
 {
@@ -42,6 +43,10 @@ namespace SDE
 			return false;
 		}
 
+		m_debugRender = std::make_unique<DebugRender>();
+		m_debugRender->Create();
+		m_debugPass.GetRenderState().m_depthTestEnabled = false;
+
 		return true;
 	}
 
@@ -58,13 +63,15 @@ namespace SDE
 		for (auto& renderPass : m_passes)
 		{
 			renderPass.RenderAll(*m_device);
-		}
-		m_device->Present();
-
-		for (auto& renderPass : m_passes)
-		{
 			renderPass.Reset();
 		}
+
+		// Render debug pass last
+		m_debugRender->PushToRenderPass(m_debugPass);
+		m_debugPass.RenderAll(*m_device);
+		m_debugPass.Reset();
+
+		m_device->Present();
 
 		return true;
 	}
@@ -72,6 +79,7 @@ namespace SDE
 	void RenderSystem::PostShutdown()
 	{
 		m_passes.clear();
+		m_debugRender = nullptr;
 		m_device = nullptr;
 		m_window = nullptr;
 	}

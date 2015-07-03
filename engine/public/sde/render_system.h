@@ -7,15 +7,19 @@ Matt Hoyle
 #include <vector>
 #include "core/system.h"
 #include "render/render_pass.h"
+#include "debug_render.h"
 
 namespace Render
 {
 	class Device;
 	class Window;
+	class Camera;
 }
 
 namespace SDE
 {
+	class DebugRender;
+
 	// Main renderer. Runs on the main thread and handles
 	// collection of render primitives, and submission to GPU
 	class RenderSystem : public Core::ISystem
@@ -26,6 +30,9 @@ namespace SDE
 
 		uint32_t CreatePass(std::string passName);
 		Render::RenderPass& GetPass(uint32_t passId);
+
+		inline DebugRender& GetDebugRender() { return *m_debugRender.get(); }
+		inline Render::Camera& DebugCamera() { return m_debugPass.GetCamera(); }
 
 		// Pass one of these to set custom params before Initialise
 		struct InitialisationParams
@@ -49,6 +56,9 @@ namespace SDE
 		std::vector<Render::RenderPass> m_passes;
 		std::unique_ptr<Render::Window> m_window;
 		std::unique_ptr<Render::Device> m_device;
+
+		std::unique_ptr<DebugRender> m_debugRender;
+		Render::RenderPass m_debugPass;
 	};
 
 	inline Render::RenderPass& RenderSystem::GetPass(uint32_t passId)

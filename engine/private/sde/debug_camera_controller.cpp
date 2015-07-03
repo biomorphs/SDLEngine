@@ -12,7 +12,7 @@ Matt Hoyle
 namespace SDE
 {
 	DebugCameraController::DebugCameraController()
-		: m_position(0.0f, 0.0f, 1.0f)
+		: m_position(0.0f, 0.0f, -1.0f)
 		, m_pitch(0.0f)
 		, m_yaw(PI)
 	{
@@ -49,11 +49,11 @@ namespace SDE
 		const float yawRotation = -xAxisRight * s_yawRotSpeed * timeDeltaF;
 		m_yaw += yawRotation;
 
-		const float pitchRotation = -yAxisRight * s_pitchRotSpeed * timeDeltaF;
+		const float pitchRotation = yAxisRight * s_pitchRotSpeed * timeDeltaF;
 		m_pitch += pitchRotation;
 
 		// build direction from pitch, yaw
-		glm::vec3 downZ(0.0f, 0.0f, 1.0f);
+		glm::vec3 downZ(0.0f, 0.0f, -1.0f);
 		m_lookDirection = glm::normalize(glm::rotateX(downZ, m_pitch));		
 		m_lookDirection = glm::normalize(glm::rotateY(m_lookDirection, m_yaw));
 

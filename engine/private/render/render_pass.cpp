@@ -24,6 +24,11 @@ namespace Render
 		m_instances.Clear();
 	}
 
+	void RenderPass::ApplyRenderState(Device& d)
+	{
+		d.SetDepthState(m_renderState.m_depthTestEnabled, m_renderState.m_depthWritingEnabled);
+	}
+
 	void RenderPass::RenderAll(Device& device)
 	{
 		// Shadow current state to save driver overhead
@@ -31,6 +36,7 @@ namespace Render
 		const ShaderProgram* currentProgram = nullptr;
 		const glm::mat4 projectionMatrix = m_camera.ProjectionMatrix();
 		const glm::mat4 viewMatrix = m_camera.ViewMatrix();
+		ApplyRenderState(device);	// Apply any global render state
 		for (auto it : m_instances)
 		{
 			const glm::mat4& modelTransform = it.GetTransform();
@@ -61,7 +67,7 @@ namespace Render
 
 			for (auto it : theMesh->GetChunks())
 			{
-				device.DrawPrimitives(PrimitiveType::Triangles, it.m_firstVertex, it.m_vertexCount);
+				device.DrawPrimitives(it.m_primitiveType, it.m_firstVertex, it.m_vertexCount);
 			}
 		}
 	}

@@ -21,6 +21,9 @@
     <ClInclude Include="public\sde\asset_system.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\sde\debug_render.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\sde\debug_camera_controller.cpp">
@@ -30,6 +33,9 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\sde\asset_system.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\sde\debug_render.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

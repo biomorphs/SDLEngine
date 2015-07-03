@@ -110,7 +110,7 @@ namespace Render
 		{
 			auto& theBuffer = streams[streamIndex];
 			auto streamSize = streamIt.m_streamData.size() * sizeof(float);
-			theBuffer.Create(streamSize, RenderBufferType::VertexData);
+			theBuffer.Create(streamSize, RenderBufferType::VertexData, RenderBufferModification::Static);
 			theBuffer.SetData(0, streamSize, (void*)streamIt.m_streamData.data());
 			++streamIndex;
 		}
@@ -128,7 +128,7 @@ namespace Render
 		chunks.resize(m_chunks.size());
 		for (const auto& chunk : m_chunks)
 		{
-			chunks.emplace_back(chunk.m_firstVertex, chunk.m_lastVertex - chunk.m_firstVertex);
+			chunks.emplace_back(chunk.m_firstVertex, chunk.m_lastVertex - chunk.m_firstVertex, Render::PrimitiveType::Triangles);
 		}
 
 		return true;

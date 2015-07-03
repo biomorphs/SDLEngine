@@ -31,6 +31,11 @@ namespace Render
 		}
 	}
 
+	bool ShaderBinary::CompileFromBuffer(ShaderType type, const std::string& buffer, std::string& resultText)
+	{
+		return CompileSource(type, buffer, resultText);
+	}
+
 	bool ShaderBinary::CompileSource(ShaderType type, const std::string& src, std::string& resultText)
 	{
 		uint32_t shaderType = TranslateShaderType(type);
@@ -58,6 +63,8 @@ namespace Render
 		glGetShaderInfoLog(m_handle, resultLogSize, nullptr, errorLogResult);
 		resultText = errorLogResult;
 
+		m_type = type;
+
 		return compileResult == GL_TRUE;
 	}
 
@@ -69,8 +76,6 @@ namespace Render
 			SDE_ASSERT(false, "Failed to load shader source from %s", srcLocation);
 			return false;
 		}
-
-		m_type = type;
 
 		return CompileSource(type, shaderSource, resultText);
 	}
