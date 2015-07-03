@@ -44,7 +44,7 @@ namespace SDE
 		}
 
 		m_debugRender = std::make_unique<DebugRender>();
-		m_debugRender->Create();
+		m_debugRender->Create( 1024 * 1024 );
 		m_debugPass.GetRenderState().m_depthTestEnabled = false;
 
 		return true;

@@ -16,11 +16,13 @@
     <ClInclude Include="public\vox\clump.h" />
     <ClInclude Include="public\vox\model.h" />
     <ClInclude Include="public\vox\paged_blocks.h" />
+    <ClInclude Include="public\vox\quad_extractor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="public\vox\block.inl" />
     <None Include="public\vox\model.inl" />
     <None Include="public\vox\paged_blocks.inl" />
+    <None Include="public\vox\quad_extractor.inl" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

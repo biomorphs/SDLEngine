@@ -5,12 +5,81 @@ Matt Hoyle
 
 namespace Vox
 {
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	class Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ModelDataAccessor
+	{
+	public:
+		ModelDataAccessor(const Model& target)
+			: m_target(target) 
+			, m_cachedBlock(nullptr)
+			, m_lastBlockIndex(INT32_MIN)
+		{ }
+		inline const typename VoxelDataType GetVoxelAt(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)
+		{
+			if (m_lastBlockIndex != blockIndex)
+			{
+				m_cachedBlock = m_target.m_voxelData.BlockAt(blockIndex);
+				m_lastBlockIndex = blockIndex;
+			}
+
+			if (m_cachedBlock != nullptr)
+			{
+				return m_cachedBlock->VoxelAt(voxelIndex.x, voxelIndex.y, voxelIndex.z);
+			}
+			return 0;
+		}
+
+		inline void GetVonNeumann(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex, VoxelDataType (&data)[3][3][3])
+		{
+			glm::ivec3 thisVoxelIndex;
+			glm::ivec3 thisBlockIndex;
+			for (int32_t vZ = -1; vZ < 2; ++vZ)
+			{
+				FixupVNIndex(voxelIndex.z + vZ, blockIndex.z, thisBlockIndex.z, thisVoxelIndex.z);
+				for (int32_t vY = -1; vY < 2; ++vY)
+				{
+					FixupVNIndex(voxelIndex.y + vY, blockIndex.y, thisBlockIndex.y, thisVoxelIndex.y);
+					for (int32_t vX = -1; vX < 2; ++vX)
+					{
+						FixupVNIndex(voxelIndex.x + vX, blockIndex.x, thisBlockIndex.x, thisVoxelIndex.x);
+						data[vX+1][vY+1][vZ+1] = GetVoxelAt(thisBlockIndex, thisVoxelIndex);
+					}
+				}
+			}
+		}
+	private:
+		inline void FixupVNIndex(int32_t voxelIndex, int32_t blockIndex, int32_t& blockIndexOut, int32_t& voxelIndexOut) const
+		{
+			// handles block boundaries and adjusts block / voxel indices as appropriate
+			if (voxelIndex >= 0 && voxelIndex < t_blockDimensionVx)
+			{
+				blockIndexOut = blockIndex;
+				voxelIndexOut = voxelIndex;
+			}
+			else if (voxelIndex < 0)
+			{
+				blockIndexOut = blockIndex - 1;
+				voxelIndexOut = t_blockDimensionVx - 1;
+			}
+			else
+			{
+				blockIndexOut = blockIndex + 1;
+				voxelIndexOut = 0;
+			}
+		}
+		const Model& m_target;
+
+		// caching of blocks to speed up lookups
+		glm::ivec3 m_lastBlockIndex;
+		const typename Model::BlockType* m_cachedBlock;
+	};
+
 	// Helper for area iteration
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	class Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::AreaIteratorParams
 	{
 	public:
-		AreaIteratorParams(Model* m, glm::ivec3 block, glm::ivec3 clumpStart, glm::ivec3 clumpEnd, Math::Box3 clumpBounds)
+		AreaIteratorParams(Model* m, const glm::ivec3& block, const glm::ivec3& clumpStart, const glm::ivec3& clumpEnd, const Math::Box3& clumpBounds)
 			: m_target(m), m_blockIndex(block), m_clumpStartIndex(clumpStart), m_clumpEndIndex(clumpEnd), m_clumpBounds(clumpBounds)
 		{
 			SDE_ASSERT(m != nullptr);
@@ -38,14 +107,14 @@ namespace Vox
 	class Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ClumpDataAccessor
 	{
 	public:
-		ClumpDataAccessor(Model* target, glm::ivec3 blockIndex)
+		ClumpDataAccessor(Model* target, const glm::ivec3& blockIndex)
 			: m_targetModel(target)
 			, m_targetClump(nullptr)
 			, m_targetBlock(nullptr)
 			, m_targetBlockIndex(blockIndex)
 		{
 		}
-		inline void SetClumpIndex(glm::ivec3 clumpIndex)
+		inline void SetClumpIndex(const glm::ivec3& clumpIndex)
 		{
 			m_targetClump = nullptr;
 			m_targetClumpIndex = clumpIndex;
@@ -92,14 +161,14 @@ namespace Vox
 	}
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::SetVoxelSize(glm::vec3 voxelSize)
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::SetVoxelSize(const glm::vec3& voxelSize)
 	{
 		m_voxelDimensions = voxelSize;
 		m_blockDimensions = m_voxelDimensions * 2.0f * (float)BlockType::BlockDimensions;
 	}
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	glm::ivec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ModelspaceToBlockIndices(glm::vec3 coordinate)
+	glm::ivec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ModelspaceToBlockIndices(const glm::vec3& coordinate)
 	{
 		return glm::floor(coordinate / m_blockDimensions);
 	}
@@ -125,6 +194,34 @@ namespace Vox
 				}
 			}
 		}
+	}
+
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+		GetBlockIterationParameters(const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)
+	{
+		start = ModelspaceToBlockIndices(modelSpaceBounds.Min());
+		end = ModelspaceToBlockIndices(modelSpaceBounds.Max());
+	}
+
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+		GetClumpIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)
+	{
+		const glm::vec3 c_clumpSize = m_voxelDimensions * 2.0f;
+		const glm::ivec3 c_clumpsPerBlockVec(c_clumpsPerBlock);
+
+		// calculate the block area we need to update
+		const glm::vec3 blockBoundsMin = m_blockDimensions * glm::vec3(blockIndex);
+		const glm::vec3 blockBoundsMax = blockBoundsMin + m_blockDimensions;
+		const glm::vec3 blockIterStart = glm::max(blockBoundsMin, modelSpaceBounds.Min());
+		const glm::vec3 blockIterEnd = glm::min(blockBoundsMax, modelSpaceBounds.Max());
+		const Math::Box3 clumpBounds(blockIterStart, blockIterEnd);
+
+		// calculate the clump range and clamp to proper range
+		start = glm::floor((blockIterStart - blockBoundsMin) / c_clumpSize);
+		glm::ivec3 clumpEndIndices = glm::floor((blockIterEnd - blockBoundsMin) / c_clumpSize);
+		end = glm::min(clumpEndIndices, c_clumpsPerBlockVec);
 	}
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >

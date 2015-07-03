@@ -21,6 +21,9 @@
     <ClInclude Include="public\vox\model.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\vox\quad_extractor.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="public\vox\block.inl">
@@ -30,6 +33,9 @@
       <Filter>public</Filter>
     </None>
     <None Include="public\vox\model.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\vox\quad_extractor.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>

@@ -152,13 +152,12 @@ namespace SDE
 		const glm::vec3 xAxis(scale, 0.0f, 0.0f);
 		const glm::vec3 yAxis(0.0f, scale, 0.0f);
 		const glm::vec3 zAxis(0.0f, 0.0f, scale);
-		const glm::vec3 origin(0.0f);
 		const glm::vec4 xColour(1.0f, 0.0f, 0.0f, 1.0f);
 		const glm::vec4 yColour(0.0f, 1.0f, 0.0f, 1.0f);
 		const glm::vec4 zColour(0.0f, 0.0f, 1.0f, 1.0f);
-		AddLine(origin, xAxis, xColour, xColour);
-		AddLine(origin, yAxis, yColour, yColour);
-		AddLine(origin, zAxis, zColour, zColour);
+		AddLine(point, point + xAxis, xColour, xColour);
+		AddLine(point, point + yAxis, yColour, yColour);
+		AddLine(point, point + zAxis, zColour, zColour);
 	}
 
 	void DebugRender::PushLinesToMesh(Render::Mesh& target)

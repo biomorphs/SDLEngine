@@ -37,7 +37,7 @@ namespace SDE
 		// Pass one of these to set custom params before Initialise
 		struct InitialisationParams
 		{
-			InitialisationParams(uint32_t w = 640, uint32_t h = 480, bool fs = false, std::string title = "SDE")
+			InitialisationParams(uint32_t w = 800, uint32_t h = 600, bool fs = false, std::string title = "SDE")
 				: m_windowWidth(w), m_windowHeight(h), m_fullscreen(fs), m_windowTitle(title)	{ }
 			uint32_t m_windowWidth;
 			uint32_t m_windowHeight;
