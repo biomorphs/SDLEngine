@@ -14,6 +14,17 @@ namespace Vox
 			, m_cachedBlock(nullptr)
 			, m_lastBlockIndex(INT32_MIN)
 		{ }
+
+		inline const typename BlockType* GetBlockAt(const glm::ivec3& blockIndex)
+		{
+			if (m_lastBlockIndex != blockIndex)
+			{
+				m_cachedBlock = m_target.m_voxelData.BlockAt(blockIndex);
+				m_lastBlockIndex = blockIndex;
+			}
+			return m_cachedBlock;
+		}
+
 		inline const typename VoxelDataType GetVoxelAt(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)
 		{
 			if (m_lastBlockIndex != blockIndex)
@@ -25,6 +36,28 @@ namespace Vox
 			if (m_cachedBlock != nullptr)
 			{
 				return m_cachedBlock->VoxelAt(voxelIndex.x, voxelIndex.y, voxelIndex.z);
+			}
+			return 0;
+		}
+
+		inline const typename VoxelDataType GetVoxelNeighbour(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex, const glm::ivec3& voxelOffset)
+		{
+			// fixup block index and voxel index so we can support negative offsets
+			glm::ivec3 thisVoxelIndex;
+			glm::ivec3 thisBlockIndex;
+			FixupVNIndex(voxelIndex.x + voxelOffset.x, blockIndex.x, thisBlockIndex.x, thisVoxelIndex.x);
+			FixupVNIndex(voxelIndex.y + voxelOffset.y, blockIndex.y, thisBlockIndex.y, thisVoxelIndex.y);
+			FixupVNIndex(voxelIndex.z + voxelOffset.z, blockIndex.z, thisBlockIndex.z, thisVoxelIndex.z);
+
+			if (m_lastBlockIndex != thisBlockIndex)
+			{
+				m_cachedBlock = m_target.m_voxelData.BlockAt(thisBlockIndex);
+				m_lastBlockIndex = thisBlockIndex;
+			}
+
+			if (m_cachedBlock != nullptr)
+			{
+				return m_cachedBlock->VoxelAt(thisVoxelIndex.x, thisVoxelIndex.y, thisVoxelIndex.z);
 			}
 			return 0;
 		}
@@ -187,8 +220,10 @@ namespace Vox
 			{
 				for (int32_t cx = params.ClumpStartIndices().x; cx < params.ClumpEndIndices().x; ++cx)
 				{
-					const glm::vec3 clumpOrigin = params.ClumpModelspaceBounds().Min() + (glm::vec3(cx, cy, cz) * clumpSize);
 					const glm::ivec3 clumpIndex(cx, cy, cz);
+					const glm::vec3 clumpFromOrigin = glm::vec3(clumpIndex - params.ClumpStartIndices());
+					const glm::vec3 clumpOrigin = params.ClumpModelspaceBounds().Min() + (clumpFromOrigin * clumpSize);
+					
 					clumpPolicy.SetClumpIndex(clumpIndex);
 					iterator(clumpPolicy, clumpOrigin, params.VoxelDimensions(), voxelCenterOffset);
 				}

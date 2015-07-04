@@ -6,20 +6,20 @@ Matt Hoyle
 namespace Vox
 {
 	template<class ModelType>
-	QuadExtractor<ModelType>::QuadExtractor(ModelType& targetModel)
+	SimpleQuadExtractor<ModelType>::SimpleQuadExtractor(ModelType& targetModel)
 		: m_targetModel(targetModel)
 	{
 
 	}
 
 	template<class ModelType>
-	QuadExtractor<ModelType>::~QuadExtractor()
+	SimpleQuadExtractor<ModelType>::~SimpleQuadExtractor()
 	{
 
 	}
 
 	template<class ModelType>
-	void QuadExtractor<ModelType>::ExtractQuadsForVoxel(const typename ModelType::BlockType::ClumpType::VoxelDataType(&data)[3][3][3],
+	void SimpleQuadExtractor<ModelType>::ExtractQuadsForVoxel(const typename ModelType::BlockType::ClumpType::VoxelDataType(&data)[3][3][3],
 		const glm::vec3& voxelCenter)
 	{
 		const glm::vec3 c_halfVoxelSize = m_targetModel.GetVoxelSize() * 0.5f;
@@ -31,7 +31,7 @@ namespace Vox
 			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
 			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
 			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
-			m_zAxisQuads.push_back(quad);
+			m_quads.push_back(quad);
 		}
 
 		if (data[1][1][2] == 0)	//z+1, 'back' face
@@ -41,7 +41,7 @@ namespace Vox
 			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
-			m_zAxisQuads.push_back(quad);
+			m_quads.push_back(quad);
 		}
 
 		if (data[0][1][1] == 0)	//x-1, 'left' face
@@ -51,7 +51,7 @@ namespace Vox
 			quad.m_vertices[1] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[2] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
-			m_yAxisQuads.push_back(quad);
+			m_quads.push_back(quad);
 		}
 
 		if (data[2][1][1] == 0)	//x-1, 'right' face
@@ -61,7 +61,7 @@ namespace Vox
 			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[3] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
-			m_yAxisQuads.push_back(quad);
+			m_quads.push_back(quad);
 		}
 
 		if (data[1][2][1] == 0)	//y+1, 'top' face
@@ -71,7 +71,7 @@ namespace Vox
 			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, -c_halfVoxelSize.z);
 			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, c_halfVoxelSize.y, c_halfVoxelSize.z);
-			m_xAxisQuads.push_back(quad);
+			m_quads.push_back(quad);
 		}
 
 		if (data[1][0][1] == 0)	//y+1, 'top' face
@@ -81,12 +81,12 @@ namespace Vox
 			quad.m_vertices[1] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, -c_halfVoxelSize.z);
 			quad.m_vertices[2] = voxelCenter + glm::vec3(c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
 			quad.m_vertices[3] = voxelCenter + glm::vec3(-c_halfVoxelSize.x, -c_halfVoxelSize.y, c_halfVoxelSize.z);
-			m_xAxisQuads.push_back(quad);
+			m_quads.push_back(quad);
 		}
 	}
 
 	template<class ModelType>
-	void QuadExtractor<ModelType>::ExtractQuadsFromBlock(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump)
+	void SimpleQuadExtractor<ModelType>::ExtractQuadsFromBlock(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump)
 	{
 		ModelType::ModelDataAccessor dataAccessor(m_targetModel);
 
@@ -124,7 +124,7 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	void QuadExtractor<ModelType>::ExtractQuads(const Math::Box3& modelSpaceBounds)
+	void SimpleQuadExtractor<ModelType>::ExtractQuads(const Math::Box3& modelSpaceBounds)
 	{
 		// first, calculate block indices
 		glm::ivec3 blockStartIndices;
