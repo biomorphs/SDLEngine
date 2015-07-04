@@ -14,9 +14,11 @@ namespace Render
 	struct RenderState
 	{
 		RenderState()
-			: m_depthTestEnabled(true), m_depthWritingEnabled(true) {}
+			: m_depthTestEnabled(true), m_depthWritingEnabled(true), m_backfaceCullEnabled(true), m_frontFaceOrderCCW(true) {}
 		bool m_depthTestEnabled;
 		bool m_depthWritingEnabled;
+		bool m_backfaceCullEnabled;
+		bool m_frontFaceOrderCCW;
 	};
 
 	// Contains everything required to draw a set of instances in one pass

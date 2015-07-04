@@ -77,18 +77,37 @@ namespace Render
 		}
 	}
 
+	void Device::SetBackfaceCulling(bool enabled, bool frontFaceCCW)
+	{
+		if (enabled)
+		{
+			glEnable(GL_CULL_FACE);
+			SDE_RENDER_PROCESS_GL_ERRORS("glEnable");
+		}
+		else
+		{
+			glDisable(GL_CULL_FACE);
+			SDE_RENDER_PROCESS_GL_ERRORS("glDisable");
+		}
+
+		glFrontFace(frontFaceCCW ? GL_CCW : GL_CW);
+		SDE_RENDER_PROCESS_GL_ERRORS("glFrontFace");
+	}
+
 	void Device::SetDepthState(bool enabled, bool writeEnabled)
 	{
 		if (enabled)
 		{
 			glEnable(GL_DEPTH_TEST);
+			SDE_RENDER_PROCESS_GL_ERRORS("glEnable");
 		}
 		else
 		{
 			glDisable(GL_DEPTH_TEST);
+			SDE_RENDER_PROCESS_GL_ERRORS("glDisable");
 		}
-
 		glDepthMask(writeEnabled);
+		SDE_RENDER_PROCESS_GL_ERRORS("glDepthMask");
 	}
 
 	void Device::ClearColourDepthTarget(const glm::vec4& colour)

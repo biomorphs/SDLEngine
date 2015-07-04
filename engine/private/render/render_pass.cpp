@@ -27,6 +27,7 @@ namespace Render
 	void RenderPass::ApplyRenderState(Device& d)
 	{
 		d.SetDepthState(m_renderState.m_depthTestEnabled, m_renderState.m_depthWritingEnabled);
+		d.SetBackfaceCulling(m_renderState.m_backfaceCullEnabled, m_renderState.m_frontFaceOrderCCW);
 	}
 
 	void RenderPass::RenderAll(Device& device)

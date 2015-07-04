@@ -29,6 +29,7 @@ namespace Render
 		void Present();
 		void* GetGLContext();
 
+		void SetBackfaceCulling(bool enabled, bool frontFaceCCW);
 		void SetDepthState(bool enabled, bool writeEnabled);
 		void ClearColourDepthTarget(const glm::vec4& colour);
 		void SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix);

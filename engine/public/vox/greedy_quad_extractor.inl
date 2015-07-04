@@ -32,6 +32,10 @@ namespace Vox
 	template<class ModelType>
 	void GreedyQuadExtractor<ModelType>::ClearSliceMask(std::vector<MaskType>&mask, int32_t u, int32_t v, int32_t uMax, int32_t vMax)
 	{
+		SDE_ASSERT(u >= 0 && u < ModelType::c_clumpsPerBlock * 2);
+		SDE_ASSERT(v >= 0 && v < ModelType::c_clumpsPerBlock * 2);
+		SDE_ASSERT(uMax >= u && uMax <= ModelType::c_clumpsPerBlock * 2);
+		SDE_ASSERT(vMax >= v && vMax <= ModelType::c_clumpsPerBlock * 2);
 		for (int32_t vv = v;vv < vMax;++vv)
 		{
 			memset(&MaskVal(mask,u,vv), 0, sizeof(MaskType) * (uMax - u));
@@ -41,6 +45,8 @@ namespace Vox
 	template<class ModelType>
 	typename GreedyQuadExtractor<ModelType>::MaskType& GreedyQuadExtractor<ModelType>::MaskVal(std::vector<MaskType>&mask, int32_t u, int32_t v)
 	{
+		SDE_ASSERT(u >= 0 && u < ModelType::c_clumpsPerBlock * 2);
+		SDE_ASSERT(v >= 0 && v < ModelType::c_clumpsPerBlock * 2);
 		const size_t voxelsPerBlock = ModelType::c_clumpsPerBlock * 2;
 		return mask[u + (v * voxelsPerBlock)];
 	}
@@ -48,6 +54,8 @@ namespace Vox
 	template<class ModelType>
 	const typename GreedyQuadExtractor<ModelType>::MaskType& GreedyQuadExtractor<ModelType>::MaskVal(const std::vector<MaskType>&mask, int32_t u, int32_t v) const
 	{
+		SDE_ASSERT(u >= 0 && u < ModelType::c_clumpsPerBlock * 2);
+		SDE_ASSERT(v >= 0 && v < ModelType::c_clumpsPerBlock * 2);
 		const size_t voxelsPerBlock = ModelType::c_clumpsPerBlock * 2;
 		return mask[u + (v * voxelsPerBlock)];
 	}
@@ -89,7 +97,26 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	void GreedyQuadExtractor<ModelType>::ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask)
+	inline void GreedyQuadExtractor<ModelType>::BuildQuad(const glm::vec3& blockOrigin, int32_t u, int32_t v, int32_t uEnd, int32_t vEnd, int32_t slice, bool backFace)
+	{
+		const int32_t c_frontFaceIndices[] = { 0,1,2,3 };		// ccw
+		const int32_t c_backFaceIndices[] = { 0,3,2,1 };		// cw
+		const int32_t* c_indices = backFace ? c_backFaceIndices : c_frontFaceIndices;
+
+		const glm::vec3 voxelSize = m_targetModel.GetVoxelSize();
+		const glm::vec3 voxelOrigin = blockOrigin + glm::vec3(u * voxelSize.x, v * voxelSize.y, slice * voxelSize.z);
+		const glm::vec3 quadTopCorner = glm::vec3((uEnd - u) * voxelSize.x, (vEnd - v) * voxelSize.y, 0.0f);
+
+		QuadDescriptor newQuad;
+		newQuad.m_vertices[c_indices[0]] = voxelOrigin;
+		newQuad.m_vertices[c_indices[1]] = voxelOrigin + glm::vec3(quadTopCorner.x, 0.0f, 0.0f);
+		newQuad.m_vertices[c_indices[2]] = voxelOrigin + glm::vec3(quadTopCorner.x, quadTopCorner.y, 0.0f);
+		newQuad.m_vertices[c_indices[3]] = voxelOrigin + glm::vec3(0.0f, quadTopCorner.y, 0.0f);
+		m_quads.push_back(newQuad);
+	}
+
+	template<class ModelType>
+	void GreedyQuadExtractor<ModelType>::ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace)
 	{
 		glm::vec3 blockOrigin = glm::vec3(blockIndex) * (m_targetModel.GetVoxelSize() * (2.0f * ModelType::c_clumpsPerBlock));
 		const int32_t c_maxMask = typename ModelType::c_clumpsPerBlock * 2;
@@ -105,16 +132,7 @@ namespace Vox
 				CalculateMergedQuadsFromMask(mask, u, v, quadEndU, quadEndV);
 
 				// at this point, we have a u->quadEndU, v->quadEndV pair that describes a quad. so add the damn thing!
-				glm::vec3 voxelSize = m_targetModel.GetVoxelSize();
-				glm::vec3 voxelOrigin = blockOrigin + glm::vec3(u * voxelSize.x, v * voxelSize.y, slice * voxelSize.z);
-				glm::vec3 quadTopCorner = glm::vec3((quadEndU-u) * voxelSize.x, (quadEndV-v) * voxelSize.y, 0.0f);
-
-				QuadDescriptor newQuad;
-				newQuad.m_vertices[0] = voxelOrigin;
-				newQuad.m_vertices[1] = voxelOrigin + glm::vec3(quadTopCorner.x, 0.0f, 0.0f);
-				newQuad.m_vertices[2] = voxelOrigin + glm::vec3(quadTopCorner.x, quadTopCorner.y, 0.0f);
-				newQuad.m_vertices[3] = voxelOrigin + glm::vec3(0.0f, quadTopCorner.y, 0.0f);
-				m_quads.push_back(newQuad);
+				BuildQuad(blockOrigin, u, v, quadEndU, quadEndV, slice, backFace);
 
 				// finally, clear out the mask so we dont process these entries later
 				ClearSliceMask(mask, u, v, quadEndU, quadEndV);
@@ -160,12 +178,12 @@ namespace Vox
 					// now determine whether a quad should be here for each direction
 					if(voxelData[0] == 0)
 					{
-						MaskVal(m_sliceMaskPositive, vx, vy) = 1;
+						MaskVal(m_sliceMaskNegative, vx, vy) = 1;
 						processBlockData = true;
 					}
 					if (voxelData[1] == 0)
 					{
-						MaskVal(m_sliceMaskNegative, vx, vy) = 1;
+						MaskVal(m_sliceMaskPositive, vx, vy) = 1;
 						processBlockData = true;
 					}
 				}
@@ -173,8 +191,8 @@ namespace Vox
 			// Now we do the greedy part, running through the masks, combining mergable quads
 			if (processBlockData)
 			{
-				ProcessMaskAndBuildQuads(blockIndex, vz, m_sliceMaskPositive);
-				ProcessMaskAndBuildQuads(blockIndex, vz + 1, m_sliceMaskNegative);
+				ProcessMaskAndBuildQuads(blockIndex, vz + 1, m_sliceMaskPositive, false);	// front face
+				ProcessMaskAndBuildQuads(blockIndex, vz, m_sliceMaskNegative, true);		// back face
 			}
 		}
 	}

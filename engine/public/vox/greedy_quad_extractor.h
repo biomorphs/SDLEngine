@@ -40,8 +40,9 @@ namespace Vox
 
 		void ExtractMeshesAlongZ(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump);
 
-		void ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask);
+		void ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace);
 		void CalculateMergedQuadsFromMask(const std::vector<MaskType>& mask, int32_t u, int32_t v, int32_t& quadEndU, int32_t& quadEndV);
+		void BuildQuad(const glm::vec3& blockOrigin, int32_t u, int32_t v, int32_t uEnd, int32_t vEnd, int32_t slice, bool backFace);
 
 		std::vector<QuadDescriptor> m_quads;
 		ModelType& m_targetModel;
