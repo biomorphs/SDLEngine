@@ -97,28 +97,40 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	inline void GreedyQuadExtractor<ModelType>::BuildQuad(const glm::vec3& blockOrigin, int32_t u, int32_t v, int32_t uEnd, int32_t vEnd, int32_t slice, bool backFace)
+	inline glm::vec3 GreedyQuadExtractor<ModelType>::BuildQuadVertex(const glm::ivec3& sample, const glm::vec3& blockOrigin, const glm::vec3& voxSize, const glm::ivec3& sampleAxes)
+	{
+		glm::vec3 vertex;
+		vertex[sampleAxes.x] = blockOrigin[sampleAxes.x] + (sample.x * voxSize[sampleAxes.x]);
+		vertex[sampleAxes.y] = blockOrigin[sampleAxes.y] + (sample.y * voxSize[sampleAxes.y]);
+		vertex[sampleAxes.z] = blockOrigin[sampleAxes.z] + (sample.z * voxSize[sampleAxes.z]);
+		return vertex;
+	}
+
+	template<class ModelType>
+	inline void GreedyQuadExtractor<ModelType>::BuildQuad(const QuadBuildParameters& params)
 	{
 		const int32_t c_frontFaceIndices[] = { 0,1,2,3 };		// ccw
 		const int32_t c_backFaceIndices[] = { 0,3,2,1 };		// cw
-		const int32_t* c_indices = backFace ? c_backFaceIndices : c_frontFaceIndices;
-
+		const int32_t* c_indices = params.m_backFace ? c_backFaceIndices : c_frontFaceIndices;
 		const glm::vec3 voxelSize = m_targetModel.GetVoxelSize();
-		const glm::vec3 voxelOrigin = blockOrigin + glm::vec3(u * voxelSize.x, v * voxelSize.y, slice * voxelSize.z);
-		const glm::vec3 quadTopCorner = glm::vec3((uEnd - u) * voxelSize.x, (vEnd - v) * voxelSize.y, 0.0f);
-
+		
 		QuadDescriptor newQuad;
-		newQuad.m_vertices[c_indices[0]] = voxelOrigin;
-		newQuad.m_vertices[c_indices[1]] = voxelOrigin + glm::vec3(quadTopCorner.x, 0.0f, 0.0f);
-		newQuad.m_vertices[c_indices[2]] = voxelOrigin + glm::vec3(quadTopCorner.x, quadTopCorner.y, 0.0f);
-		newQuad.m_vertices[c_indices[3]] = voxelOrigin + glm::vec3(0.0f, quadTopCorner.y, 0.0f);
+		newQuad.m_vertices[c_indices[0]] = BuildQuadVertex(glm::ivec3(params.m_u, params.m_v, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
+		newQuad.m_vertices[c_indices[1]] = BuildQuadVertex(glm::ivec3(params.m_uEnd, params.m_v, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
+		newQuad.m_vertices[c_indices[2]] = BuildQuadVertex(glm::ivec3(params.m_uEnd, params.m_vEnd, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
+		newQuad.m_vertices[c_indices[3]] = BuildQuadVertex(glm::ivec3(params.m_u, params.m_vEnd, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
 		m_quads.push_back(newQuad);
 	}
 
 	template<class ModelType>
-	void GreedyQuadExtractor<ModelType>::ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace)
+	void GreedyQuadExtractor<ModelType>::ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace, int32_t sliceAxis)
 	{
-		glm::vec3 blockOrigin = glm::vec3(blockIndex) * (m_targetModel.GetVoxelSize() * (2.0f * ModelType::c_clumpsPerBlock));
+		QuadBuildParameters quadParameters;
+		quadParameters.m_blockOrigin = glm::vec3(blockIndex) * (m_targetModel.GetVoxelSize() * (2.0f * ModelType::c_clumpsPerBlock));
+		quadParameters.m_slice = slice;
+		quadParameters.m_backFace = backFace;
+		quadParameters.m_sampleAxes = glm::ivec3((sliceAxis + 1) % 3, (sliceAxis + 2) % 3, sliceAxis);
+
 		const int32_t c_maxMask = typename ModelType::c_clumpsPerBlock * 2;
 		for (int32_t v = 0; v < c_maxMask; ++v)
 		{
@@ -132,7 +144,11 @@ namespace Vox
 				CalculateMergedQuadsFromMask(mask, u, v, quadEndU, quadEndV);
 
 				// at this point, we have a u->quadEndU, v->quadEndV pair that describes a quad. so add the damn thing!
-				BuildQuad(blockOrigin, u, v, quadEndU, quadEndV, slice, backFace);
+				quadParameters.m_u = u;
+				quadParameters.m_v = v;
+				quadParameters.m_uEnd = quadEndU;
+				quadParameters.m_vEnd = quadEndV;
+				BuildQuad(quadParameters);
 
 				// finally, clear out the mask so we dont process these entries later
 				ClearSliceMask(mask, u, v, quadEndU, quadEndV);
@@ -141,28 +157,31 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	void GreedyQuadExtractor<ModelType>::ExtractMeshesAlongZ(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump)
+	void GreedyQuadExtractor<ModelType>::ExtractMeshesAlongAxis(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump, int32_t sliceAxis)
 	{
 		ModelType::ModelDataAccessor dataAccessor(m_targetModel);
 
-		// skip blocks with no data
-		if (dataAccessor.GetBlockAt(blockIndex) == nullptr)
+		if (dataAccessor.GetBlockAt(blockIndex) == nullptr)	// skip blocks with no data
 		{
 			return;
 		}
 
-		// run along z axis, building a mask for each slice
 		const glm::ivec3 voxelStartIndices = startClump * 2;
 		const glm::ivec3 voxelEndIndices = endClump * 2;
-		bool processBlockData = false;
-		for (int32_t vz = voxelStartIndices.z; vz < voxelEndIndices.z; ++vz)
+		const int32_t uAxis = (sliceAxis + 1) % 3;
+		const int32_t vAxis = (sliceAxis + 2) % 3;
+		glm::ivec3 sampleIndex(0);				// loops through slice,v,u, represents current voxel index
+		glm::ivec3 neighbourDirection(0);		// used to shift coordinates when getting neighbours
+		neighbourDirection[sliceAxis] = 1;
+		for (sampleIndex[sliceAxis] = voxelStartIndices[sliceAxis]; sampleIndex[sliceAxis] < voxelEndIndices[sliceAxis]; ++sampleIndex[sliceAxis])
 		{
+			bool processBlockData = false;
 			ResetSliceMasks();
-			for (int32_t vy = voxelStartIndices.y; vy < voxelEndIndices.y; ++vy)
+			for (sampleIndex[vAxis] = voxelStartIndices[vAxis]; sampleIndex[vAxis] < voxelEndIndices[vAxis]; ++sampleIndex[vAxis])
 			{
-				for (int32_t vx = voxelStartIndices.x; vx < voxelEndIndices.x; ++vx)
+				for (sampleIndex[uAxis] = voxelStartIndices[uAxis]; sampleIndex[uAxis] < voxelEndIndices[uAxis]; ++sampleIndex[uAxis])
 				{
-					const glm::ivec3 voxelIndex(vx, vy, vz);
+					const glm::ivec3 voxelIndex(sampleIndex.x, sampleIndex.y, sampleIndex.z);
 
 					// get the voxel, as well as its neighbours
 					ModelType::BlockType::ClumpType::VoxelDataType thisVoxel = dataAccessor.GetVoxelAt(blockIndex, voxelIndex);
@@ -170,29 +189,25 @@ namespace Vox
 					{
 						continue;
 					}
-
 					ModelType::BlockType::ClumpType::VoxelDataType voxelData[2];
-					voxelData[0] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, glm::ivec3(0, 0, -1));					
-					voxelData[1] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, glm::ivec3(0, 0, 1));
-
-					// now determine whether a quad should be here for each direction
-					if(voxelData[0] == 0)
+					voxelData[0] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, -neighbourDirection);
+					voxelData[1] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, neighbourDirection);
+					if(voxelData[0] == 0)	// now determine whether a quad should be here for each direction
 					{
-						MaskVal(m_sliceMaskNegative, vx, vy) = 1;
+						MaskVal(m_sliceMaskNegative, sampleIndex[uAxis], sampleIndex[vAxis]) = 1;
 						processBlockData = true;
 					}
 					if (voxelData[1] == 0)
 					{
-						MaskVal(m_sliceMaskPositive, vx, vy) = 1;
+						MaskVal(m_sliceMaskPositive, sampleIndex[uAxis], sampleIndex[vAxis]) = 1;
 						processBlockData = true;
 					}
 				}
 			}
-			// Now we do the greedy part, running through the masks, combining mergable quads
-			if (processBlockData)
+			if (processBlockData)	// If we added anything, run through the masks, merging + building quads
 			{
-				ProcessMaskAndBuildQuads(blockIndex, vz + 1, m_sliceMaskPositive, false);	// front face
-				ProcessMaskAndBuildQuads(blockIndex, vz, m_sliceMaskNegative, true);		// back face
+				ProcessMaskAndBuildQuads(blockIndex, sampleIndex[sliceAxis] + 1, m_sliceMaskPositive, false, sliceAxis);	// front face
+				ProcessMaskAndBuildQuads(blockIndex, sampleIndex[sliceAxis], m_sliceMaskNegative, true, sliceAxis);			// back face
 			}
 		}
 	}
@@ -221,7 +236,9 @@ namespace Vox
 					m_targetModel.GetClumpIterationParameters(blockIndex, modelSpaceBounds, clumpStartIndices, clumpEndIndices);
 
 					// extract quads for each axis
-					ExtractMeshesAlongZ(blockIndex, clumpStartIndices, clumpEndIndices);
+					ExtractMeshesAlongAxis(blockIndex, clumpStartIndices, clumpEndIndices, 0);
+					ExtractMeshesAlongAxis(blockIndex, clumpStartIndices, clumpEndIndices, 1);
+					ExtractMeshesAlongAxis(blockIndex, clumpStartIndices, clumpEndIndices, 2);
 				}
 			}
 		}

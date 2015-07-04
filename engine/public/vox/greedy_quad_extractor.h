@@ -30,7 +30,17 @@ namespace Vox
 
 	private:
 		typedef uint8_t MaskType;
-
+		struct QuadBuildParameters	// Passed to BuildQuad, used to avoid massive parameter list
+		{
+			glm::vec3 m_blockOrigin;
+			int32_t m_u; 
+			int32_t m_v; 
+			int32_t m_uEnd;
+			int32_t m_vEnd;
+			int32_t m_slice; 
+			glm::ivec3 m_sampleAxes;
+			bool m_backFace;
+		};
 		
 		void InitialiseSliceMasks();
 		void ResetSliceMasks();
@@ -38,11 +48,11 @@ namespace Vox
 		MaskType& MaskVal(std::vector<MaskType>&mask, int32_t u, int32_t v);
 		const MaskType& MaskVal(const std::vector<MaskType>&mask, int32_t u, int32_t v) const;
 
-		void ExtractMeshesAlongZ(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump);
-
-		void ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace);
+		void ExtractMeshesAlongAxis(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump, int32_t sliceAxis);
+		void ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace, int32_t sliceAxis);
 		void CalculateMergedQuadsFromMask(const std::vector<MaskType>& mask, int32_t u, int32_t v, int32_t& quadEndU, int32_t& quadEndV);
-		void BuildQuad(const glm::vec3& blockOrigin, int32_t u, int32_t v, int32_t uEnd, int32_t vEnd, int32_t slice, bool backFace);
+		void BuildQuad(const QuadBuildParameters& params);
+		glm::vec3 BuildQuadVertex(const glm::ivec3& sample, const glm::vec3& blockOrigin, const glm::vec3& voxSize, const glm::ivec3& sampleAxes);
 
 		std::vector<QuadDescriptor> m_quads;
 		ModelType& m_targetModel;
