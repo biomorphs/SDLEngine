@@ -18,6 +18,9 @@
     <ClInclude Include="public\math\box3.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\math\intersections.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="public\math\math.inl">
@@ -27,6 +30,9 @@
       <Filter>public</Filter>
     </None>
     <None Include="public\math\box3.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\math\intersections.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>

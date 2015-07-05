@@ -27,14 +27,24 @@ namespace Vox
 	class GreedyQuadExtractor
 	{
 	public:
-		GreedyQuadExtractor(ModelType& targetModel);
+		GreedyQuadExtractor(const ModelType& targetModel);
 		~GreedyQuadExtractor();
 
 		void ExtractQuads(const Math::Box3& modelSpaceBounds);
 		struct QuadDescriptor
 		{
+			enum class NormalDirection : uint8_t
+			{
+				XAxisPositive,
+				XAxisNegative,
+				YAxisPositive,
+				YAxisNegative,
+				ZAxisPositive,
+				ZAxisNegative,
+			};
 			glm::vec3 m_vertices[4];
 			typename ModelType::BlockType::ClumpType::VoxelDataType m_sourceData;
+			NormalDirection m_normal;
 		};
 		typename std::vector<QuadDescriptor>::const_iterator Begin() const { return m_quads.begin(); }
 		typename std::vector<QuadDescriptor>::const_iterator End() const { return m_quads.end(); }
@@ -51,6 +61,7 @@ namespace Vox
 			int32_t m_slice; 
 			glm::ivec3 m_sampleAxes;
 			bool m_backFace;
+			typename QuadDescriptor::NormalDirection m_normal;
 			typename ModelType::BlockType::ClumpType::VoxelDataType m_sourceVoxel;
 		};
 		
@@ -67,7 +78,7 @@ namespace Vox
 		glm::vec3 BuildQuadVertex(const glm::ivec3& sample, const glm::vec3& blockOrigin, const glm::vec3& voxSize, const glm::ivec3& sampleAxes);
 
 		std::vector<QuadDescriptor> m_quads;
-		ModelType& m_targetModel;
+		const ModelType& m_targetModel;
 		std::vector<MaskType> m_sliceMaskPositive;	// temporary storage for slice masks. thrown away on completion
 		std::vector<MaskType> m_sliceMaskNegative;	// temporary storage for slice masks. thrown away on completion
 	};

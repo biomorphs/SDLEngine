@@ -6,6 +6,7 @@ Matt Hoyle
 
 #include "block.h"
 #include "math/math.h"
+#include <glm.hpp>
 #include <unordered_map>
 
 namespace Vox

@@ -6,6 +6,8 @@ Matt Hoyle
 #include "kernel/assert.h"
 #include "math/morton_encoding.h"
 
+#define USE_SIMPLE_VOXEL_PACKING	// Turns out simple array indices are faster for random access
+
 namespace Vox
 {
 	template<class DataType, uint32_t t_clumpDimensions, class Allocator>
@@ -63,8 +65,12 @@ namespace Vox
 	{
 		SDE_ASSERT(IsClumpInBoundaries(x, y, z));
 		SDE_ASSERT(m_clumpData != nullptr);
+#ifdef USE_SIMPLE_VOXEL_PACKING
+		return m_clumpData[x + (y * t_clumpDimensions) + (z * t_clumpDimensions * t_clumpDimensions)];
+#else
 		uint64_t mortonKey = Math::MortonEncode(x, y, z);
 		return m_clumpData[mortonKey];
+#endif
 	}
 
 	template<class DataType, uint32_t t_clumpDimensions, class Allocator>

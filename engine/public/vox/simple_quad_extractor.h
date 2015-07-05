@@ -15,7 +15,7 @@ namespace Vox
 	class SimpleQuadExtractor
 	{
 	public:
-		SimpleQuadExtractor(ModelType& targetModel);
+		SimpleQuadExtractor(const ModelType& targetModel);
 		~SimpleQuadExtractor();
 
 		void ExtractQuads(const Math::Box3& modelSpaceBounds);
@@ -33,7 +33,7 @@ namespace Vox
 		void ExtractQuadsForVoxel(const typename ModelType::BlockType::ClumpType::VoxelDataType(&data)[3][3][3], 
 								  const glm::vec3& voxelCenter);
 		void ExtractQuadsFromBlock(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump);
-		ModelType& m_targetModel;
+		const ModelType& m_targetModel;
 
 		// vector of resulting quads
 		std::vector<QuadDescriptor> m_quads;

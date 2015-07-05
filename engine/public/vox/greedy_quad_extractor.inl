@@ -6,7 +6,7 @@ Matt Hoyle
 namespace Vox
 {
 	template<class ModelType>
-	GreedyQuadExtractor<ModelType>::GreedyQuadExtractor(ModelType& targetModel)
+	GreedyQuadExtractor<ModelType>::GreedyQuadExtractor(const ModelType& targetModel)
 		: m_targetModel(targetModel)
 	{
 		// slice masks can be allocated straight awey, since we just need to handle
@@ -121,6 +121,7 @@ namespace Vox
 		newQuad.m_vertices[c_indices[2]] = BuildQuadVertex(glm::ivec3(params.m_uEnd, params.m_vEnd, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
 		newQuad.m_vertices[c_indices[3]] = BuildQuadVertex(glm::ivec3(params.m_u, params.m_vEnd, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
 		newQuad.m_sourceData = params.m_sourceVoxel;
+		newQuad.m_normal = params.m_normal;
 		m_quads.push_back(newQuad);
 	}
 
@@ -132,6 +133,7 @@ namespace Vox
 		quadParameters.m_slice = slice;
 		quadParameters.m_backFace = backFace;
 		quadParameters.m_sampleAxes = glm::ivec3((sliceAxis + 1) % 3, (sliceAxis + 2) % 3, sliceAxis);
+		quadParameters.m_normal = static_cast<QuadDescriptor::NormalDirection>((sliceAxis * 2) + (backFace ? 1 : 0));
 		
 		GreedyQuadVoxelInterpreter::Interpreter<ModelType::BlockType::ClumpType::VoxelDataType> voxInterpreter;
 		const int32_t c_maxMask = typename ModelType::c_clumpsPerBlock * 2;

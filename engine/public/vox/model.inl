@@ -201,7 +201,7 @@ namespace Vox
 	}
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	glm::ivec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ModelspaceToBlockIndices(const glm::vec3& coordinate)
+	glm::ivec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ModelspaceToBlockIndices(const glm::vec3& coordinate) const
 	{
 		return glm::floor(coordinate / m_blockDimensions);
 	}
@@ -233,7 +233,7 @@ namespace Vox
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
-		GetBlockIterationParameters(const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)
+		GetBlockIterationParameters(const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)  const
 	{
 		start = ModelspaceToBlockIndices(modelSpaceBounds.Min());
 		end = ModelspaceToBlockIndices(modelSpaceBounds.Max());
@@ -241,7 +241,7 @@ namespace Vox
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
-		GetClumpIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)
+		GetClumpIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)  const
 	{
 		const glm::vec3 c_clumpSize = m_voxelDimensions * 2.0f;
 		const glm::ivec3 c_clumpsPerBlockVec(c_clumpsPerBlock);
@@ -261,7 +261,7 @@ namespace Vox
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	glm::vec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
-		GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)
+		GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)  const
 	{
 		const glm::vec3 blockPosition = glm::vec3(blockIndex) * m_blockDimensions;
 		const glm::vec3 voxelCornerPos = blockPosition + (glm::vec3(voxelIndex) * m_voxelDimensions);

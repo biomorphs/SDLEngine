@@ -48,6 +48,9 @@
     <ClInclude Include="public\core\asset_database.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\core\timer.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\system_manager.cpp">
@@ -69,6 +72,9 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\core\asset_database.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\timer.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

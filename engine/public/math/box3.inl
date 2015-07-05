@@ -64,12 +64,12 @@ namespace Math
 		SDE_ASSERT(m_min.x <= m_max.x && m_min.y <= m_max.y && m_min.z <= m_max.z);
 	}
 
-	glm::vec3 Box3::Size() const
+	inline glm::vec3 Box3::Size() const
 	{
 		return m_max - m_min;
 	}
 
-	bool Box3::Intersects(const Box3& other) const
+	inline bool Box3::Intersects(const Box3& other) const
 	{
 		return !(glm::any(glm::greaterThan(m_min, other.m_max)) || glm::any(glm::greaterThan(other.m_min, m_max)));
 	}

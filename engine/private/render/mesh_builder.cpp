@@ -18,6 +18,16 @@ namespace Render
 	{
 	}
 
+	void MeshBuilder::SetStreamData(uint32_t vertexStream, float v0, float v1, float v2)
+	{
+		SDE_ASSERT(vertexStream < m_streams.size());
+		SDE_ASSERT(m_streams[vertexStream].m_componentCount == 1);
+		auto& streamData = m_streams[vertexStream].m_streamData;
+		streamData.push_back(v0);
+		streamData.push_back(v1);
+		streamData.push_back(v2);
+	}
+
 	void MeshBuilder::SetStreamData(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
@@ -53,7 +63,7 @@ namespace Render
 
 	uint32_t MeshBuilder::AddVertexStream(int32_t componentCount)
 	{
-		SDE_ASSERT(componentCount < 4);
+		SDE_ASSERT(componentCount <= 4);
 		SDE_ASSERT(m_chunks.size() == 0);
 		
 		StreamDesc newStream;
@@ -97,13 +107,60 @@ namespace Render
 		}		
 	}
 
-	bool MeshBuilder::CreateMesh(Mesh& target)
+	bool MeshBuilder::ShouldRecreateMesh(Mesh& target)
+	{
+		const size_t c_maximumWaste = 8 * 1024;
+		// If the mesh streams match, and the stream buffers are big enough, then we don't need to do anything
+		auto& streams = target.GetStreams();
+		auto& vertexArray = target.GetVertexArray();
+
+		if (streams.size() != m_streams.size())
+		{
+			return true;
+		}
+		if (vertexArray.GetStreamCount() != m_streams.size())
+		{
+			return true;
+		}
+
+		for (int32_t streamIndex = 0; streamIndex < streams.size(); ++streamIndex)
+		{
+			const auto thisStreamSize = m_streams[streamIndex].m_streamData.size() * sizeof(float);
+			if (streams[streamIndex].GetSize() < thisStreamSize)
+			{
+				return true;
+			}
+			if (streams[streamIndex].GetSize() > (thisStreamSize + c_maximumWaste))
+			{
+				return true;
+			}
+			if (vertexArray.GetStreamAttributeIndex(streamIndex) != streamIndex)
+			{
+				return true;
+			}
+			if (vertexArray.GetStreamComponentCount(streamIndex) != m_streams[streamIndex].m_componentCount)
+			{
+				return true;
+			}
+			if (vertexArray.GetStreamDataType(streamIndex) != Render::VertexDataType::Float)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	void MeshBuilder::RecreateMesh(Mesh& target)
 	{
 		auto& streams = target.GetStreams();
 		auto& vertexArray = target.GetVertexArray();
-		auto& chunks = target.GetChunks();
 
-		// Fill buffers
+		for (auto& s : streams)
+		{
+			s.Destroy();
+		}
+		streams.clear();
 		streams.resize(m_streams.size());
 		int32_t streamIndex = 0;
 		for (const auto& streamIt : m_streams)
@@ -111,21 +168,43 @@ namespace Render
 			auto& theBuffer = streams[streamIndex];
 			auto streamSize = streamIt.m_streamData.size() * sizeof(float);
 			theBuffer.Create(streamSize, RenderBufferType::VertexData, RenderBufferModification::Static);
-			theBuffer.SetData(0, streamSize, (void*)streamIt.m_streamData.data());
 			++streamIndex;
 		}
 
-		// Populate vertex array
 		streamIndex = 0;
+		vertexArray.Destroy();
 		for (const auto& streamIt : m_streams)
 		{
 			vertexArray.AddBuffer(streamIndex, &streams[streamIndex], VertexDataType::Float, streamIt.m_componentCount);
 			++streamIndex;
 		}
 		vertexArray.Create();
+	}
 
-		// Populate chunks
-		chunks.resize(m_chunks.size());
+	bool MeshBuilder::CreateMesh(Mesh& target)
+	{
+		auto& streams = target.GetStreams();
+		auto& vertexArray = target.GetVertexArray();
+		auto& chunks = target.GetChunks();
+
+		if (ShouldRecreateMesh(target))
+		{
+			RecreateMesh(target);
+		}
+
+		// Fill buffers
+		int32_t streamIndex = 0;
+		for (const auto& streamIt : m_streams)
+		{
+			auto& theBuffer = streams[streamIndex];
+			auto streamSize = streamIt.m_streamData.size() * sizeof(float);
+			theBuffer.SetData(0, streamSize, (void*)streamIt.m_streamData.data());
+			++streamIndex;
+		}
+
+		// Populate chunks. We always rebuild this data
+		chunks.clear();
+		chunks.reserve(m_chunks.size());
 		for (const auto& chunk : m_chunks)
 		{
 			chunks.emplace_back(chunk.m_firstVertex, chunk.m_lastVertex - chunk.m_firstVertex, Render::PrimitiveType::Triangles);

@@ -35,6 +35,7 @@
     <ClInclude Include="public\core\system_enumerator.h" />
     <ClInclude Include="public\core\system_manager.h" />
     <ClInclude Include="public\core\system_registrar.h" />
+    <ClInclude Include="public\core\timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\asset.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="private\core\event_system.cpp" />
     <ClCompile Include="private\core\file_io.cpp" />
     <ClCompile Include="private\core\system_manager.cpp" />
+    <ClCompile Include="private\core\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="public\core\shortname.inl" />

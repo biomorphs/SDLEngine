@@ -33,14 +33,14 @@ namespace Vox
 		};
 		void IterateForArea(Math::Box3 modelSpaceBounds, IteratorAccess itType, ClumpIterator iterator);
 
-		void GetBlockIterationParameters(const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end);
-		void GetClumpIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end);
-		glm::vec3 GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex);
+		void GetBlockIterationParameters(const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end) const;
+		void GetClumpIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)  const;
+		glm::vec3 GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)  const;
 
 	private:
 		class AreaIteratorParams;				// Parameter helper object for area iteration
 		void IterateClumpsInArea(AreaIteratorParams& params, ClumpIterator iterator);
-		glm::ivec3 ModelspaceToBlockIndices(const glm::vec3& coordinate);
+		glm::ivec3 ModelspaceToBlockIndices(const glm::vec3& coordinate) const;
 
 		PagedBlocks< BlockType > m_voxelData;	// Voxel data container
 		glm::vec3 m_voxelDimensions;			// Size of a single voxel. Max bounds should be divisible by this

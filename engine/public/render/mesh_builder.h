@@ -27,6 +27,7 @@ namespace Render
 		void BeginTriangle();
 
 		// Step 4: Add data for each triangle/stream
+		void SetStreamData(uint32_t vertexStream, float v0, float v1, float v2);
 		void SetStreamData(uint32_t vertexStream, const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2);
 		void SetStreamData(uint32_t vertexStream, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2);
 		void SetStreamData(uint32_t vertexStream, const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2);
@@ -39,6 +40,9 @@ namespace Render
 		bool CreateMesh(Mesh& target);
 
 	private:
+		bool ShouldRecreateMesh(Mesh& target);
+		void RecreateMesh(Mesh& target);
+
 		struct StreamDesc
 		{
 			int32_t m_componentCount;

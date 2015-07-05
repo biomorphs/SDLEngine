@@ -6,7 +6,7 @@ Matt Hoyle
 namespace Vox
 {
 	template<class ModelType>
-	SimpleQuadExtractor<ModelType>::SimpleQuadExtractor(ModelType& targetModel)
+	SimpleQuadExtractor<ModelType>::SimpleQuadExtractor(const ModelType& targetModel)
 		: m_targetModel(targetModel)
 	{
 
