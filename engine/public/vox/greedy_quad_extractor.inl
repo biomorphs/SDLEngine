@@ -61,15 +61,16 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	void GreedyQuadExtractor<ModelType>::CalculateMergedQuadsFromMask(const std::vector<MaskType>& mask, int32_t u, int32_t v, int32_t& quadEndU, int32_t& quadEndV)
+	void GreedyQuadExtractor<ModelType>::CalculateMergedQuadsFromMask(const std::vector<MaskType>& mask, MaskType sourceVoxel, int32_t u, int32_t v, int32_t& quadEndU, int32_t& quadEndV)
 	{
 		const int32_t c_maxMask = typename ModelType::c_clumpsPerBlock * 2;
+		GreedyQuadVoxelInterpreter::Interpreter<ModelType::BlockType::ClumpType::VoxelDataType> voxInterpreter;
 
 		// we run across the u axis, until we can't merge any more
 		int32_t endU, endV;
 		for (endU = u + 1; endU < c_maxMask; ++endU)
 		{
-			if (MaskVal(mask,endU,v) == false)
+			if (!voxInterpreter.ShouldMergeQuad(sourceVoxel, MaskVal(mask,endU,v)))
 			{
 				break;
 			}
@@ -82,7 +83,7 @@ namespace Vox
 			bool canMerge = true;
 			for (int32_t i = u; i < endU; ++i)
 			{
-				if (MaskVal(mask,i,endV) == false)
+				if (!voxInterpreter.ShouldMergeQuad(sourceVoxel, MaskVal(mask,i,endV)))
 				{
 					canMerge = false;
 					break;
@@ -119,6 +120,7 @@ namespace Vox
 		newQuad.m_vertices[c_indices[1]] = BuildQuadVertex(glm::ivec3(params.m_uEnd, params.m_v, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
 		newQuad.m_vertices[c_indices[2]] = BuildQuadVertex(glm::ivec3(params.m_uEnd, params.m_vEnd, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
 		newQuad.m_vertices[c_indices[3]] = BuildQuadVertex(glm::ivec3(params.m_u, params.m_vEnd, params.m_slice), params.m_blockOrigin, voxelSize, params.m_sampleAxes);
+		newQuad.m_sourceData = params.m_sourceVoxel;
 		m_quads.push_back(newQuad);
 	}
 
@@ -130,24 +132,27 @@ namespace Vox
 		quadParameters.m_slice = slice;
 		quadParameters.m_backFace = backFace;
 		quadParameters.m_sampleAxes = glm::ivec3((sliceAxis + 1) % 3, (sliceAxis + 2) % 3, sliceAxis);
-
+		
+		GreedyQuadVoxelInterpreter::Interpreter<ModelType::BlockType::ClumpType::VoxelDataType> voxInterpreter;
 		const int32_t c_maxMask = typename ModelType::c_clumpsPerBlock * 2;
 		for (int32_t v = 0; v < c_maxMask; ++v)
 		{
 			for (int32_t u = 0; u < c_maxMask; ++u)
 			{
-				if (MaskVal(mask,u,v) == false)
+				auto thisVoxel = MaskVal(mask, u, v);
+				if (!voxInterpreter.ShouldAddQuad(thisVoxel))
 				{
 					continue;
 				}
 				int32_t quadEndU, quadEndV;
-				CalculateMergedQuadsFromMask(mask, u, v, quadEndU, quadEndV);
+				CalculateMergedQuadsFromMask(mask, thisVoxel, u, v, quadEndU, quadEndV);
 
 				// at this point, we have a u->quadEndU, v->quadEndV pair that describes a quad. so add the damn thing!
 				quadParameters.m_u = u;
 				quadParameters.m_v = v;
 				quadParameters.m_uEnd = quadEndU;
 				quadParameters.m_vEnd = quadEndV;
+				quadParameters.m_sourceVoxel = thisVoxel;
 				BuildQuad(quadParameters);
 
 				// finally, clear out the mask so we dont process these entries later
@@ -184,22 +189,24 @@ namespace Vox
 					const glm::ivec3 voxelIndex(sampleIndex.x, sampleIndex.y, sampleIndex.z);
 
 					// get the voxel, as well as its neighbours
+					GreedyQuadVoxelInterpreter::Interpreter<ModelType::BlockType::ClumpType::VoxelDataType> voxInterpreter;
 					ModelType::BlockType::ClumpType::VoxelDataType thisVoxel = dataAccessor.GetVoxelAt(blockIndex, voxelIndex);
-					if (thisVoxel == 0)
+					if (!voxInterpreter.ShouldAddQuad(thisVoxel))
 					{
 						continue;
 					}
 					ModelType::BlockType::ClumpType::VoxelDataType voxelData[2];
 					voxelData[0] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, -neighbourDirection);
 					voxelData[1] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, neighbourDirection);
-					if(voxelData[0] == 0)	// now determine whether a quad should be here for each direction
+					// now determine whether a quad should be here for each direction
+					if(!voxInterpreter.ShouldAddQuad(voxelData[0]))
 					{
-						MaskVal(m_sliceMaskNegative, sampleIndex[uAxis], sampleIndex[vAxis]) = 1;
+						MaskVal(m_sliceMaskNegative, sampleIndex[uAxis], sampleIndex[vAxis]) = thisVoxel;
 						processBlockData = true;
 					}
-					if (voxelData[1] == 0)
+					if (!voxInterpreter.ShouldAddQuad(voxelData[1]))
 					{
-						MaskVal(m_sliceMaskPositive, sampleIndex[uAxis], sampleIndex[vAxis]) = 1;
+						MaskVal(m_sliceMaskPositive, sampleIndex[uAxis], sampleIndex[vAxis]) = thisVoxel;
 						processBlockData = true;
 					}
 				}
