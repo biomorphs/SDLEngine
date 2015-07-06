@@ -12,15 +12,17 @@
     <IncludePath>$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)public\math\;$(ProjectDir)private\math\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="public\math\bit_twiddling.h" />
     <ClInclude Include="public\math\box3.h" />
     <ClInclude Include="public\math\intersections.h" />
-    <ClInclude Include="public\math\math.h" />
+    <ClInclude Include="public\math\trig.h" />
     <ClInclude Include="public\math\morton_encoding.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="public\math\bit_twiddling.inl" />
     <None Include="public\math\box3.inl" />
     <None Include="public\math\intersections.inl" />
-    <None Include="public\math\math.inl" />
+    <None Include="public\math\trig.inl" />
     <None Include="public\math\morton_encoding.inl" />
   </ItemGroup>
 </Project>

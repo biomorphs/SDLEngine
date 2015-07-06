@@ -4,13 +4,11 @@ Matt Hoyle
 */
 #pragma once
 
-#include "event_listener.h"
-
 namespace Core
 {
 	class ISystemEnumerator;
 
-	class ISystem : public IEventListener
+	class ISystem
 	{
 	public:
 		virtual ~ISystem() {}
@@ -23,7 +21,5 @@ namespace Core
 		virtual void PreShutdown() { }
 		virtual void Shutdown() { }
 		virtual void PostShutdown() { }
-
-		virtual void OnEventRecieved(const EngineEvent& theEvent) { }
 	};
 }

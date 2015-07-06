@@ -7,7 +7,7 @@ Matt Hoyle
 #include <memory>
 #include <unordered_map>
 
-namespace Core
+namespace Assets
 {
 	class Asset;
 	class AssetDatabase

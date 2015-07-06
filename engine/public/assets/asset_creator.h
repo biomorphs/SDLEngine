@@ -4,11 +4,11 @@ Matt Hoyle
 */
 #pragma once
 
-#include "shortname.h"
+#include "core\shortname.h"
 #include <unordered_map>
 #include <memory>
 
-namespace Core
+namespace Assets
 {
 	class AssetFactory;
 	class Asset;
@@ -19,16 +19,16 @@ namespace Core
 		~AssetCreator();
 		
 		template<class FactoryType>
-		void RegisterFactory(Shortname typeName);
+		void RegisterFactory(Core::Shortname typeName);
 
-		Asset* CreateAsset(std::string id, Shortname assetType);
+		Asset* CreateAsset(const std::string& id, Core::Shortname assetType);
 
 	private:
-		std::unordered_map< Shortname, std::unique_ptr<AssetFactory> > m_factories;
+		std::unordered_map< Core::Shortname, std::unique_ptr<AssetFactory> > m_factories;
 	};
 
 	template<class FactoryType>
-	void AssetCreator::RegisterFactory(Shortname typeName)
+	void AssetCreator::RegisterFactory(Core::Shortname typeName)
 	{
 		SDE_ASSERT(m_factories.find(typeName) == m_factories.end());
 		m_factories[typeName] = std::make_unique<FactoryType>();

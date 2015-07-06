@@ -11,13 +11,13 @@ namespace Render
 {
 	const Core::Shortname ShaderProgramAsset::c_assetType("RSHP");
 
-	Core::Asset* ShaderProgramAssetFactory::CreateAsset(std::string id)
+	Assets::Asset* ShaderProgramAssetFactory::CreateAsset(std::string id)
 	{
 		return new ShaderProgramAsset(id);
 	}
 
 	ShaderProgramAsset::ShaderProgramAsset(std::string id)
-		: Core::Asset(id, c_assetType)
+		: Assets::Asset(id, c_assetType)
 	{
 	}
 
@@ -25,7 +25,7 @@ namespace Render
 	{
 	}
 
-	bool ShaderProgramAsset::Load(const rapidjson::Value& assetNode, const Core::AssetDatabase& db)
+	bool ShaderProgramAsset::Load(const rapidjson::Value& assetNode, const Assets::AssetDatabase& db)
 	{
 		auto vsMember = assetNode.FindMember("vertexshader");
 		auto fsMember = assetNode.FindMember("fragmentshader");

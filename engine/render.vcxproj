@@ -11,12 +11,7 @@
   <PropertyGroup>
     <IncludePath>$(ProjectDir)..\external\rapidjson\include;$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)..\external\glew-1.12.0-win32\glew-1.12.0\include\GL;$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\;$(ProjectDir)public\render\;$(ProjectDir)private\render\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>

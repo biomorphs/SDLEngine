@@ -3,13 +3,13 @@ SDLEngine
 Matt Hoyle
 */
 #include "timer.h"
-#include <sdl_timer.h>
+#include "kernel/time.h"
 
 namespace Core
 {
 	Timer::Timer()
 	{
-		m_frequency = SDL_GetPerformanceFrequency();
+		m_frequency = Kernel::Time::HighPerformanceCounterFrequency();
 	}
 
 	Timer::~Timer()
@@ -18,7 +18,7 @@ namespace Core
 
 	uint64_t Timer::GetTicks() const
 	{
-		return SDL_GetPerformanceCounter();
+		return Kernel::Time::HighPerformanceCounterTicks();
 	}
 
 	double Timer::GetSeconds() const

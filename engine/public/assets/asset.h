@@ -4,10 +4,10 @@ Matt Hoyle
 */
 #pragma once
 
-#include "shortname.h"
+#include "core\shortname.h"
 #include <rapidjson\document.h>
 
-namespace Core
+namespace Assets
 {
 	// Assets are wrappers around *constant* data objects that will be shared
 	// Things like textures, materials, meshes, etc that are loaded externally
@@ -15,7 +15,7 @@ namespace Core
 	class Asset
 	{
 	public:
-		Asset(std::string id, Shortname assetTypeName);
+		Asset(const std::string& id, Core::Shortname assetTypeName);
 		virtual ~Asset();
 
 		virtual bool Load(const rapidjson::Value& assetNode, const AssetDatabase& db) = 0;
@@ -23,6 +23,6 @@ namespace Core
 
 	private:
 		std::string m_assetIdStr;
-		Shortname m_assetType;
+		Core::Shortname m_assetType;
 	};
 }

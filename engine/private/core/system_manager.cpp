@@ -3,48 +3,33 @@ SDLEngine
 Matt Hoyle
 */
 #include "system_manager.h"
-#include "event_system.h"
 #include "system.h"
 #include "kernel/assert.h"
-#include "kernel/string_hashing.h"
+#include "core/string_hashing.h"
 #include "kernel/log.h"
 
 namespace Core
 {
-	const char c_EventSystemName[] = "_Reserved_EventSystem";
-
 	SystemManager::SystemManager()
 	{
-		// The system manager always has an event system registered as the first thing
-		// to run per-frame. This is so any events can be dispatched to all systems asap
-		AddSystemInternal(c_EventSystemName, new EventSystem());
 	}
 
 	SystemManager::~SystemManager()
 	{
 	}
 
-	void SystemManager::RegisterSystem(const std::string& systemName, ISystem* theSystem)
-	{
-		AddSystemInternal(systemName, theSystem);
-
-		// All external systems receive engine events
-		EventSystem* events = (EventSystem*)GetSystem(c_EventSystemName);
-		events->RegisterListener(theSystem);
-	}
-
-	void SystemManager::AddSystemInternal(const std::string& name, ISystem* theSystem)
+	void SystemManager::RegisterSystem(const char* systemName, ISystem* theSystem)
 	{
 		SDE_ASSERT(theSystem);
-		uint32_t nameHash = StringHashing::GetHash(name.c_str());
+		uint32_t nameHash = StringHashing::GetHash(systemName);
 		SDE_ASSERT(m_systemMap.find(nameHash) == m_systemMap.end(), "A system already exists with this name");
 		m_systems.push_back(theSystem);
 		m_systemMap.insert(SystemPair(nameHash, theSystem));
 	}
 
-	ISystem* SystemManager::GetSystem(const std::string& systemName)
+	ISystem* SystemManager::GetSystem(const char* systemName)
 	{
-		SystemMap::iterator it = m_systemMap.find(StringHashing::GetHash(systemName.c_str()));
+		SystemMap::iterator it = m_systemMap.find(StringHashing::GetHash(systemName));
 		if (it != m_systemMap.end())
 		{
 			return it->second;
@@ -82,14 +67,12 @@ namespace Core
 	
 	bool SystemManager::Tick()
 	{
+		bool keepRunning = true;
 		for (auto it = m_systems.begin(); it != m_systems.end(); ++it)
 		{
-			if (!(*it)->Tick())
-			{
-				return false;
-			}
+			keepRunning &= (*it)->Tick();
 		}
-		return true;
+		return keepRunning;
 	}
 	
 	void SystemManager::Shutdown()

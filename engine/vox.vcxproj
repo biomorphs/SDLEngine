@@ -9,7 +9,7 @@
   <Import Project="props/engine_lib_paths.props" />
   <Import Project="props/library_build.props" />
   <PropertyGroup>
-    <IncludePath>$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)..\external\glew-1.12.0-win32\glew-1.12.0\include\GL;$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\;$(ProjectDir)public\vox\;$(ProjectDir)private\vox\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)public\;$(ProjectDir)public\vox\;$(ProjectDir)private\vox\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="public\vox\block.h" />
@@ -26,12 +26,7 @@
     <None Include="public\vox\paged_blocks.inl" />
     <None Include="public\vox\simple_quad_extractor.inl" />
   </ItemGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>

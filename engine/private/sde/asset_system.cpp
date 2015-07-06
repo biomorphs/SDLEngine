@@ -3,7 +3,7 @@ SDLEngine
 Matt Hoyle
 */
 #include "asset_system.h"
-#include "core/asset_serialiser.h"
+#include "assets/asset_serialiser.h"
 
 namespace SDE
 {
@@ -12,7 +12,7 @@ namespace SDE
 	{
 		m_pendingJobs.reserve(128);
 		m_completedJobs.reserve(128);
-		m_database = std::make_unique<Core::AssetDatabase>();
+		m_database = std::make_unique<Assets::AssetDatabase>();
 	}
 
 	AssetSystem::~AssetSystem()
@@ -21,7 +21,7 @@ namespace SDE
 		SDE_ASSERT(m_completedJobs.size() == 0);
 	}
 
-	std::shared_ptr<Core::Asset> AssetSystem::GetAsset(const std::string& assetID)
+	std::shared_ptr<Assets::Asset> AssetSystem::GetAsset(const std::string& assetID)
 	{
 		return m_database->GetAsset(assetID);
 	}
@@ -40,7 +40,7 @@ namespace SDE
 		// fake job system
 		for (auto &pending : m_pendingJobs)
 		{
-			Core::AssetSerialiser serialiser(*m_database, m_creator);
+			Assets::AssetSerialiser serialiser(*m_database, m_creator);
 			bool loadResult = serialiser.Load(m_assetsRoot.c_str(), pending.m_assetID.c_str());
 			pending.m_loadResult = loadResult;
 			m_completedJobs.push_back(pending);

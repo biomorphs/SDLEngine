@@ -5,7 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include <vector>
-#include <stdint.h>
+#include "kernel/base_types.h"
 
 namespace Render
 {
@@ -29,7 +29,6 @@ namespace Render
 		void Destroy();
 
 		inline uint32_t GetHandle() const { return m_handle; }
-
 		inline uint32_t GetStreamCount() const { return (uint32_t)m_descriptors.size(); }
 		inline VertexDataType GetStreamDataType(uint32_t streamIndex) const	{ return m_descriptors[streamIndex].m_dataType; }
 		inline uint8_t GetStreamComponentCount(uint32_t streamIndex) const	{ return m_descriptors[streamIndex].m_componentCount; }

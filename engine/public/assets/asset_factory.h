@@ -5,7 +5,7 @@ Matt Hoyle
 #pragma once
 #include <memory>
 
-namespace Core
+namespace Assets
 {
 	class Asset;
 	class AssetFactory

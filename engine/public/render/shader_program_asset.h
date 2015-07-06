@@ -4,21 +4,21 @@ Matt Hoyle
 */
 #pragma once
 
-#include "core/asset.h"
-#include "core/asset_factory.h"
+#include "assets/asset.h"
+#include "assets/asset_factory.h"
 
 namespace Render
 {
 	class ShaderProgram;
 
-	class ShaderProgramAssetFactory : public Core::AssetFactory
+	class ShaderProgramAssetFactory : public Assets::AssetFactory
 	{
 	public:
 		virtual ~ShaderProgramAssetFactory() { };
-		Core::Asset* CreateAsset(std::string id) override;
+		Assets::Asset* CreateAsset(std::string id) override;
 	};
 
-	class ShaderProgramAsset : public Core::Asset
+	class ShaderProgramAsset : public Assets::Asset
 	{
 	public:
 		ShaderProgramAsset(std::string id);
@@ -32,7 +32,7 @@ namespace Render
 		static const Core::Shortname c_assetType;
 
 	private:
-		bool Load(const rapidjson::Value& assetNode, const Core::AssetDatabase& db) override;
+		bool Load(const rapidjson::Value& assetNode, const Assets::AssetDatabase& db) override;
 		std::string m_vertexShader;
 		std::string m_fragmentShader;
 		std::string m_mvpUniformName;

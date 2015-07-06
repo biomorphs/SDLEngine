@@ -4,12 +4,12 @@ Matt Hoyle
 */
 #pragma once
 
-#include <vector>
-#include <memory>
 #include "kernel/assert.h"
 #include <rapidjson\document.h>
+#include <vector>
+#include <memory>
 
-namespace Core
+namespace Assets
 {
 	class Asset;
 	class AssetCreator;

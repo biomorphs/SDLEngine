@@ -15,6 +15,6 @@ namespace Core
 	class ISystemRegistrar
 	{
 	public:
-		virtual void RegisterSystem(const std::string& systemName, ISystem* theSystem) = 0;
+		virtual void RegisterSystem(const char* systemName, ISystem* theSystem) = 0;
 	};
 }

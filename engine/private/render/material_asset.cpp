@@ -7,19 +7,19 @@ Matt Hoyle
 #include "material.h"
 #include "shader_program_asset.h"
 #include "shader_program.h"
-#include "core/asset_database.h"
+#include "assets/asset_database.h"
 
 namespace Render
 {
 	const Core::Shortname MaterialAsset::c_assetType("RMAT");
 
-	Core::Asset* MaterialAssetFactory::CreateAsset(std::string id)
+	Assets::Asset* MaterialAssetFactory::CreateAsset(std::string id)
 	{
 		return new MaterialAsset(id);
 	}
 
 	MaterialAsset::MaterialAsset(std::string id)
-		: Core::Asset(id, c_assetType)
+		: Assets::Asset(id, c_assetType)
 	{
 	}
 
@@ -27,7 +27,7 @@ namespace Render
 	{
 	}
 
-	bool MaterialAsset::Load(const rapidjson::Value& assetNode, const Core::AssetDatabase& db)
+	bool MaterialAsset::Load(const rapidjson::Value& assetNode, const Assets::AssetDatabase& db)
 	{
 		auto shaderProgramMember = assetNode.FindMember("shader_program");
 		SDE_ASSERT(shaderProgramMember != assetNode.MemberEnd());

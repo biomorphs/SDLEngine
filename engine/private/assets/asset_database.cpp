@@ -4,10 +4,10 @@ Matt Hoyle
 */
 #include "asset_database.h"
 #include "kernel/assert.h"
-#include "kernel/string_hashing.h"
+#include "core/string_hashing.h"
 #include "asset.h"
 
-namespace Core
+namespace Assets
 {
 	AssetDatabase::AssetDatabase()
 	{

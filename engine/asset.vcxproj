@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{28f734d4-eac2-48ba-816a-a71bd10866c6}</ProjectGuid>
+    <RootNamespace>assets</RootNamespace>
+    <ProjectName>assets</ProjectName>
+  </PropertyGroup>
+  <Import Project="props/build_configs.props" />
+  <Import Project="props/engine_lib_paths.props" />
+  <Import Project="props/library_build.props" />
+  <Import Project="props/shared_preprocessor.props" />
+  <PropertyGroup>
+    <IncludePath>$(ProjectDir)..\external\rapidjson\include;$(ProjectDir)public\;$(ProjectDir)public\assets\;$(ProjectDir)private\assets\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="public\assets\asset.h" />
+    <ClInclude Include="public\assets\asset_creator.h" />
+    <ClInclude Include="public\assets\asset_database.h" />
+    <ClInclude Include="public\assets\asset_factory.h" />
+    <ClInclude Include="public\assets\asset_serialiser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="private\assets\asset.cpp" />
+    <ClCompile Include="private\assets\asset_creator.cpp" />
+    <ClCompile Include="private\assets\asset_database.cpp" />
+    <ClCompile Include="private\assets\asset_serialiser.cpp" />
+  </ItemGroup>
+</Project>

@@ -6,14 +6,14 @@ Matt Hoyle
 #include "asset_creator.h"
 #include "asset_database.h"
 #include "asset.h"
-#include "file_io.h"
+#include "kernel/file_io.h"
 #include "kernel/log.h"
 #include "kernel/assert.h"
 #include <rapidjson/document.h>
 #include <rapidjson/error/en.h>
 #include <string>
 
-namespace Core
+namespace Assets
 {
 	AssetSerialiser::AssetSerialiser(AssetDatabase& targetDb, AssetCreator& creator)
 		: m_db(targetDb)
@@ -106,7 +106,7 @@ namespace Core
 		// First, load the data into one big fat string
 		std::string rawJsonData;
 		std::string assetPath = MakePath(assetsRoot, jsonPath);
-		if (!LoadTextFromFile(assetPath.c_str(), rawJsonData))
+		if (!Kernel::FileIO::LoadTextFromFile(assetPath.c_str(), rawJsonData))
 		{
 			SDE_LOGC(Core, "Failed to open file '%s'", jsonPath);
 			return false;

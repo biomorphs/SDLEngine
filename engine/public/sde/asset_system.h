@@ -4,8 +4,8 @@ Matt Hoyle
 */
 #pragma once
 #include "core/system.h"
-#include "core/asset_database.h"
-#include "core/asset_creator.h"
+#include "assets/asset_database.h"
+#include "assets/asset_creator.h"
 #include <functional>
 
 namespace SDE
@@ -16,9 +16,9 @@ namespace SDE
 		AssetSystem();
 		virtual ~AssetSystem();
 
-		std::shared_ptr<Core::Asset> GetAsset(const std::string& assetID);
+		std::shared_ptr<Assets::Asset> GetAsset(const std::string& assetID);
 		void LoadAsset(const char* assetName, std::function<void(const std::string&, bool)> onComplete);
-		Core::AssetCreator& GetCreator() { return m_creator; }
+		Assets::AssetCreator& GetCreator() { return m_creator; }
 
 		void Shutdown() override;
 		bool Tick() override;
@@ -32,8 +32,8 @@ namespace SDE
 		};
 
 		std::string m_assetsRoot;
-		std::unique_ptr<Core::AssetDatabase> m_database;
-		Core::AssetCreator m_creator;
+		std::unique_ptr<Assets::AssetDatabase> m_database;
+		Assets::AssetCreator m_creator;
 
 		// Replace with job system!
 		std::vector<LoadingJobDescriptor> m_pendingJobs;			

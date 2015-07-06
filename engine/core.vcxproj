@@ -9,28 +9,16 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(ProjectDir)..\external\rapidjson\include;$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\;$(ProjectDir)public\core\;$(ProjectDir)private\core\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)public\;$(ProjectDir)public\core\;$(ProjectDir)private\core\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="private\core\event_system.h" />
-    <ClInclude Include="public\core\asset.h" />
-    <ClInclude Include="public\core\asset_creator.h" />
-    <ClInclude Include="public\core\asset_database.h" />
-    <ClInclude Include="public\core\asset_factory.h" />
-    <ClInclude Include="public\core\asset_serialiser.h" />
-    <ClInclude Include="public\core\event_listener.h" />
-    <ClInclude Include="public\core\file_io.h" />
     <ClInclude Include="public\core\shortname.h" />
+    <ClInclude Include="public\core\string_hashing.h" />
     <ClInclude Include="public\core\system.h" />
     <ClInclude Include="public\core\system_enumerator.h" />
     <ClInclude Include="public\core\system_manager.h" />
@@ -38,12 +26,6 @@
     <ClInclude Include="public\core\timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="private\core\asset.cpp" />
-    <ClCompile Include="private\core\asset_creator.cpp" />
-    <ClCompile Include="private\core\asset_database.cpp" />
-    <ClCompile Include="private\core\asset_serialiser.cpp" />
-    <ClCompile Include="private\core\event_system.cpp" />
-    <ClCompile Include="private\core\file_io.cpp" />
     <ClCompile Include="private\core\system_manager.cpp" />
     <ClCompile Include="private\core\timer.cpp" />
   </ItemGroup>

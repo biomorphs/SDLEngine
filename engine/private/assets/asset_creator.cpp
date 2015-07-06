@@ -5,7 +5,7 @@ Matt Hoyle
 #include "asset_creator.h"
 #include "asset_factory.h"
 
-namespace Core
+namespace Assets
 {
 	AssetCreator::AssetCreator()
 	{
@@ -15,7 +15,7 @@ namespace Core
 	{
 	}
 
-	Asset* AssetCreator::CreateAsset(std::string id, Shortname assetType)
+	Asset* AssetCreator::CreateAsset(const std::string& id, Core::Shortname assetType)
 	{
 		Asset* theAsset = nullptr;
 		auto factoryIt = m_factories.find(assetType);

@@ -9,24 +9,27 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(ProjectDir)public\kernel\;$(ProjectDir)private\kernel\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\kernel\;$(ProjectDir)private\kernel\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\kernel\assert.h" />
+    <ClInclude Include="public\kernel\basetypes.h" />
+    <ClInclude Include="public\kernel\file_io.h" />
     <ClInclude Include="public\kernel\log.h" />
-    <ClInclude Include="public\kernel\string_hashing.h" />
+    <ClInclude Include="public\kernel\system_events.h" />
+    <ClInclude Include="public\kernel\platform.h" />
+    <ClInclude Include="public\kernel\time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="private\kernel\file_io.cpp" />
     <ClCompile Include="private\kernel\log.cpp" />
+    <ClCompile Include="private\kernel\system_events.cpp" />
+    <ClCompile Include="private\kernel\platform.cpp" />
+    <ClCompile Include="private\kernel\time.cpp" />
   </ItemGroup>
 </Project>

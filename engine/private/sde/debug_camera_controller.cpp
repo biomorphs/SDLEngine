@@ -3,7 +3,7 @@ SDLEngine
 Matt Hoyle
 */
 #include "debug_camera_controller.h"
-#include "engine/controller_state.h"
+#include "input/controller_state.h"
 #include "render/camera.h"
 #include <gtx\rotate_vector.hpp>
 
@@ -30,7 +30,7 @@ namespace SDE
 		target.LookAt(m_position, m_position + m_lookDirection, up);
 	}
 
-	void DebugCameraController::Update(const Engine::ControllerRawState& controllerState, double timeDelta)
+	void DebugCameraController::Update(const Input::ControllerRawState& controllerState, double timeDelta)
 	{
 		static float s_yawRotSpeed = 2.0f;
 		static float s_pitchRotSpeed = 2.0f;

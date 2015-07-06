@@ -9,69 +9,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\core\event_listener.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\core\system.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="public\core\system_enumerator.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="private\core\event_system.h">
-      <Filter>private</Filter>
-    </ClInclude>
     <ClInclude Include="public\core\system_registrar.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\core\file_io.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="public\core\system_manager.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="public\core\asset.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\core\shortname.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\core\asset_factory.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\core\asset_creator.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\core\asset_serialiser.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\core\asset_database.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="public\core\timer.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\core\string_hashing.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\system_manager.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\core\event_system.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\core\file_io.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\core\asset.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\core\asset_creator.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\core\asset_serialiser.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\core\asset_database.cpp">
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\core\timer.cpp">

@@ -4,25 +4,32 @@ SDLEngine
 */
 
 #include "engine_startup.h"
-#include "platform.h"
+#include "event_system.h"
 #include "core/system_manager.h"
+#include "kernel/platform.h"
 #include "kernel/assert.h"
 
 namespace Engine
 {
+	const char c_EventSystemName[] = "_Reserved_EventSystem";
+
 	// Application entry point
 	int Run(IAppSystemRegistrar& sysRegistrar, int argc, char* args[])
 	{
 		// Initialise platform stuff
-		Platform::InitResult result = Platform::Initialise(argc, args);
-		SDE_ASSERT(result == Platform::InitOK);
-		if (result == Platform::InitFailed)
+		Kernel::Platform::InitResult result = Kernel::Platform::Initialise(argc, args);
+		SDE_ASSERT(result == Kernel::Platform::InitResult::InitOK);
+		if (result == Kernel::Platform::InitResult::InitFailed)
 		{
 			return 1;
 		}
 
 		// Create the system manager and register systems
 		Core::SystemManager sysManager;
+
+		// Always add an event system, since we always need it and the user never
+		// iteracts with it
+		sysManager.RegisterSystem(c_EventSystemName, new EventSystem());
 
 		SDE_LOGC(Engine, "Registering systems...");
 		sysRegistrar.RegisterSystems(sysManager);
@@ -43,8 +50,8 @@ namespace Engine
 		sysManager.Shutdown();
 
 		// Shutdown
-		Platform::ShutdownResult shutdownResult = Platform::Shutdown();
-		SDE_ASSERT(shutdownResult == Platform::ShutdownOK);
-		return shutdownResult;
+		Kernel::Platform::ShutdownResult shutdownResult = Kernel::Platform::Shutdown();
+		SDE_ASSERT(shutdownResult == Kernel::Platform::ShutdownResult::ShutdownOK);
+		return shutdownResult == Kernel::Platform::ShutdownResult::ShutdownOK ? 0 : 1;
 	}
 }

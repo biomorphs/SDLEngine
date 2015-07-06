@@ -12,24 +12,15 @@
     <ClInclude Include="public\engine\engine_startup.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="private\engine\platform.h">
+    <ClInclude Include="private\engine\event_system.h">
       <Filter>private</Filter>
-    </ClInclude>
-    <ClInclude Include="public\engine\input_system.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="public\engine\controller_state.h">
-      <Filter>public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\engine\engine_startup.cpp">
       <Filter>private</Filter>
     </ClCompile>
-    <ClCompile Include="private\engine\platform.cpp">
-      <Filter>private</Filter>
-    </ClCompile>
-    <ClCompile Include="private\engine\input_system.cpp">
+    <ClCompile Include="private\engine\event_system.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

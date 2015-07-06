@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="private\assets\asset.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\assets\asset_creator.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\assets\asset_database.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\assets\asset_serialiser.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="public\assets\asset.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\assets\asset_creator.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\assets\asset_database.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\assets\asset_factory.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\assets\asset_serialiser.h">
+      <Filter>public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="public">
+      <UniqueIdentifier>{f5f31593-1034-4919-9da1-d8c53d2f4cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="private">
+      <UniqueIdentifier>{e9818d2e-b5d5-496a-92e1-e5a454745113}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

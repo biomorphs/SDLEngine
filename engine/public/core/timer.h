@@ -3,7 +3,7 @@ SDLEngine
 Matt Hoyle
 */
 #pragma once
-#include <stdint.h>
+#include "kernel/base_types.h"
 
 namespace Core
 {

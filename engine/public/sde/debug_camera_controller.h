@@ -6,7 +6,7 @@ Matt Hoyle
 #include <glm.hpp>
 #include "camera_controller.h"
 
-namespace Engine
+namespace Input
 {
 	struct ControllerRawState;
 }
@@ -19,8 +19,7 @@ namespace SDE
 		DebugCameraController();
 		virtual ~DebugCameraController();
 		virtual void ApplyToCamera(Render::Camera& target);
-
-		void Update(const Engine::ControllerRawState& controllerState, double timeDelta);
+		void Update(const Input::ControllerRawState& controllerState, double timeDelta);
 
 	private:
 		glm::vec3 m_position;

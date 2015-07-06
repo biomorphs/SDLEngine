@@ -21,18 +21,16 @@ namespace Core
 		~SystemManager();
 
 		// ISystemEnumerator
-		virtual ISystem* GetSystem(const std::string& systemName);
+		virtual ISystem* GetSystem(const char* systemName);
 
 		// ISystemRegistrar
-		void RegisterSystem(const std::string& systemName, ISystem* theSystem);
+		void RegisterSystem(const char* systemName, ISystem* theSystem);
 
 		bool Initialise();
 		bool Tick();
 		void Shutdown();
 
 	private:
-		void AddSystemInternal(const std::string& name, ISystem* theSystem);
-
 		typedef std::vector<ISystem*> SystemArray;
 		typedef std::map<uint32_t, ISystem*> SystemMap;
 		typedef std::pair<uint32_t, ISystem*> SystemPair;

@@ -8,7 +8,7 @@ Matt Hoyle
 #include "core/system.h"
 #include <vector>
 
-namespace Engine
+namespace Input
 {
 	class InputSystem : public Core::ISystem
 	{

@@ -4,9 +4,9 @@ Matt Hoyle
 */
 #include "asset.h"
 
-namespace Core
+namespace Assets
 {
-	Asset::Asset(std::string id, Shortname assetTypeName)
+	Asset::Asset(const std::string& id, Core::Shortname assetTypeName)
 		: m_assetIdStr(id)
 		, m_assetType(assetTypeName)
 	{

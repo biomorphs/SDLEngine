@@ -12,15 +12,39 @@
     <ClInclude Include="public\kernel\log.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="public\kernel\string_hashing.h">
+    <ClInclude Include="public\kernel\assert.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="public\kernel\assert.h">
+    <ClInclude Include="public\kernel\basetypes.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\file_io.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\time.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\system_events.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\platform.h">
       <Filter>public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\kernel\log.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\file_io.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\time.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\system_events.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\platform.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

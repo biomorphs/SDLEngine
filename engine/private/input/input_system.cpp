@@ -7,7 +7,7 @@ Matt Hoyle
 #include <SDL_joystick.h>
 #include <SDL_gamecontroller.h>
 
-namespace Engine
+namespace Input
 {
 	InputSystem::InputSystem()
 		: m_controllerAxisDeadZone( 0.5f )

@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\math\math.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\math\morton_encoding.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -21,11 +18,14 @@
     <ClInclude Include="public\math\intersections.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\math\bit_twiddling.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\math\trig.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="public\math\math.inl">
-      <Filter>public</Filter>
-    </None>
     <None Include="public\math\morton_encoding.inl">
       <Filter>public</Filter>
     </None>
@@ -33,6 +33,12 @@
       <Filter>public</Filter>
     </None>
     <None Include="public\math\intersections.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\math\bit_twiddling.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\math\trig.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>

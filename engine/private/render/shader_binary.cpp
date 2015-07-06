@@ -4,7 +4,7 @@ Matt Hoyle
 */
 #include "shader_binary.h"
 #include "utils.h"
-#include "core/file_io.h"
+#include "kernel/file_io.h"
 
 namespace Render
 {
@@ -71,7 +71,7 @@ namespace Render
 	bool ShaderBinary::CompileFromFile(ShaderType type, const char* srcLocation, std::string& resultText)
 	{
 		std::string shaderSource;
-		if (!Core::LoadTextFromFile(srcLocation, shaderSource))
+		if (!Kernel::FileIO::LoadTextFromFile(srcLocation, shaderSource))
 		{
 			SDE_ASSERT(false, "Failed to load shader source from %s", srcLocation);
 			return false;
