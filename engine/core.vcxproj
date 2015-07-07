@@ -17,6 +17,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="public\core\list.h" />
+    <ClInclude Include="public\core\object_pool.h" />
     <ClInclude Include="public\core\shortname.h" />
     <ClInclude Include="public\core\string_hashing.h" />
     <ClInclude Include="public\core\system.h" />
@@ -32,6 +34,8 @@
     <ClCompile Include="private\core\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="public\core\list.inl" />
+    <None Include="public\core\object_pool.inl" />
     <None Include="public\core\shortname.inl" />
   </ItemGroup>
 </Project>
