@@ -24,6 +24,15 @@
     <ClInclude Include="public\sde\debug_render.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\sde\job_system.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\sde\job.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\sde\job_queue.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\sde\debug_camera_controller.cpp">
@@ -36,6 +45,15 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\sde\debug_render.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\sde\job.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\sde\job_queue.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\sde\job_system.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

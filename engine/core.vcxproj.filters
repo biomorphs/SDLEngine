@@ -30,12 +30,18 @@
     <ClInclude Include="public\core\string_hashing.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\core\thread_pool.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\system_manager.cpp">
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\core\timer.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\thread_pool.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

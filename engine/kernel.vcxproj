@@ -18,18 +18,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\kernel\assert.h" />
-    <ClInclude Include="public\kernel\basetypes.h" />
+    <ClInclude Include="public\kernel\atomics.h" />
+    <ClInclude Include="public\kernel\base_types.h" />
     <ClInclude Include="public\kernel\file_io.h" />
     <ClInclude Include="public\kernel\log.h" />
+    <ClInclude Include="public\kernel\mutex.h" />
+    <ClInclude Include="public\kernel\semaphore.h" />
     <ClInclude Include="public\kernel\system_events.h" />
     <ClInclude Include="public\kernel\platform.h" />
+    <ClInclude Include="public\kernel\thread.h" />
     <ClInclude Include="public\kernel\time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="private\kernel\atomics.cpp" />
     <ClCompile Include="private\kernel\file_io.cpp" />
     <ClCompile Include="private\kernel\log.cpp" />
+    <ClCompile Include="private\kernel\mutex.cpp" />
+    <ClCompile Include="private\kernel\semaphore.cpp" />
     <ClCompile Include="private\kernel\system_events.cpp" />
     <ClCompile Include="private\kernel\platform.cpp" />
+    <ClCompile Include="private\kernel\thread.cpp" />
     <ClCompile Include="private\kernel\time.cpp" />
   </ItemGroup>
 </Project>

@@ -23,10 +23,12 @@
     <ClInclude Include="public\core\system_enumerator.h" />
     <ClInclude Include="public\core\system_manager.h" />
     <ClInclude Include="public\core\system_registrar.h" />
+    <ClInclude Include="public\core\thread_pool.h" />
     <ClInclude Include="public\core\timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\system_manager.cpp" />
+    <ClCompile Include="private\core\thread_pool.cpp" />
     <ClCompile Include="private\core\timer.cpp" />
   </ItemGroup>
   <ItemGroup>

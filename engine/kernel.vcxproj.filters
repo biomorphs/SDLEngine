@@ -15,9 +15,6 @@
     <ClInclude Include="public\kernel\assert.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="public\kernel\basetypes.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\kernel\file_io.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -28,6 +25,21 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="public\kernel\platform.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\thread.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\base_types.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\mutex.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\semaphore.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\kernel\atomics.h">
       <Filter>public</Filter>
     </ClInclude>
   </ItemGroup>
@@ -45,6 +57,18 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\kernel\platform.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\thread.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\mutex.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\semaphore.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\kernel\atomics.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>
