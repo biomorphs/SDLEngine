@@ -11,11 +11,6 @@
   <PropertyGroup>
     <IncludePath>$(ProjectDir)public\;$(ProjectDir)public\core\;$(ProjectDir)private\core\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\core\list.h" />
     <ClInclude Include="public\core\object_pool.h" />

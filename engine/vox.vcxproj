@@ -26,9 +26,4 @@
     <None Include="public\vox\paged_blocks.inl" />
     <None Include="public\vox\simple_quad_extractor.inl" />
   </ItemGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
 </Project>

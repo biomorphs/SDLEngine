@@ -37,6 +37,8 @@ namespace Vox
 		void GetClumpIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)  const;
 		glm::vec3 GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)  const;
 
+		void PreallocateMemory(Math::Box3 modelSpaceBounds);
+
 	private:
 		class AreaIteratorParams;				// Parameter helper object for area iteration
 		void IterateClumpsInArea(AreaIteratorParams& params, ClumpIterator iterator);

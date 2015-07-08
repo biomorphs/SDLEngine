@@ -11,11 +11,6 @@
   <PropertyGroup>
     <IncludePath>$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\kernel\;$(ProjectDir)private\kernel\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\kernel\assert.h" />
     <ClInclude Include="public\kernel\atomics.h" />

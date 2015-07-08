@@ -11,11 +11,6 @@
   <PropertyGroup>
     <IncludePath>$(ProjectDir)..\external\SDL2-2.0.1\include;$(ProjectDir)public\;$(ProjectDir)public\input\;$(ProjectDir)private\input\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\input\controller_state.h" />
     <ClInclude Include="public\input\input_system.h" />

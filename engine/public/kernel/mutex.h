@@ -11,6 +11,7 @@ namespace Kernel
 	public:
 		Mutex();
 		Mutex(const Mutex& other) = delete;
+		Mutex(Mutex&& other);
 		~Mutex();
 
 		void Lock();

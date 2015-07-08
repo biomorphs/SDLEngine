@@ -12,11 +12,6 @@
   <PropertyGroup>
     <IncludePath>$(ProjectDir)..\external\rapidjson\include;$(ProjectDir)public\;$(ProjectDir)public\assets\;$(ProjectDir)private\assets\;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\assets\asset.h" />
     <ClInclude Include="public\assets\asset_creator.h" />

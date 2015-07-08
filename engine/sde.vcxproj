@@ -30,9 +30,4 @@
     <ClCompile Include="private\sde\job_system.cpp" />
     <ClCompile Include="private\sde\render_system.cpp" />
   </ItemGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
 </Project>

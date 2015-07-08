@@ -7,7 +7,7 @@ Matt Hoyle
 namespace SDE
 {
 	JobSystem::JobSystem()
-		: m_threadCount(2)
+		: m_threadCount(3)
 		, m_jobThreadTrigger(0)
 		, m_jobThreadStopRequested(0)
 	{

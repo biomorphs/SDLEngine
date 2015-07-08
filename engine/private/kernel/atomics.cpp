@@ -28,6 +28,11 @@ namespace Kernel
 	{
 	}
 
+	bool AtomicInt32::CAS(int32_t oldVal, int32_t newVal)
+	{
+		return SDL_AtomicCAS(&GetInternal().m_atomic, oldVal, newVal);
+	}
+
 	int32_t AtomicInt32::Add(int32_t v)
 	{
 		return SDL_AtomicAdd(&GetInternal().m_atomic, v);

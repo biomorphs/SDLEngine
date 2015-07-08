@@ -17,6 +17,7 @@ namespace Kernel
 
 		int32_t Add(int32_t v);
 		int32_t Set(int32_t v);
+		bool CAS(int32_t oldVal, int32_t newVal);
 		int32_t Get();	// danger!
 
 	private:

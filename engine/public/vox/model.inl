@@ -270,6 +270,25 @@ namespace Vox
 
 	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+		PreallocateMemory(Math::Box3 modelSpaceBounds)
+	{
+		glm::ivec3 c_startBlockIndices = ModelspaceToBlockIndices(modelSpaceBounds.Min());
+		glm::ivec3 c_endBlockIndices = ModelspaceToBlockIndices(modelSpaceBounds.Max());
+		for (int32_t bx = c_startBlockIndices.x; bx <= c_endBlockIndices.x; ++bx)
+		{
+			for (int32_t by = c_startBlockIndices.y; by <= c_endBlockIndices.y; ++by)
+			{
+				for (int32_t bz = c_startBlockIndices.z; bz <= c_endBlockIndices.z; ++bz)
+				{
+					const glm::ivec3 blockIndex(bx, by, bz);
+					m_voxelData.BlockAt(blockIndex, true);	// Force block creation
+				}
+			}
+		}
+	}
+
+	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
 		IterateForArea(Math::Box3 modelSpaceBounds, IteratorAccess itType, ClumpIterator iterator)
 	{
 		// Find block indices for iteration

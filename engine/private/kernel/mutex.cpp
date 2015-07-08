@@ -14,6 +14,15 @@ namespace Kernel
 		SDE_ASSERT(m_mutex);
 	}
 
+	Mutex::Mutex(Mutex&& other)
+	{
+		if (this != &other)
+		{
+			m_mutex = other.m_mutex;
+			other.m_mutex = nullptr;
+		}
+	}
+
 	Mutex::~Mutex()
 	{
 		if (m_mutex != nullptr)
