@@ -24,6 +24,9 @@
     <ClInclude Include="public\math\trig.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\math\dda.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="public\math\morton_encoding.inl">
@@ -39,6 +42,9 @@
       <Filter>public</Filter>
     </None>
     <None Include="public\math\trig.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\math\dda.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>

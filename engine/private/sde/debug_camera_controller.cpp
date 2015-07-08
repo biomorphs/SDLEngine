@@ -12,7 +12,7 @@ Matt Hoyle
 namespace SDE
 {
 	DebugCameraController::DebugCameraController()
-		: m_position(0.0f, 20.0f, -1.0f)
+		: m_position(0.0f, 20.0f, 0.0f)
 		, m_pitch(-0.9f)
 		, m_yaw(3.85f)
 	{

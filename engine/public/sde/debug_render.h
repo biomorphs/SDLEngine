@@ -31,6 +31,7 @@ namespace SDE
 		void AddLine(const glm::vec3& v0, const glm::vec3& v1);
 		void AddLine(const glm::vec3& v0, const glm::vec3& v1, const glm::vec4& c0, const glm::vec4& c1);
 		void AddAxisAtPoint(glm::vec3 point, float scale = 1.0f);
+		void AddBox(const glm::vec3& boxCenter, const glm::vec3& boxSize, const glm::vec4& colour);
 
 	private:
 		bool CreateMaterial();

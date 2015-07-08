@@ -148,6 +148,26 @@ namespace SDE
 		m_linesToDraw.push_back(lineDef);
 	}
 
+	void DebugRender::AddBox(const glm::vec3& boxCenter, const glm::vec3& boxSize, const glm::vec4& colour)
+	{
+		const glm::vec3 halfSize = boxSize * 0.5f;
+		const glm::vec3 bl = boxCenter - halfSize;
+		const glm::vec3 tr = boxCenter + halfSize;
+
+		AddLine(glm::vec3(bl.x, bl.y, bl.z), glm::vec3(tr.x, bl.y, bl.z), colour, colour);
+		AddLine(glm::vec3(tr.x, bl.y, bl.z), glm::vec3(tr.x, tr.y, bl.z), colour, colour);
+		AddLine(glm::vec3(tr.x, tr.y, bl.z), glm::vec3(bl.x, tr.y, bl.z), colour, colour);
+		AddLine(glm::vec3(bl.x, tr.y, bl.z), glm::vec3(bl.x, bl.y, bl.z), colour, colour);
+		AddLine(glm::vec3(bl.x, bl.y, tr.z), glm::vec3(tr.x, bl.y, tr.z), colour, colour);
+		AddLine(glm::vec3(tr.x, bl.y, tr.z), glm::vec3(tr.x, tr.y, tr.z), colour, colour);
+		AddLine(glm::vec3(tr.x, tr.y, tr.z), glm::vec3(bl.x, tr.y, tr.z), colour, colour);
+		AddLine(glm::vec3(bl.x, tr.y, tr.z), glm::vec3(bl.x, bl.y, tr.z), colour, colour);
+		AddLine(glm::vec3(bl.x, bl.y, bl.z), glm::vec3(bl.x, bl.y, tr.z), colour, colour);
+		AddLine(glm::vec3(tr.x, bl.y, bl.z), glm::vec3(tr.x, bl.y, tr.z), colour, colour);
+		AddLine(glm::vec3(bl.x, tr.y, bl.z), glm::vec3(bl.x, tr.y, tr.z), colour, colour);
+		AddLine(glm::vec3(tr.x, tr.y, bl.z), glm::vec3(tr.x, tr.y, tr.z), colour, colour);
+	}
+
 	void DebugRender::AddLine(const glm::vec3& v0, const glm::vec3& v1, const glm::vec4& c0, const glm::vec4& c1)
 	{
 		LineDefinition lineDef;

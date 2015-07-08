@@ -14,6 +14,7 @@
   <ItemGroup>
     <ClInclude Include="public\math\bit_twiddling.h" />
     <ClInclude Include="public\math\box3.h" />
+    <ClInclude Include="public\math\dda.h" />
     <ClInclude Include="public\math\intersections.h" />
     <ClInclude Include="public\math\trig.h" />
     <ClInclude Include="public\math\morton_encoding.h" />
@@ -21,6 +22,7 @@
   <ItemGroup>
     <None Include="public\math\bit_twiddling.inl" />
     <None Include="public\math\box3.inl" />
+    <None Include="public\math\dda.inl" />
     <None Include="public\math\intersections.inl" />
     <None Include="public\math\trig.inl" />
     <None Include="public\math\morton_encoding.inl" />
