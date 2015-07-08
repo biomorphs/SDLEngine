@@ -9,69 +9,56 @@ namespace Math
 	template<class Intersector>
 	inline void DDAIntersect(const glm::vec3& rayStart, const glm::vec3& rayEnd, const glm::vec3& voxelSize, Intersector& intersecter)
 	{
-		glm::vec3 scaledRayStart = rayStart / voxelSize;
-		glm::vec3 scaledRayEnd = rayEnd / voxelSize;
-
-		glm::ivec3 currentV;
-		glm::ivec3 vStep;
-
-		glm::vec3 rayTIncrement;
-		glm::vec3 rayT;
-
-		const float threshold = 1.0e-6f;
+		// Rescale ray as if we were acting on a grid with voxel size = 1
+		const glm::vec3 scaledRayStart = rayStart / voxelSize;
+		const glm::vec3 scaledRayEnd = rayEnd / voxelSize;
 		const glm::vec3 rayDirection = scaledRayEnd - scaledRayStart;
-		for (int i = 0; i < 3; i++)
-		{
-			// inverse scaling parameters
-			bool bAligned = (fabs(rayDirection[i]) < threshold) ? true : false;
-			float fInvD = (bAligned) ? 0.0f : 1.0f / rayDirection[i];
-			float signD = (rayDirection[i] < 0.0f ? -1 : 1.0f);
 
-			// which side of the cell we need to test
-			float fPlane = (floor(scaledRayStart[i]) + 0.5f + signD * 0.5f);
+		glm::ivec3 currentV = glm::floor(scaledRayStart);		// current voxel indices
+		glm::ivec3 vStep = glm::sign(rayDirection);				// step direction in voxels
 
-			// first cell to trasverse
-			currentV[i] = floor(scaledRayStart[i]);
-			vStep[i] = signD;
+		// Vectorised DDA parameters
+		const glm::vec3 c_threshold(1.0e-6f);
+		const auto dirAxisAligned = glm::lessThan(glm::abs(rayDirection), c_threshold);
+		const auto dirAxisAlignedInverted = glm::equal(glm::tvec3<bool>(false), dirAxisAligned);
+		const glm::vec3 planeDiff = glm::abs((glm::floor(scaledRayStart) + 0.5f) + (glm::vec3(vStep) * 0.5f) - scaledRayStart);
 
-			// the DDA increment for that axis
-			rayTIncrement[i] = (bAligned) ? 0.0f : fabs(fInvD);
+		// Calculate inverse direction (sucks, but I can't see a way to vectorise)
+		glm::vec3 inverseDirection;
+		inverseDirection.x = dirAxisAligned.x ? 0.0f : (1.0f / rayDirection.x);
+		inverseDirection.y = dirAxisAligned.y ? 0.0f : (1.0f / rayDirection.y);
+		inverseDirection.z = dirAxisAligned.z ? 0.0f : (1.0f / rayDirection.z);
 
-			// the first time of intersection
-			rayT[i] = (bAligned) ? 1.01f : fabs(fPlane - scaledRayStart[i]) * rayTIncrement[i];
-		}
+		// Ray increment per step
+		const glm::vec3 rayIncrement = glm::vec3(dirAxisAlignedInverted) * glm::abs(inverseDirection);
 
-		while (1)
+		// Ray initial T value
+		glm::vec3 rayT;											// current T value for ray in 3 axes
+		rayT.x = dirAxisAligned.x ? 1.01f : planeDiff.x * rayIncrement.x;
+		rayT.y = dirAxisAligned.y ? 1.01f : planeDiff.y * rayIncrement.y;
+		rayT.z = dirAxisAligned.z ? 1.01f : planeDiff.z * rayIncrement.z;
+
+		while (glm::any(glm::lessThanEqual(rayT, glm::vec3(1.0f))))
 		{
 			if (intersecter.OnDDAIntersection(currentV))
 			{
 				break;
 			}
 
-			bool ok = false;
-
 			// find the dimension with the closest intersection
 			int iMinAxis = -1;
 			for (int i = 0; i < 3; i++)
 			{
-				// have we reached end of ray
-				ok |= (rayT[i] <= 1.0f);
-
 				// it's the minimum (or the first)
 				if (iMinAxis == -1 || rayT[i] < rayT[iMinAxis])
 				{
-					// that will be our dimension to use
-					// for incrementing.
 					iMinAxis = i;
 				}
 			}
 
-			if (!ok)
-				break;
-
 			// move to next cell along the dimension of minimum intersection
 			currentV[iMinAxis] += vStep[iMinAxis];
-			rayT[iMinAxis] += rayTIncrement[iMinAxis];
+			rayT[iMinAxis] += rayIncrement[iMinAxis];
 		}
 	}
 }
