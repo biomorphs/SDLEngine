@@ -7,7 +7,7 @@ Matt Hoyle
 
 namespace Math
 {
-	bool RayIntersectsAAB(const glm::vec3& rayStart, const glm::vec3& rayEnd, const Math::Box3& aabb, float& tNearOut)
+	inline bool RayIntersectsAAB(const glm::vec3& rayStart, const glm::vec3& rayEnd, const Math::Box3& aabb, float& tNearOut, float& tFarOut)
 	{
 		glm::vec3 t1, t2; // vectors to hold the T-values for every direction
 		double tNear = -DBL_MAX;
@@ -52,11 +52,20 @@ namespace Math
 		}
 		const float rayLengthDiv = 1.0f / glm::length(rayEnd - rayStart);
 		tNearOut = rayLengthDiv * tNear;
+		tFarOut = rayLengthDiv * tFar;
 		if (tNearOut < 0.0f)
 		{
 			tNearOut = 0.0f;
 		}
 		else if (tNearOut > 1.0f)
+		{
+			return false;
+		}
+		if (tFarOut > 1.0f)
+		{
+			tFarOut = 1.0f;
+		}
+		else if(tFarOut < 0.0f)
 		{
 			return false;
 		}

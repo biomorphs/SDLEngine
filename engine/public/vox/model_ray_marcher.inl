@@ -4,6 +4,7 @@ Matt Hoyle
 */
 
 #include "math/dda.h"
+#include "math/intersections.h"
 
 namespace Vox
 {
@@ -20,14 +21,16 @@ namespace Vox
 				, m_iterator(iterator)
 				, m_target(target)
 			{
+				m_blockOrigin = (glm::vec3(m_blockIndex) * m_target.GetBlockSize());
 			}
 
 			bool OnDDAIntersection(const glm::ivec3& p)
 			{
-				if (glm::all(glm::lessThan(p, glm::ivec3(VoxelModel::c_clumpsPerBlock))))
+				if (glm::all(glm::greaterThanEqual(p, glm::ivec3(0))) &&
+					glm::all(glm::lessThan(p, glm::ivec3(VoxelModel::c_clumpsPerBlock))))
 				{
 					m_accessor.SetClumpIndex(p);
-					const glm::vec3 clumpOrigin = glm::vec3(p) * (m_target.GetVoxelSize() * 2.0f);
+					const glm::vec3 clumpOrigin = m_blockOrigin + glm::vec3(p) * (m_target.GetVoxelSize() * 2.0f);
 					const glm::vec3 voxelCenter = m_target.GetVoxelSize() * 0.5f;
 					return !m_iterator(m_accessor, clumpOrigin, m_target.GetVoxelSize(), voxelCenter);
 				}
@@ -39,6 +42,7 @@ namespace Vox
 			typename ModelRaymarcher<ModelType>::ClumpIterator& m_iterator;
 			ModelType& m_target;
 			glm::ivec3 m_blockIndex;
+			glm::vec3 m_blockOrigin;
 		};
 
 		template< class ModelType>
@@ -61,10 +65,22 @@ namespace Vox
 				{
 					ModelType::ClumpDataAccessor clumpAccessor(&m_target, p);
 
-					// Now clamp the ray to this block and transform back into 'block' coordinates
-					auto blockStartCoord = glm::vec3(p) * m_target.GetBlockSize();
-					glm::vec3 blockRayStart = glm::clamp(m_rayStart - blockStartCoord, glm::vec3(0.0f), m_target.GetBlockSize());
-					glm::vec3 blockRayEnd = glm::clamp(m_rayEnd - blockStartCoord, glm::vec3(0.0f), m_target.GetBlockSize());
+					const auto voxelSize = m_target.GetVoxelSize();
+					const auto blockSize = m_target.GetBlockSize();
+					const auto blockStartCoord = glm::vec3(p) * blockSize;
+					const auto blockEndCoord = blockStartCoord + blockSize;
+
+					// Calculate where this ray lands in block-space using ray-AABB intersection points
+					float rayHitNear = 0.0f, rayHitFar = 0.0f;
+					Math::RayIntersectsAAB(m_rayStart, m_rayEnd, Math::Box3(blockStartCoord, blockEndCoord), rayHitNear, rayHitFar);
+
+					glm::vec3 rayDistance = m_rayEnd - m_rayStart;
+					glm::vec3 blockRayStart = m_rayStart + (rayDistance * rayHitNear);
+					glm::vec3 blockRayEnd = m_rayStart + (rayDistance * rayHitFar);
+
+					// And move into local block-space
+					blockRayStart -= blockStartCoord;
+					blockRayEnd -= blockStartCoord;
 
 					// Run DDA for this block at clump resolution
 					ModelClumpRaymarcher<ModelType> clumpRaymarcher(m_target, clumpAccessor, p, m_it);
