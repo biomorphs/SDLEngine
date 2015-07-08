@@ -21,7 +21,7 @@ namespace SDE
 		virtual bool Initialise() override;
 		virtual void Shutdown() override;
 
-		void PushJob(Job::JobThreadFunction threadFn);
+		void PushJob(Job::JobThreadFunction threadFn, const char* dbgName="");
 
 	private:
 		Core::ThreadPool m_threadPool;

@@ -17,6 +17,8 @@ namespace Render
 		MeshBuilder();
 		~MeshBuilder();
 
+		bool HasData();
+
 		// Step 1: Define streams
 		uint32_t AddVertexStream(int32_t componentCount);
 

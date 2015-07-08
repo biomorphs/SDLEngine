@@ -13,8 +13,8 @@ namespace SDE
 {
 	DebugCameraController::DebugCameraController()
 		: m_position(0.0f, 20.0f, -1.0f)
-		, m_pitch(0.0f)
-		, m_yaw(PI)
+		, m_pitch(-0.9f)
+		, m_yaw(3.85f)
 	{
 
 	}
@@ -37,6 +37,7 @@ namespace SDE
 		static float s_forwardSpeed = 1.0f;
 		static float s_strafeSpeed = 1.0f;
 		static float s_speedMultiplier = 10.0f;
+		static float s_highSpeedMultiplier = 50.0f;
 
 		const float timeDeltaF = (float)timeDelta;
 		const float xAxisRight = controllerState.m_rightStickAxes[0];
@@ -44,7 +45,7 @@ namespace SDE
 		const float xAxisLeft = controllerState.m_leftStickAxes[0];
 		const float yAxisLeft = controllerState.m_leftStickAxes[1];
 
-		float moveSpeedMulti = 1.0f + (controllerState.m_rightTrigger * s_speedMultiplier);
+		float moveSpeedMulti = 1.0f + (controllerState.m_rightTrigger * s_speedMultiplier) + ((controllerState.m_leftTrigger * s_highSpeedMultiplier));
 
 		const float yawRotation = -xAxisRight * s_yawRotSpeed * timeDeltaF;
 		m_yaw += yawRotation;

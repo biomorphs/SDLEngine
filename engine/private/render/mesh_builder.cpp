@@ -18,6 +18,18 @@ namespace Render
 	{
 	}
 
+	bool MeshBuilder::HasData()
+	{
+		if (m_chunks.size() > 0)
+		{
+			return (m_chunks[0].m_lastVertex != 0);
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	void MeshBuilder::SetStreamData(uint32_t vertexStream, float v0, float v1, float v2)
 	{
 		SDE_ASSERT(vertexStream < m_streams.size());
