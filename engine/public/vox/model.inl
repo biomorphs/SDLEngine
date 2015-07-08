@@ -15,6 +15,11 @@ namespace Vox
 			, m_lastBlockIndex(INT32_MIN)
 		{ }
 
+		inline bool HasBlockData(const glm::ivec3& blockIndex) const
+		{
+			return m_target.m_voxelData.BlockAt(blockIndex) != nullptr;
+		}
+
 		inline const typename BlockType* GetBlockAt(const glm::ivec3& blockIndex)
 		{
 			if (m_lastBlockIndex != blockIndex)

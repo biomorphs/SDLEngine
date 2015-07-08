@@ -19,6 +19,7 @@ namespace Vox
 		~Model();
 		void SetVoxelSize(const glm::vec3& voxelSize);
 		inline const glm::vec3& GetVoxelSize() const { return m_voxelDimensions; }
+		inline const glm::vec3& GetBlockSize() const { return m_blockDimensions; }
 
 		static const uint32_t c_clumpsPerBlock = t_blockDimensionVx >> 1;
 		typedef Block< VoxelDataType, c_clumpsPerBlock, BlockAllocator > BlockType;
