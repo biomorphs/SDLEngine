@@ -5,6 +5,8 @@ Matt Hoyle
 #pragma once
 #include "job.h"
 #include "kernel/mutex.h"
+#include "core/list.h"
+#include "core/object_pool.h"
 #include <deque>
 
 namespace SDE
@@ -21,6 +23,9 @@ namespace SDE
 
 	private:
 		Kernel::Mutex m_lock;
-		std::deque<Job> m_jobs;		// if allocations/frees become a problem, switch to pooled list
+		typedef Core::ListNode<Job> JobListNode;
+		Core::ObjectPool<JobListNode> m_jobsPool;
+		Core::List<JobListNode> m_jobs;
+		static const uint32_t c_maxJobsQueued = 64 * 1024;
 	};
 }

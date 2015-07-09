@@ -13,6 +13,7 @@ namespace Core
 		{
 			m_freeList.PushBack(&m_objectStorage[i]);
 		}
+		m_freeList.ValidateInternal();
 	}
 
 	template<class ObjectType>
@@ -29,6 +30,20 @@ namespace Core
 		if (n != nullptr)
 		{
 			new (reinterpret_cast<void*>(&n->m_storage)) ObjectType();
+			m_usedList.PushBack(n);
+			return reinterpret_cast<ObjectType*>(n);
+		}
+		return nullptr;
+	}
+
+	template<class ObjectType>
+	ObjectType* ObjectPool<ObjectType>::Allocate(const ObjectType& other)
+	{
+		SDE_ASSERT(m_usedList.GetSize() + m_freeList.GetSize() == m_objectStorage.size());
+		auto n = m_freeList.PopFront();
+		if (n != nullptr)
+		{
+			new (reinterpret_cast<void*>(&n->m_storage)) ObjectType(other);
 			m_usedList.PushBack(n);
 			return reinterpret_cast<ObjectType*>(n);
 		}

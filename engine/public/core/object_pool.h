@@ -18,6 +18,7 @@ namespace Core
 		~ObjectPool();
 
 		ObjectType* Allocate();
+		ObjectType* Allocate(const ObjectType& other);	// copy-construct
 		void Free(ObjectType* o);
 
 	private:

@@ -5,6 +5,7 @@ Matt Hoyle
 #include "kernel/assert.h"
 
 #ifdef SDE_DEBUG
+	//#define SDE_ENABLE_AUTO_LIST_VALIDATION	// Really frickin' slow
 	#define SDE_ENABLE_LIST_VALIDATION
 #endif
 
@@ -26,7 +27,10 @@ namespace Core
 	NodeType* List<NodeType>::PopFront()
 	{
 		NodeType* n = m_head;
-		Remove(m_head);
+		if (n != nullptr)
+		{
+			Remove(m_head);
+		}
 		return n;
 	}
 
@@ -34,7 +38,10 @@ namespace Core
 	NodeType* List<NodeType>::PopBack()
 	{
 		NodeType* n = m_tail;
-		Remove(m_tail);
+		if (n != nullptr)
+		{
+			Remove(m_tail);
+		}
 		return n;
 	}
 
@@ -54,7 +61,10 @@ namespace Core
 		{
 			m_tail = m_head;
 		}
+
+#ifdef SDE_ENABLE_AUTO_LIST_VALIDATION
 		ValidateInternal();
+#endif
 	}
 
 	template<class NodeType>
@@ -73,13 +83,16 @@ namespace Core
 		{
 			m_head = m_tail;
 		}
+
+#ifdef SDE_ENABLE_AUTO_LIST_VALIDATION
 		ValidateInternal();
+#endif
 	}
 
 	template<class NodeType>
 	void List<NodeType>::Remove(NodeType* n)
 	{
-#ifdef SDE_ENABLE_LIST_VALIDATION
+#ifdef SDE_ENABLE_AUTO_LIST_VALIDATION
 		SDE_ASSERT(NodeInList(n));
 #endif
 		if (m_head == n)
@@ -102,7 +115,10 @@ namespace Core
 		
 		n->SetNext(nullptr);
 		n->SetPrevious(nullptr);
+
+#ifdef SDE_ENABLE_AUTO_LIST_VALIDATION
 		ValidateInternal();
+#endif
 	}
 
 	template<class NodeType>

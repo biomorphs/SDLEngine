@@ -11,6 +11,8 @@ namespace Core
 	{
 	public:
 		ListNode() : m_previous(nullptr), m_next(nullptr) { }
+		ListNode(const Data&other) : Data(other), m_previous(nullptr), m_next(nullptr) { }
+
 		void SetPrevious(ListNode* p) { m_previous = p; }
 		void SetNext(ListNode* n) { m_next = n; }
 		const ListNode* GetPrevious() const { return m_previous; }
@@ -39,8 +41,9 @@ namespace Core
 		bool HasLoop() const;
 		bool NodeInList(const NodeType* n) const;
 
-	private:
 		void ValidateInternal();
+
+	private:
 		NodeType* m_head;
 		NodeType* m_tail;
 	};
