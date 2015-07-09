@@ -51,8 +51,8 @@ namespace Math
 			}
 		}
 		const float rayLengthDiv = 1.0f / glm::length(rayEnd - rayStart);
-		tNearOut = rayLengthDiv * tNear;
-		tFarOut = rayLengthDiv * tFar;
+		tNearOut = (float)(rayLengthDiv * tNear);
+		tFarOut = (float)(rayLengthDiv * tFar);
 		if (tNearOut < 0.0f)
 		{
 			tNearOut = 0.0f;

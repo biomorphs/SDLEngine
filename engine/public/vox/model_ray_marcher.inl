@@ -42,7 +42,7 @@ namespace Vox
 		class ModelBlockRaymarcher
 		{
 		public:
-			ModelBlockRaymarcher(ModelType& target, const glm::vec3& rayStart, const glm::vec3& rayEnd, 
+			ModelBlockRaymarcher(const ModelType& target, const glm::vec3& rayStart, const glm::vec3& rayEnd,
 				typename ModelRaymarcher<ModelType>::VoxelIterator& iterator)
 				: m_target(target)
 				, m_rayStart(rayStart)
@@ -84,7 +84,7 @@ namespace Vox
 			}
 
 		private:
-			ModelType& m_target;
+			const ModelType& m_target;
 			glm::vec3 m_rayStart;
 			glm::vec3 m_rayEnd;
 			typename ModelRaymarcher<ModelType>::VoxelIterator& m_it;
@@ -104,7 +104,7 @@ namespace Vox
 	}
 
 	template< class ModelType>
-	ModelRaymarcher<ModelType>::ModelRaymarcher(ModelType& target)
+	ModelRaymarcher<ModelType>::ModelRaymarcher(const ModelType& target)
 		: m_target(target)
 	{
 	}

@@ -44,14 +44,14 @@ namespace Vox
 	class ModelRaymarcher
 	{
 	public:
-		ModelRaymarcher(ModelType& target);
+		ModelRaymarcher(const ModelType& target);
 		~ModelRaymarcher();
 
 		typedef std::function<bool(const ModelRaymarcherParams<ModelType>&)> VoxelIterator;
 		void Raymarch(const glm::vec3& rayStart, const glm::vec3& rayEnd, VoxelIterator iterator);
 
 	private:
-		ModelType& m_target;
+		const ModelType& m_target;
 	};
 }
 
