@@ -15,7 +15,7 @@ namespace Vox
 		ModelDataReader(const ModelType& model);
 		~ModelDataReader();
 
-		typedef typename ModelType::VoxDataType VoxelDataType;
+		typedef typename ModelType::VoxelDataType VoxelDataType;
 
 		bool HasBlockData(const glm::ivec3& blockIndex) const;
 		VoxelDataType VoxelAt(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex);

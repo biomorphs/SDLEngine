@@ -13,9 +13,15 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	inline void ModelAreaDataWriterParams<ModelType>::WriteVoxel(int32_t vx, int32_t vy, int32_t vz, typename const ModelType::VoxDataType& data)
+	inline void ModelAreaDataWriterParams<ModelType>::WriteVoxel(int32_t vx, int32_t vy, int32_t vz, typename const ModelType::VoxelDataType& data)
 	{
 		m_writer->WriteVoxel(m_blockIndex, glm::ivec3(vx, vy, vz), data);
+	}
+
+	template<class ModelType>
+	inline typename ModelType::VoxelDataType& ModelAreaDataWriterParams<ModelType>::VoxelAt(int32_t vx, int32_t vy, int32_t vz)
+	{
+		return m_writer->VoxelAt(m_blockIndex, glm::ivec3(vx, vy, vz));
 	}
 
 	template<class ModelType>

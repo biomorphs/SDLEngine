@@ -14,10 +14,10 @@ namespace Math
 	// Takes a structure/class/whatever with a single function, 
 	// bool OnDDAIntersection(const glm::ivec3& p)
 	// OnDDAIntersection is called for all intersecting voxels
-	// If it returns true, the function does not continue
-
+	// If the iterator returns false, the function does not continue
+	// and returns false itself
 	template<class Intersector>
-	void DDAIntersect(const glm::vec3& rayStart, const glm::vec3& rayEnd, const glm::vec3& voxelSize, Intersector& intersecter);
+	bool DDAIntersect(const glm::vec3& rayStart, const glm::vec3& rayEnd, const glm::vec3& voxelSize, Intersector& intersecter);
 }
 
 #include "dda.inl"

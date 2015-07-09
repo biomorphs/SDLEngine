@@ -30,7 +30,7 @@ namespace Vox
 
 	private:
 
-		void ExtractQuadsForVoxel(const typename ModelType::VoxDataType(&data)[3][3][3], 
+		void ExtractQuadsForVoxel(const typename ModelType::VoxelDataType(&data)[3][3][3], 
 								  const glm::vec3& voxelCenter);
 		void ExtractQuadsFromBlock(const glm::ivec3& blockIndex, const glm::ivec3& startVoxel, const glm::ivec3& endVoxel);
 		const ModelType& m_targetModel;

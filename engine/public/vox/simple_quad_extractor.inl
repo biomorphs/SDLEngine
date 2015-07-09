@@ -21,7 +21,7 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	void SimpleQuadExtractor<ModelType>::ExtractQuadsForVoxel(const typename ModelType::VoxDataType(&data)[3][3][3],
+	void SimpleQuadExtractor<ModelType>::ExtractQuadsForVoxel(const typename ModelType::VoxelDataType(&data)[3][3][3],
 		const glm::vec3& voxelCenter)
 	{
 		const glm::vec3 c_halfVoxelSize = m_targetModel.GetVoxelSize() * 0.5f;
@@ -93,7 +93,7 @@ namespace Vox
 		ModelDataReader<ModelType> dataAccessor(m_targetModel);
 
 		// moore neighbourhood storage
-		typename ModelType::VoxDataType neighbourhood[3][3][3];
+		typename ModelType::VoxelDataType neighbourhood[3][3][3];
 
 		const glm::vec3 voxelSize = m_targetModel.GetVoxelSize();
 		for (int32_t vz = startVoxel.z; vz < endVoxel.z; ++vz)

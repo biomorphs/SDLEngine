@@ -13,7 +13,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="public\vox\block.h" />
-    <ClInclude Include="public\vox\clump.h" />
     <ClInclude Include="public\vox\greedy_quad_extractor.h" />
     <ClInclude Include="public\vox\model.h" />
     <ClInclude Include="public\vox\model_area_data_writer.h" />

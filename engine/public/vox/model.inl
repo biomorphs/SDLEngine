@@ -5,39 +5,39 @@ Matt Hoyle
 
 namespace Vox
 {
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::Model()
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	Model<DataType, t_blockDimensionVx, BlockAllocator>::Model()
 	{
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::~Model()
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	Model<DataType, t_blockDimensionVx, BlockAllocator>::~Model()
 	{
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::SetVoxelSize(const glm::vec3& voxelSize)
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<DataType, t_blockDimensionVx, BlockAllocator>::SetVoxelSize(const glm::vec3& voxelSize)
 	{
 		m_voxelDimensions = voxelSize;
-		m_blockDimensions = m_voxelDimensions * 2.0f * (float)BlockType::BlockDimensions;
+		m_blockDimensions = voxelSize * glm::vec3(t_blockDimensionVx);
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	glm::ivec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::ModelspaceToBlockIndices(const glm::vec3& coordinate) const
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	glm::ivec3 Model<DataType, t_blockDimensionVx, BlockAllocator>::ModelspaceToBlockIndices(const glm::vec3& coordinate) const
 	{
 		return glm::floor(coordinate / m_blockDimensions);
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<DataType, t_blockDimensionVx, BlockAllocator>::
 		GetBlockIterationParameters(const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)  const
 	{
 		start = ModelspaceToBlockIndices(modelSpaceBounds.Min());
 		end = ModelspaceToBlockIndices(modelSpaceBounds.Max());
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<DataType, t_blockDimensionVx, BlockAllocator>::
 		GetVoxelIterationParameters(const glm::ivec3& blockIndex, const Math::Box3& modelSpaceBounds, glm::ivec3& start, glm::ivec3& end)  const
 	{
 		// calculate the block area we need to update
@@ -45,7 +45,6 @@ namespace Vox
 		const glm::vec3 blockBoundsMax = blockBoundsMin + m_blockDimensions;
 		const glm::vec3 blockIterStart = glm::max(blockBoundsMin, modelSpaceBounds.Min());
 		const glm::vec3 blockIterEnd = glm::min(blockBoundsMax, modelSpaceBounds.Max());
-		const Math::Box3 clumpBounds(blockIterStart, blockIterEnd);
 
 		// calculate the voxel range we are interested in
 		start = glm::floor((blockIterStart - blockBoundsMin) / m_voxelDimensions);
@@ -53,8 +52,8 @@ namespace Vox
 		end = glm::min(voxelEndIndices, glm::ivec3(typename BlockType::VoxelDimensions));
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	glm::vec3 Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	glm::vec3 Model<DataType, t_blockDimensionVx, BlockAllocator>::
 		GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)  const
 	{
 		const glm::vec3 blockPosition = glm::vec3(blockIndex) * m_blockDimensions;
@@ -62,8 +61,8 @@ namespace Vox
 		return voxelCornerPos + (m_voxelDimensions * 0.5f);
 	}
 
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
-	void Model<VoxelDataType, t_blockDimensionVx, BlockAllocator>::
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<DataType, t_blockDimensionVx, BlockAllocator>::
 		PreallocateMemory(Math::Box3 modelSpaceBounds)
 	{
 		glm::ivec3 c_startBlockIndices = ModelspaceToBlockIndices(modelSpaceBounds.Min());

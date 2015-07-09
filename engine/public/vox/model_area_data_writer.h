@@ -5,6 +5,8 @@ Matt Hoyle
 #pragma once
 
 #include "model_data_writer.h"
+#include "math/box3.h"
+#include <functional>
 
 namespace Vox
 {
@@ -22,7 +24,8 @@ namespace Vox
 		inline const glm::ivec3& EndVoxel() const			{ return m_endVoxelIndex; }
 
 		inline glm::vec3 VoxelPosition(int32_t vx, int32_t vy, int32_t vz) const;
-		inline void WriteVoxel(int32_t vx, int32_t vy, int32_t vz, typename const ModelType::VoxDataType& data);
+		inline void WriteVoxel(int32_t vx, int32_t vy, int32_t vz, typename const ModelType::VoxelDataType& data);
+		inline typename ModelType::VoxelDataType& VoxelAt(int32_t vx, int32_t vy, int32_t vz);
 
 	protected:
 		ModelAreaDataWriterParams(ModelDataWriter<ModelType>* writer, const glm::ivec3& block, const Math::Box3& blockBounds,

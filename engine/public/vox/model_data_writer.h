@@ -15,9 +15,10 @@ namespace Vox
 		ModelDataWriter(ModelType& model);
 		~ModelDataWriter();
 
-		typedef typename ModelType::VoxDataType VoxelDataType;
+		typedef typename ModelType::VoxelDataType VoxelDataType;
 
 		void WriteVoxel(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex, const VoxelDataType& data);
+		inline typename ModelType::VoxelDataType& VoxelAt(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex);
 
 	private:
 		typename ModelType::BlockType* GetBlockAndCache(const glm::ivec3& blockIndex);

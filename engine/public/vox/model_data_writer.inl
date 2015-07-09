@@ -36,4 +36,12 @@ namespace Vox
 		SDE_ASSERT(thisBlock, "Failed to get voxel for writing. OOM?");
 		thisBlock->VoxelAt(voxelIndex.x, voxelIndex.y, voxelIndex.z) = data;
 	}
+
+	template<class ModelType>
+	inline typename ModelType::VoxelDataType& ModelDataWriter<ModelType>::VoxelAt(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)
+	{
+		auto thisBlock = GetBlockAndCache(blockIndex);
+		SDE_ASSERT(thisBlock, "Failed to get voxel for writing. OOM?");
+		return thisBlock->VoxelAt(voxelIndex.x, voxelIndex.y, voxelIndex.z);
+	}
 }

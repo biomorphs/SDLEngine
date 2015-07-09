@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="public\vox\clump.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\vox\block.h">
       <Filter>public</Filter>
     </ClInclude>

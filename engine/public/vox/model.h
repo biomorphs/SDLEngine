@@ -11,7 +11,7 @@ Matt Hoyle
 
 namespace Vox
 {
-	template< class VoxelDataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	class Model
 	{
 	public:
@@ -21,9 +21,8 @@ namespace Vox
 		inline const glm::vec3& GetVoxelSize() const { return m_voxelDimensions; }
 		inline const glm::vec3& GetBlockSize() const { return m_blockDimensions; }
 
-		static const uint32_t c_clumpsPerBlock = t_blockDimensionVx >> 1;
-		typedef Block< VoxelDataType, c_clumpsPerBlock, BlockAllocator > BlockType;
-		typedef VoxelDataType VoxDataType;
+		typedef Block< DataType, t_blockDimensionVx, BlockAllocator > BlockType;
+		typedef DataType VoxelDataType;
 
 		const BlockType* BlockAt(const glm::ivec3& blockIndex) const		{ return m_voxelData.BlockAt(blockIndex); }
 		BlockType* BlockAt(const glm::ivec3& blockIndex, bool createNew)	{ return m_voxelData.BlockAt(blockIndex, createNew); }

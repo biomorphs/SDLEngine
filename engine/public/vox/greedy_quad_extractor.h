@@ -43,14 +43,14 @@ namespace Vox
 				ZAxisNegative,
 			};
 			glm::vec3 m_vertices[4];
-			typename ModelType::VoxDataType m_sourceData;
+			typename ModelType::VoxelDataType m_sourceData;
 			NormalDirection m_normal;
 		};
 		typename std::vector<QuadDescriptor>::const_iterator Begin() const { return m_quads.begin(); }
 		typename std::vector<QuadDescriptor>::const_iterator End() const { return m_quads.end(); }
 
 	private:
-		typedef typename ModelType::VoxDataType MaskType;
+		typedef typename ModelType::VoxelDataType MaskType;
 		struct QuadBuildParameters	// Passed to BuildQuad, used to avoid massive parameter list
 		{
 			glm::vec3 m_blockOrigin;
@@ -62,7 +62,7 @@ namespace Vox
 			glm::ivec3 m_sampleAxes;
 			bool m_backFace;
 			typename QuadDescriptor::NormalDirection m_normal;
-			typename ModelType::VoxDataType m_sourceVoxel;
+			typename ModelType::VoxelDataType m_sourceVoxel;
 		};
 		
 		void ResetSliceMasks();

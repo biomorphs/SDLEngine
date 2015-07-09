@@ -64,7 +64,7 @@ namespace Vox
 	void GreedyQuadExtractor<ModelType>::CalculateMergedQuadsFromMask(const std::vector<MaskType>& mask, MaskType sourceVoxel, int32_t u, int32_t v, int32_t& quadEndU, int32_t& quadEndV)
 	{
 		const int32_t c_maxMask = ModelType::BlockType::VoxelDimensions;
-		GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxDataType> voxInterpreter;
+		GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxelDataType> voxInterpreter;
 
 		// we run across the u axis, until we can't merge any more
 		int32_t endU, endV;
@@ -135,7 +135,7 @@ namespace Vox
 		quadParameters.m_sampleAxes = glm::ivec3((sliceAxis + 1) % 3, (sliceAxis + 2) % 3, sliceAxis);
 		quadParameters.m_normal = static_cast<QuadDescriptor::NormalDirection>((sliceAxis * 2) + (backFace ? 1 : 0));
 		
-		GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxDataType> voxInterpreter;
+		GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxelDataType> voxInterpreter;
 		const int32_t c_maxMask = ModelType::BlockType::VoxelDimensions;
 		for (int32_t v = 0; v < c_maxMask; ++v)
 		{
@@ -189,13 +189,13 @@ namespace Vox
 					const glm::ivec3 voxelIndex(sampleIndex.x, sampleIndex.y, sampleIndex.z);
 
 					// get the voxel, as well as its neighbours
-					GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxDataType> voxInterpreter;
-					ModelType::VoxDataType thisVoxel = dataReader.VoxelAt(blockIndex, voxelIndex);
+					GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxelDataType> voxInterpreter;
+					ModelType::VoxelDataType thisVoxel = dataReader.VoxelAt(blockIndex, voxelIndex);
 					if (!voxInterpreter.ShouldAddQuad(thisVoxel))
 					{
 						continue;
 					}
-					ModelType::VoxDataType voxelData[2];
+					ModelType::VoxelDataType voxelData[2];
 					voxelData[0] = dataReader.VoxelNeighbour(blockIndex, voxelIndex, -neighbourDirection);
 					voxelData[1] = dataReader.VoxelNeighbour(blockIndex, voxelIndex, neighbourDirection);
 

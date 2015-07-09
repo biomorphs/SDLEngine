@@ -28,9 +28,9 @@ namespace Vox
 					glm::all(glm::lessThan(p, glm::ivec3(VoxelModel::BlockType::VoxelDimensions))))
 				{
 					m_params.m_voxelIndex = p;
-					m_iterator(m_params);
+					return m_iterator(m_params);
 				}
-				return false;
+				return true;
 			}
 
 		private:
@@ -78,9 +78,9 @@ namespace Vox
 
 					// Run DDA for this block at voxel resolution
 					ModelVoxelRaymarcher<ModelType> voxelRaymarch(params, m_it);
-					Math::DDAIntersect(blockRayStart, blockRayEnd, voxelSize, voxelRaymarch);
+					return Math::DDAIntersect(blockRayStart, blockRayEnd, voxelSize, voxelRaymarch);
 				}
-				return false;	// We can't stop the DDA here since there may be more intersecting blocks
+				return true;	// We can't stop the DDA here since there may be more intersecting blocks
 			}
 
 		private:
@@ -92,13 +92,13 @@ namespace Vox
 	}
 
 	template< class ModelType>
-	inline glm::vec3& ModelRaymarcherParams<ModelType>::VoxelPosition() const
+	inline glm::vec3 ModelRaymarcherParams<ModelType>::VoxelPosition() const
 	{
 		return m_blockBounds.Min() + (glm::vec3(m_voxelIndex) * m_voxelSize) + (m_voxelSize * 0.5f);
 	}
 
 	template< class ModelType>
-	inline typename const ModelType::VoxDataType ModelRaymarcherParams<ModelType>::VoxelData() const
+	inline typename const ModelType::VoxelDataType ModelRaymarcherParams<ModelType>::VoxelData() const
 	{
 		return m_reader->VoxelAt(m_blockIndex, m_voxelIndex);
 	}

@@ -23,12 +23,6 @@ namespace Vox
 		BlockType* BlockAt(const glm::ivec3& coords, bool createNewBlocks = true);
 		const BlockType* BlockAt(const glm::ivec3& coords) const;
 
-		// Clump accoessors (in clump coords).
-		typename BlockType::ClumpType* ClumpAt(const glm::ivec3& coords);	// TODO - DELETE
-
-		// Voxel accessors (dito)
-		typename BlockType::ClumpType::VoxelDataType* VoxelAt(const glm::ivec3& coords);
-
 		// Remove all data
 		void Clear();
 

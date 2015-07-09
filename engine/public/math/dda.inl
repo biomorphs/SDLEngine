@@ -7,7 +7,7 @@ Matt Hoyle
 namespace Math
 {
 	template<class Intersector>
-	inline void DDAIntersect(const glm::vec3& rayStart, const glm::vec3& rayEnd, const glm::vec3& voxelSize, Intersector& intersecter)
+	inline bool DDAIntersect(const glm::vec3& rayStart, const glm::vec3& rayEnd, const glm::vec3& voxelSize, Intersector& intersecter)
 	{
 		// Rescale ray as if we were acting on a grid with voxel size = 1
 		const glm::vec3 scaledRayStart = rayStart / voxelSize;
@@ -40,9 +40,9 @@ namespace Math
 
 		while (glm::any(glm::lessThanEqual(rayT, glm::vec3(1.0f))))
 		{
-			if (intersecter.OnDDAIntersection(currentV))
+			if (!intersecter.OnDDAIntersection(currentV))
 			{
-				break;
+				return false;
 			}
 
 			// find the dimension with the closest intersection
@@ -60,5 +60,7 @@ namespace Math
 			currentV[iMinAxis] += vStep[iMinAxis];
 			rayT[iMinAxis] += rayIncrement[iMinAxis];
 		}
+
+		return true;
 	}
 }

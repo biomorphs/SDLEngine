@@ -23,8 +23,8 @@ namespace Vox
 		ModelRaymarcherParams()		{ }
 		~ModelRaymarcherParams()	{ }
 
-		glm::vec3& VoxelPosition() const;
-		typename const ModelType::VoxDataType VoxelData() const;
+		glm::vec3 VoxelPosition() const;
+		typename const ModelType::VoxelDataType VoxelData() const;
 
 	protected:
 		ModelRaymarcherParams(ModelDataReader<ModelType>* reader, const glm::ivec3& block, const Math::Box3& blockBounds,

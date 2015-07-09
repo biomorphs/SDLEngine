@@ -50,6 +50,8 @@ namespace SDE
 		bool Tick();			// All passes are drawn here
 		void PostShutdown();	// Device + window shutdown here
 
+		inline void SetClearColour(const glm::vec4& c) { m_clearColour = c; }
+
 	private:
 		InitialisationParams m_initParams;
 		glm::vec4 m_clearColour;
