@@ -43,14 +43,14 @@ namespace Vox
 				ZAxisNegative,
 			};
 			glm::vec3 m_vertices[4];
-			typename ModelType::BlockType::ClumpType::VoxelDataType m_sourceData;
+			typename ModelType::VoxDataType m_sourceData;
 			NormalDirection m_normal;
 		};
 		typename std::vector<QuadDescriptor>::const_iterator Begin() const { return m_quads.begin(); }
 		typename std::vector<QuadDescriptor>::const_iterator End() const { return m_quads.end(); }
 
 	private:
-		typedef typename ModelType::BlockType::ClumpType::VoxelDataType MaskType;
+		typedef typename ModelType::VoxDataType MaskType;
 		struct QuadBuildParameters	// Passed to BuildQuad, used to avoid massive parameter list
 		{
 			glm::vec3 m_blockOrigin;
@@ -62,16 +62,15 @@ namespace Vox
 			glm::ivec3 m_sampleAxes;
 			bool m_backFace;
 			typename QuadDescriptor::NormalDirection m_normal;
-			typename ModelType::BlockType::ClumpType::VoxelDataType m_sourceVoxel;
+			typename ModelType::VoxDataType m_sourceVoxel;
 		};
 		
-		void InitialiseSliceMasks();
 		void ResetSliceMasks();
 		void ClearSliceMask(std::vector<MaskType>&mask, int32_t u, int32_t v, int32_t uMax, int32_t vMax);
 		MaskType& MaskVal(std::vector<MaskType>&mask, int32_t u, int32_t v);
 		const MaskType& MaskVal(const std::vector<MaskType>&mask, int32_t u, int32_t v) const;
 
-		void ExtractMeshesAlongAxis(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump, int32_t sliceAxis);
+		void ExtractMeshesAlongAxis(const glm::ivec3& blockIndex, const glm::ivec3& startVoxel, const glm::ivec3& endVoxel, int32_t sliceAxis);
 		void ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace, int32_t sliceAxis);
 		void CalculateMergedQuadsFromMask(const std::vector<MaskType>& mask, MaskType sourceVoxel, int32_t u, int32_t v, int32_t& quadEndU, int32_t& quadEndV);
 		void BuildQuad(const QuadBuildParameters& params);

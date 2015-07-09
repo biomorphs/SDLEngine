@@ -16,6 +16,9 @@
     <ClInclude Include="public\vox\clump.h" />
     <ClInclude Include="public\vox\greedy_quad_extractor.h" />
     <ClInclude Include="public\vox\model.h" />
+    <ClInclude Include="public\vox\model_area_data_writer.h" />
+    <ClInclude Include="public\vox\model_data_reader.h" />
+    <ClInclude Include="public\vox\model_data_writer.h" />
     <ClInclude Include="public\vox\model_ray_marcher.h" />
     <ClInclude Include="public\vox\paged_blocks.h" />
     <ClInclude Include="public\vox\simple_quad_extractor.h" />
@@ -24,6 +27,9 @@
     <None Include="public\vox\block.inl" />
     <None Include="public\vox\greedy_quad_extractor.inl" />
     <None Include="public\vox\model.inl" />
+    <None Include="public\vox\model_area_data_writer.inl" />
+    <None Include="public\vox\model_data_reader.inl" />
+    <None Include="public\vox\model_data_writer.inl" />
     <None Include="public\vox\model_ray_marcher.inl" />
     <None Include="public\vox\paged_blocks.inl" />
     <None Include="public\vox\simple_quad_extractor.inl" />

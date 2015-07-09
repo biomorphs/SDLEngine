@@ -3,6 +3,8 @@ SDLEngine
 Matt Hoyle
 */
 
+#include "model_data_reader.h"
+
 namespace Vox
 {
 	template<class ModelType>
@@ -11,7 +13,7 @@ namespace Vox
 	{
 		// slice masks can be allocated straight awey, since we just need to handle
 		// voxels per block * 2 (one mask per direction for a slice)
-		const size_t voxelsPerBlock = ModelType::c_clumpsPerBlock * 2;
+		const size_t voxelsPerBlock = ModelType::BlockType::VoxelDimensions;
 		m_sliceMaskPositive.resize(voxelsPerBlock * voxelsPerBlock);
 		m_sliceMaskNegative.resize(voxelsPerBlock * voxelsPerBlock);
 	}
@@ -32,10 +34,10 @@ namespace Vox
 	template<class ModelType>
 	void GreedyQuadExtractor<ModelType>::ClearSliceMask(std::vector<MaskType>&mask, int32_t u, int32_t v, int32_t uMax, int32_t vMax)
 	{
-		SDE_ASSERT(u >= 0 && u < ModelType::c_clumpsPerBlock * 2);
-		SDE_ASSERT(v >= 0 && v < ModelType::c_clumpsPerBlock * 2);
-		SDE_ASSERT(uMax >= u && uMax <= ModelType::c_clumpsPerBlock * 2);
-		SDE_ASSERT(vMax >= v && vMax <= ModelType::c_clumpsPerBlock * 2);
+		SDE_ASSERT(u >= 0 && u < ModelType::BlockType::VoxelDimensions);
+		SDE_ASSERT(v >= 0 && v < ModelType::BlockType::VoxelDimensions);
+		SDE_ASSERT(uMax >= u && uMax <= ModelType::BlockType::VoxelDimensions);
+		SDE_ASSERT(vMax >= v && vMax <= ModelType::BlockType::VoxelDimensions);
 		for (int32_t vv = v;vv < vMax;++vv)
 		{
 			memset(&MaskVal(mask,u,vv), 0, sizeof(MaskType) * (uMax - u));
@@ -45,26 +47,24 @@ namespace Vox
 	template<class ModelType>
 	typename GreedyQuadExtractor<ModelType>::MaskType& GreedyQuadExtractor<ModelType>::MaskVal(std::vector<MaskType>&mask, int32_t u, int32_t v)
 	{
-		SDE_ASSERT(u >= 0 && u < ModelType::c_clumpsPerBlock * 2);
-		SDE_ASSERT(v >= 0 && v < ModelType::c_clumpsPerBlock * 2);
-		const size_t voxelsPerBlock = ModelType::c_clumpsPerBlock * 2;
-		return mask[u + (v * voxelsPerBlock)];
+		SDE_ASSERT(u >= 0 && u < ModelType::BlockType::VoxelDimensions);
+		SDE_ASSERT(v >= 0 && v < ModelType::BlockType::VoxelDimensions);
+		return mask[u + (v * ModelType::BlockType::VoxelDimensions)];
 	}
 
 	template<class ModelType>
 	const typename GreedyQuadExtractor<ModelType>::MaskType& GreedyQuadExtractor<ModelType>::MaskVal(const std::vector<MaskType>&mask, int32_t u, int32_t v) const
 	{
-		SDE_ASSERT(u >= 0 && u < ModelType::c_clumpsPerBlock * 2);
-		SDE_ASSERT(v >= 0 && v < ModelType::c_clumpsPerBlock * 2);
-		const size_t voxelsPerBlock = ModelType::c_clumpsPerBlock * 2;
-		return mask[u + (v * voxelsPerBlock)];
+		SDE_ASSERT(u >= 0 && u < ModelType::BlockType::VoxelDimensions);
+		SDE_ASSERT(v >= 0 && v < ModelType::BlockType::VoxelDimensions);
+		return mask[u + (v * ModelType::BlockType::VoxelDimensions)];
 	}
 
 	template<class ModelType>
 	void GreedyQuadExtractor<ModelType>::CalculateMergedQuadsFromMask(const std::vector<MaskType>& mask, MaskType sourceVoxel, int32_t u, int32_t v, int32_t& quadEndU, int32_t& quadEndV)
 	{
-		const int32_t c_maxMask = typename ModelType::c_clumpsPerBlock * 2;
-		GreedyQuadVoxelInterpreter::Interpreter<ModelType::BlockType::ClumpType::VoxelDataType> voxInterpreter;
+		const int32_t c_maxMask = ModelType::BlockType::VoxelDimensions;
+		GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxDataType> voxInterpreter;
 
 		// we run across the u axis, until we can't merge any more
 		int32_t endU, endV;
@@ -129,14 +129,14 @@ namespace Vox
 	void GreedyQuadExtractor<ModelType>::ProcessMaskAndBuildQuads(const glm::ivec3& blockIndex, int32_t slice, std::vector<MaskType>&mask, bool backFace, int32_t sliceAxis)
 	{
 		QuadBuildParameters quadParameters;
-		quadParameters.m_blockOrigin = glm::vec3(blockIndex) * (m_targetModel.GetVoxelSize() * (2.0f * ModelType::c_clumpsPerBlock));
+		quadParameters.m_blockOrigin = glm::vec3(blockIndex) * m_targetModel.GetBlockSize();
 		quadParameters.m_slice = slice;
 		quadParameters.m_backFace = backFace;
 		quadParameters.m_sampleAxes = glm::ivec3((sliceAxis + 1) % 3, (sliceAxis + 2) % 3, sliceAxis);
 		quadParameters.m_normal = static_cast<QuadDescriptor::NormalDirection>((sliceAxis * 2) + (backFace ? 1 : 0));
 		
-		GreedyQuadVoxelInterpreter::Interpreter<ModelType::BlockType::ClumpType::VoxelDataType> voxInterpreter;
-		const int32_t c_maxMask = typename ModelType::c_clumpsPerBlock * 2;
+		GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxDataType> voxInterpreter;
+		const int32_t c_maxMask = ModelType::BlockType::VoxelDimensions;
 		for (int32_t v = 0; v < c_maxMask; ++v)
 		{
 			for (int32_t u = 0; u < c_maxMask; ++u)
@@ -164,42 +164,41 @@ namespace Vox
 	}
 
 	template<class ModelType>
-	void GreedyQuadExtractor<ModelType>::ExtractMeshesAlongAxis(const glm::ivec3& blockIndex, const glm::ivec3& startClump, const glm::ivec3& endClump, int32_t sliceAxis)
+	void GreedyQuadExtractor<ModelType>::ExtractMeshesAlongAxis(const glm::ivec3& blockIndex, const glm::ivec3& startVoxel, const glm::ivec3& endVoxel, int32_t sliceAxis)
 	{
-		ModelType::ModelDataAccessor dataAccessor(m_targetModel);
+		ModelDataReader<ModelType> dataReader(m_targetModel);
 
-		if (dataAccessor.GetBlockAt(blockIndex) == nullptr)	// skip blocks with no data
+		if (!dataReader.HasBlockData(blockIndex))	// skip blocks with no data
 		{
 			return;
 		}
 
-		const glm::ivec3 voxelStartIndices = startClump * 2;
-		const glm::ivec3 voxelEndIndices = endClump * 2;
 		const int32_t uAxis = (sliceAxis + 1) % 3;
 		const int32_t vAxis = (sliceAxis + 2) % 3;
 		glm::ivec3 sampleIndex(0);				// loops through slice,v,u, represents current voxel index
 		glm::ivec3 neighbourDirection(0);		// used to shift coordinates when getting neighbours
 		neighbourDirection[sliceAxis] = 1;
-		for (sampleIndex[sliceAxis] = voxelStartIndices[sliceAxis]; sampleIndex[sliceAxis] < voxelEndIndices[sliceAxis]; ++sampleIndex[sliceAxis])
+		for (sampleIndex[sliceAxis] = startVoxel[sliceAxis]; sampleIndex[sliceAxis] < endVoxel[sliceAxis]; ++sampleIndex[sliceAxis])
 		{
 			bool processBlockData = false;
 			ResetSliceMasks();
-			for (sampleIndex[vAxis] = voxelStartIndices[vAxis]; sampleIndex[vAxis] < voxelEndIndices[vAxis]; ++sampleIndex[vAxis])
+			for (sampleIndex[vAxis] = startVoxel[vAxis]; sampleIndex[vAxis] < endVoxel[vAxis]; ++sampleIndex[vAxis])
 			{
-				for (sampleIndex[uAxis] = voxelStartIndices[uAxis]; sampleIndex[uAxis] < voxelEndIndices[uAxis]; ++sampleIndex[uAxis])
+				for (sampleIndex[uAxis] = startVoxel[uAxis]; sampleIndex[uAxis] < endVoxel[uAxis]; ++sampleIndex[uAxis])
 				{
 					const glm::ivec3 voxelIndex(sampleIndex.x, sampleIndex.y, sampleIndex.z);
 
 					// get the voxel, as well as its neighbours
-					GreedyQuadVoxelInterpreter::Interpreter<ModelType::BlockType::ClumpType::VoxelDataType> voxInterpreter;
-					ModelType::BlockType::ClumpType::VoxelDataType thisVoxel = dataAccessor.GetVoxelAt(blockIndex, voxelIndex);
+					GreedyQuadVoxelInterpreter::Interpreter<ModelType::VoxDataType> voxInterpreter;
+					ModelType::VoxDataType thisVoxel = dataReader.VoxelAt(blockIndex, voxelIndex);
 					if (!voxInterpreter.ShouldAddQuad(thisVoxel))
 					{
 						continue;
 					}
-					ModelType::BlockType::ClumpType::VoxelDataType voxelData[2];
-					voxelData[0] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, -neighbourDirection);
-					voxelData[1] = dataAccessor.GetVoxelNeighbour(blockIndex, voxelIndex, neighbourDirection);
+					ModelType::VoxDataType voxelData[2];
+					voxelData[0] = dataReader.VoxelNeighbour(blockIndex, voxelIndex, -neighbourDirection);
+					voxelData[1] = dataReader.VoxelNeighbour(blockIndex, voxelIndex, neighbourDirection);
+
 					// now determine whether a quad should be here for each direction
 					if(!voxInterpreter.ShouldAddQuad(voxelData[0]))
 					{
@@ -238,16 +237,15 @@ namespace Vox
 			{
 				for (int32_t bz = blockStartIndices.z; bz <= blockEndIndices.z; ++bz)
 				{
-					// calculate clump area we are interested in
+					// calculate voxel area we are interested in
 					glm::ivec3 blockIndex(bx, by, bz);
-					glm::ivec3 clumpStartIndices;
-					glm::ivec3 clumpEndIndices;
-					m_targetModel.GetClumpIterationParameters(blockIndex, modelSpaceBounds, clumpStartIndices, clumpEndIndices);
+					glm::ivec3 voxelStartIndices, voxelEndIndices;
+					m_targetModel.GetVoxelIterationParameters(blockIndex, modelSpaceBounds, voxelStartIndices, voxelEndIndices);
 
 					// extract quads for each axis
-					ExtractMeshesAlongAxis(blockIndex, clumpStartIndices, clumpEndIndices, 0);
-					ExtractMeshesAlongAxis(blockIndex, clumpStartIndices, clumpEndIndices, 1);
-					ExtractMeshesAlongAxis(blockIndex, clumpStartIndices, clumpEndIndices, 2);
+					ExtractMeshesAlongAxis(blockIndex, voxelStartIndices, voxelEndIndices, 0);
+					ExtractMeshesAlongAxis(blockIndex, voxelStartIndices, voxelEndIndices, 1);
+					ExtractMeshesAlongAxis(blockIndex, voxelStartIndices, voxelEndIndices, 2);
 				}
 			}
 		}

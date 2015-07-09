@@ -5,44 +5,37 @@ Matt Hoyle
 
 #include "math/dda.h"
 #include "math/intersections.h"
+#include "model_data_reader.h"
 
 namespace Vox
 {
 	namespace Internal
 	{
 		template< class ModelType>
-		class ModelClumpRaymarcher
+		class ModelVoxelRaymarcher
 		{
 		public:
-			ModelClumpRaymarcher(ModelType& target, typename ModelType::ClumpDataAccessor& accessor, const glm::ivec3& blockIndex,
-								 typename ModelRaymarcher<ModelType>::ClumpIterator& iterator)
-				: m_accessor(accessor)
-				, m_blockIndex(blockIndex)
+			ModelVoxelRaymarcher(ModelRaymarcherParams<ModelType>& params,
+								 typename ModelRaymarcher<ModelType>::VoxelIterator& iterator)
+				: m_params(params)
 				, m_iterator(iterator)
-				, m_target(target)
 			{
-				m_blockOrigin = (glm::vec3(m_blockIndex) * m_target.GetBlockSize());
 			}
 
 			bool OnDDAIntersection(const glm::ivec3& p)
 			{
 				if (glm::all(glm::greaterThanEqual(p, glm::ivec3(0))) &&
-					glm::all(glm::lessThan(p, glm::ivec3(VoxelModel::c_clumpsPerBlock))))
+					glm::all(glm::lessThan(p, glm::ivec3(VoxelModel::BlockType::VoxelDimensions))))
 				{
-					m_accessor.SetClumpIndex(p);
-					const glm::vec3 clumpOrigin = m_blockOrigin + glm::vec3(p) * (m_target.GetVoxelSize() * 2.0f);
-					const glm::vec3 voxelCenter = m_target.GetVoxelSize() * 0.5f;
-					return !m_iterator(m_accessor, clumpOrigin, m_target.GetVoxelSize(), voxelCenter);
+					m_params.m_voxelIndex = p;
+					m_iterator(m_params);
 				}
 				return false;
 			}
 
 		private:
-			typename ModelType::ClumpDataAccessor& m_accessor;
-			typename ModelRaymarcher<ModelType>::ClumpIterator& m_iterator;
-			ModelType& m_target;
-			glm::ivec3 m_blockIndex;
-			glm::vec3 m_blockOrigin;
+			ModelRaymarcherParams<ModelType>& m_params;
+			typename ModelRaymarcher<ModelType>::VoxelIterator& m_iterator;
 		};
 
 		template< class ModelType>
@@ -50,7 +43,7 @@ namespace Vox
 		{
 		public:
 			ModelBlockRaymarcher(ModelType& target, const glm::vec3& rayStart, const glm::vec3& rayEnd, 
-								 typename ModelRaymarcher<ModelType>::ClumpIterator& iterator)
+				typename ModelRaymarcher<ModelType>::VoxelIterator& iterator)
 				: m_target(target)
 				, m_rayStart(rayStart)
 				, m_rayEnd(rayEnd)
@@ -60,15 +53,14 @@ namespace Vox
 
 			bool OnDDAIntersection(const glm::ivec3& p)
 			{
-				ModelType::ModelDataAccessor accessor(m_target);
+				ModelDataReader<ModelType> accessor(m_target);
 				if (accessor.HasBlockData(p))
 				{
-					ModelType::ClumpDataAccessor clumpAccessor(&m_target, p);
-
 					const auto voxelSize = m_target.GetVoxelSize();
 					const auto blockSize = m_target.GetBlockSize();
 					const auto blockStartCoord = glm::vec3(p) * blockSize;
 					const auto blockEndCoord = blockStartCoord + blockSize;
+					const Math::Box3 blockBounds(blockStartCoord, blockEndCoord);
 
 					// Calculate where this ray lands in block-space using ray-AABB intersection points
 					float rayHitNear = 0.0f, rayHitFar = 0.0f;
@@ -82,9 +74,11 @@ namespace Vox
 					blockRayStart -= blockStartCoord;
 					blockRayEnd -= blockStartCoord;
 
-					// Run DDA for this block at clump resolution
-					ModelClumpRaymarcher<ModelType> clumpRaymarcher(m_target, clumpAccessor, p, m_it);
-					Math::DDAIntersect(blockRayStart, blockRayEnd, m_target.GetVoxelSize() * 2.0f, clumpRaymarcher);
+					ModelRaymarcherParams<ModelType> params(&accessor, p, blockBounds, voxelSize);
+
+					// Run DDA for this block at voxel resolution
+					ModelVoxelRaymarcher<ModelType> voxelRaymarch(params, m_it);
+					Math::DDAIntersect(blockRayStart, blockRayEnd, voxelSize, voxelRaymarch);
 				}
 				return false;	// We can't stop the DDA here since there may be more intersecting blocks
 			}
@@ -93,8 +87,20 @@ namespace Vox
 			ModelType& m_target;
 			glm::vec3 m_rayStart;
 			glm::vec3 m_rayEnd;
-			typename ModelRaymarcher<ModelType>::ClumpIterator& m_it;
+			typename ModelRaymarcher<ModelType>::VoxelIterator& m_it;
 		};
+	}
+
+	template< class ModelType>
+	inline glm::vec3& ModelRaymarcherParams<ModelType>::VoxelPosition() const
+	{
+		return m_blockBounds.Min() + (glm::vec3(m_voxelIndex) * m_voxelSize) + (m_voxelSize * 0.5f);
+	}
+
+	template< class ModelType>
+	inline typename const ModelType::VoxDataType ModelRaymarcherParams<ModelType>::VoxelData() const
+	{
+		return m_reader->VoxelAt(m_blockIndex, m_voxelIndex);
 	}
 
 	template< class ModelType>
@@ -109,7 +115,7 @@ namespace Vox
 	}
 
 	template< class ModelType>
-	void ModelRaymarcher<ModelType>::Raymarch(const glm::vec3& rayStart, const glm::vec3& rayEnd, ClumpIterator iterator)
+	void ModelRaymarcher<ModelType>::Raymarch(const glm::vec3& rayStart, const glm::vec3& rayEnd, VoxelIterator iterator)
 	{
 		// First we run DDA at block resolution, which gives us all potentially
 		// intersecting blocks.

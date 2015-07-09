@@ -24,7 +24,8 @@ namespace Vox
 		typedef Clump<DataType> ClumpType;
 		enum
 		{
-			BlockDimensions = t_clumpDimensions
+			BlockDimensions = t_clumpDimensions,
+			VoxelDimensions = t_clumpDimensions * 2,
 		};
 
 		// Clump access (in clump coords)

@@ -24,7 +24,7 @@ namespace Vox
 		const BlockType* BlockAt(const glm::ivec3& coords) const;
 
 		// Clump accoessors (in clump coords).
-		typename BlockType::ClumpType* ClumpAt(const glm::ivec3& coords);
+		typename BlockType::ClumpType* ClumpAt(const glm::ivec3& coords);	// TODO - DELETE
 
 		// Voxel accessors (dito)
 		typename BlockType::ClumpType::VoxelDataType* VoxelAt(const glm::ivec3& coords);

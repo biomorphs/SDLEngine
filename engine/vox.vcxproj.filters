@@ -30,6 +30,15 @@
     <ClInclude Include="public\vox\model_ray_marcher.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\vox\model_data_reader.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\vox\model_data_writer.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\vox\model_area_data_writer.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="public\vox\block.inl">
@@ -48,6 +57,15 @@
       <Filter>public</Filter>
     </None>
     <None Include="public\vox\model_ray_marcher.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\vox\model_data_reader.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\vox\model_data_writer.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\vox\model_area_data_writer.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>
