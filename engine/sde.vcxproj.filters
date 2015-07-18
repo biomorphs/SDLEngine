@@ -33,6 +33,12 @@
     <ClInclude Include="public\sde\job_queue.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\sde\render_2d.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\sde\font_asset.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\sde\debug_camera_controller.cpp">
@@ -54,6 +60,9 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\sde\job_system.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\sde\font_asset.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>
