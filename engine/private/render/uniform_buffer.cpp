@@ -17,6 +17,13 @@ namespace Render
 	void UniformBuffer::SetValue(const char* name, const Texture* tex)
 	{
 		const uint32_t hash = Core::StringHashing::GetHash(name);
-		m_textureSamplers[hash] = tex->GetHandle();
+		if (tex->IsArray())
+		{
+			m_textureArraySamplers[hash] = tex->GetHandle();
+		}
+		else
+		{
+			m_textureSamplers[hash] = tex->GetHandle();
+		}
 	}
 }

@@ -4,6 +4,7 @@ Matt Hoyle
 */
 #pragma once
 #include "kernel/base_types.h"
+#include <vector>
 
 namespace Render
 {
@@ -14,12 +15,18 @@ namespace Render
 		Texture();
 		~Texture();
 
-		bool Create(const TextureSource& src);
+		bool Create(const std::vector<TextureSource>& src);
 		void Destroy();
 
 		inline uint32_t GetHandle() const { return m_handle; }
+		inline bool IsArray() const { return m_isArray; }
 
 	private:
+		bool CreateSimpleTexture(const TextureSource& src);
+		bool CreateArrayTexture(const std::vector<TextureSource>& src);
+		bool ValidateSource(const std::vector<TextureSource>& src);
+
+		bool m_isArray;
 		uint32_t m_handle;
 	};
 }

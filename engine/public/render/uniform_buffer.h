@@ -23,9 +23,11 @@ namespace Render
 
 		const std::unordered_map<uint32_t, glm::vec4>& Vec4Values() const { return m_vec4Values; }
 		const std::unordered_map<uint32_t, uint32_t>& Samplers() const { return m_textureSamplers; }
+		const std::unordered_map<uint32_t, uint32_t>& ArraySamplers() const { return m_textureArraySamplers; }
 		
 	private:
 		std::unordered_map<uint32_t, glm::vec4> m_vec4Values;
 		std::unordered_map<uint32_t, uint32_t> m_textureSamplers;
+		std::unordered_map<uint32_t, uint32_t> m_textureArraySamplers;
 	};
 }

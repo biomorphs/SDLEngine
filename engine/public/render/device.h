@@ -35,6 +35,7 @@ namespace Render
 		void SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix);
 		void SetUniformValue(uint32_t uniformHandle, const glm::vec4& val);
 		void SetSampler(uint32_t uniformHandle, uint32_t textureHandle, uint32_t textureUnit);
+		void SetArraySampler(uint32_t uniformHandle, uint32_t textureHandle, uint32_t textureUnit);
 		void BindShaderProgram(const ShaderProgram& program);
 		void BindVertexArray(const VertexArray& srcArray);
 		void DrawPrimitives(PrimitiveType primitive, uint32_t vertexStart, uint32_t vertexCount);

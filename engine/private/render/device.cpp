@@ -118,6 +118,23 @@ namespace Render
 		SDE_RENDER_PROCESS_GL_ERRORS("glClear");
 	}
 
+	void Device::SetArraySampler(uint32_t uniformHandle, uint32_t textureHandle, uint32_t textureUnit)
+	{
+		// gl is a bit wierd, it uses texture units bound to samplers, so we need to both
+		// set the active texture for the specified unit, then bind the sampler to that unit
+		SDE_ASSERT(uniformHandle != -1);
+		SDE_ASSERT(textureHandle != 0);
+
+		glActiveTexture(GL_TEXTURE0 + textureUnit);
+		SDE_RENDER_PROCESS_GL_ERRORS("glActiveTexture");
+
+		glBindTexture(GL_TEXTURE_2D_ARRAY, textureHandle);
+		SDE_RENDER_PROCESS_GL_ERRORS("glBindTexture");
+
+		glUniform1i(uniformHandle, textureUnit);
+		SDE_RENDER_PROCESS_GL_ERRORS("glUniform1i");
+	}
+
 	void Device::SetSampler(uint32_t uniformHandle, uint32_t textureHandle, uint32_t textureUnit)
 	{
 		// gl is a bit wierd, it uses texture units bound to samplers, so we need to both

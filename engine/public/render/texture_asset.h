@@ -29,7 +29,6 @@ namespace Render
 
 	private:
 		bool Load(const rapidjson::Value& assetNode, const Assets::AssetDatabase& db) override;
-		std::string m_textureSourcePath;
 		std::unique_ptr<Texture> m_renderTexture;
 	};
 }

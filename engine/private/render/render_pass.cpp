@@ -48,6 +48,13 @@ namespace Render
 			auto uniformHandle = p.GetUniformHandle(it.first);
 			d.SetSampler(uniformHandle, it.second, textureUnit++);
 		}
+
+		for (auto& it : uniforms.ArraySamplers())
+		{
+			// Find the uniform handle in the program
+			auto uniformHandle = p.GetUniformHandle(it.first);
+			d.SetArraySampler(uniformHandle, it.second, textureUnit++);
+		}
 	}
 
 	void RenderPass::RenderAll(Device& device)
