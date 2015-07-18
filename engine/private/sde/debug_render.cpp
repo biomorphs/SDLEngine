@@ -64,9 +64,11 @@ namespace SDE
 			SDE_LOGC(SDE, "Failed to create debug render shader program: %s", compileResult.c_str());
 			return false;
 		}
+		m_shader->AddUniform("MVP");
+
 		m_material = std::make_unique<Render::Material>();
 		m_material->SetShaderProgram(m_shader.get());
-		m_material->GlobalDefinitions().m_mvpUniformHandle = m_shader->GetUniformHandle("MVP");
+
 		return true;
 	}
 

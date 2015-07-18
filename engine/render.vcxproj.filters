@@ -57,6 +57,15 @@
     <ClInclude Include="public\render\shader_program_asset.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\dds_loader.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\texture_source.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\uniform_buffer.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\window.cpp">
@@ -95,9 +104,18 @@
     <ClCompile Include="private\render\shader_program_asset.cpp">
       <Filter>private</Filter>
     </ClCompile>
+    <ClCompile Include="private\render\dds_loader.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\uniform_buffer.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="public\render\camera.inl">
+      <Filter>public</Filter>
+    </None>
+    <None Include="public\render\texture_source.inl">
       <Filter>public</Filter>
     </None>
   </ItemGroup>

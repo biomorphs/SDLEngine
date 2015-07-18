@@ -8,6 +8,7 @@ Matt Hoyle
 #include "shader_program_asset.h"
 #include "shader_program.h"
 #include "assets/asset_database.h"
+#include <glm.hpp>
 
 namespace Render
 {
@@ -27,6 +28,11 @@ namespace Render
 	{
 	}
 
+	void ParseVec4(const char* buffer, glm::vec4& result)
+	{
+		sscanf_s(buffer, "%f,%f,%f,%f", &result.x, &result.y, &result.z, &result.w);
+	}
+
 	bool MaterialAsset::Load(const rapidjson::Value& assetNode, const Assets::AssetDatabase& db)
 	{
 		auto shaderProgramMember = assetNode.FindMember("shader_program");
@@ -37,16 +43,27 @@ namespace Render
 		m_shaderProgramAsset = db.GetAsset(m_shaderProgramId);
 		SDE_ASSERT(m_shaderProgramAsset != nullptr);
 
-		// the render material needs to know the shader param IDs for global data
-		// it is stored in the shader program asset
-		ShaderProgramAsset* program = static_cast<ShaderProgramAsset*>(m_shaderProgramAsset.get());
-		const std::string& mvpUniformName = program->GetMVPUniformName();
-		uint32_t mvpHandle = program->GetShaderProgram()->GetUniformHandle(mvpUniformName.c_str());
-		
 		// set up the render material
+		ShaderProgramAsset* program = static_cast<ShaderProgramAsset*>(m_shaderProgramAsset.get());
 		m_renderMaterial = std::make_unique<Material>();
 		m_renderMaterial->SetShaderProgram(program->GetShaderProgram());
-		m_renderMaterial->GlobalDefinitions().m_mvpUniformHandle = mvpHandle;
+
+		// Parse the uniforms
+		auto& uniformsVec4 = assetNode.FindMember("uniforms_vec4");
+		if (uniformsVec4 != assetNode.MemberEnd())
+		{
+			SDE_ASSERT(uniformsVec4->value.IsObject());
+			for (auto uni = uniformsVec4->value.MemberBegin();
+				uni != uniformsVec4->value.MemberEnd();
+				++uni)
+			{
+				const char* name = uni->name.GetString();
+				const char* valueStr = uni->value.GetString();
+				glm::vec4 value(0.0f);
+				ParseVec4(valueStr, value);
+				m_renderMaterial->GetUniforms().SetValue(name, value);
+			}
+		}
 
 		return true;
 	}

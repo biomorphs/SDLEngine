@@ -5,6 +5,7 @@ Matt Hoyle
 #include "render_pass.h"
 #include "device.h"
 #include "material.h"
+#include "shader_program.h"
 #include "mesh.h"
 
 namespace Render
@@ -30,13 +31,26 @@ namespace Render
 		d.SetBackfaceCulling(m_renderState.m_backfaceCullEnabled, m_renderState.m_frontFaceOrderCCW);
 	}
 
+	void RenderPass::ApplyMaterialUniforms(Device& d, const ShaderProgram& p, const Material& m)
+	{
+		auto& uniforms = m.GetUniforms();
+		for (auto& it : uniforms.Vec4Values())
+		{
+			// Find the uniform handle in the program
+			auto uniformHandle = p.GetUniformHandle(it.first);
+			d.SetUniformValue(uniformHandle, it.second);
+		}
+	}
+
 	void RenderPass::RenderAll(Device& device)
 	{
 		// Shadow current state to save driver overhead
 		const Mesh* currentMesh = nullptr;
 		const ShaderProgram* currentProgram = nullptr;
+		const Material* currentMaterial = nullptr;
 		const glm::mat4 projectionMatrix = m_camera.ProjectionMatrix();
 		const glm::mat4 viewMatrix = m_camera.ViewMatrix();
+		uint32_t mvpHandle = -1;
 		ApplyRenderState(device);	// Apply any global render state
 		for (auto it : m_instances)
 		{
@@ -52,13 +66,19 @@ namespace Render
 			if (theShader != currentProgram)
 			{
 				currentProgram = theShader;
+				mvpHandle = currentProgram->GetUniformHandle("MVP");	// global param handles updated per program
 				device.BindShaderProgram(*theShader);
 			}
 
+			if(theMaterial != currentMaterial)
+			{
+				currentMaterial = theMaterial;
+				ApplyMaterialUniforms(device, *currentProgram, *theMaterial);
+			}
+
 			// set any global params
-			const auto& globalMaterialParams = theMaterial->GlobalDefinitions();
 			const glm::mat4 modelViewProjection = projectionMatrix * viewMatrix * modelTransform;
-			device.SetUniformValue(globalMaterialParams.m_mvpUniformHandle, modelViewProjection);
+			device.SetUniformValue(mvpHandle, modelViewProjection);
 
 			if (theMesh != currentMesh)
 			{

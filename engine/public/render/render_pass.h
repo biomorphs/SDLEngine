@@ -10,6 +10,8 @@ Matt Hoyle
 namespace Render
 {
 	class Device;
+	class ShaderProgram;
+	class Material;
 
 	struct RenderState
 	{
@@ -37,6 +39,7 @@ namespace Render
 
 	private:
 		void ApplyRenderState(Device& d);
+		void ApplyMaterialUniforms(Device& d, const ShaderProgram& p, const Material& m);
 
 		RenderState m_renderState;
 		Camera m_camera;

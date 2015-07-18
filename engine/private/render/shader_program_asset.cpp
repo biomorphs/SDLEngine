@@ -54,12 +54,16 @@ namespace Render
 			return false;
 		}
 
-		// load any global parameter names
-		auto globalParamsObject = assetNode.FindMember("globaluniforms");
-		SDE_ASSERT(globalParamsObject != assetNode.MemberEnd() && globalParamsObject->value.IsObject());
-		auto mvpUniformMember = globalParamsObject->value.FindMember("modelviewproj");
-		SDE_ASSERT(mvpUniformMember != globalParamsObject->value.MemberEnd());
-		m_mvpUniformName = mvpUniformMember->value.GetString();
+		// load any parameter names
+		auto uniformsObject = assetNode.FindMember("uniforms");
+		SDE_ASSERT(uniformsObject != assetNode.MemberEnd() && uniformsObject->value.IsArray());
+		for (auto docNode = uniformsObject->value.Begin();
+			 docNode != uniformsObject->value.End();
+			 ++docNode)
+		{
+			const char* uniformName = docNode->GetString();
+			m_program->AddUniform(uniformName);
+		}
 
 		return true;
 	}

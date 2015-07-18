@@ -21,7 +21,7 @@ namespace Core
 	void SystemManager::RegisterSystem(const char* systemName, ISystem* theSystem)
 	{
 		SDE_ASSERT(theSystem);
-		uint32_t nameHash = StringHashing::GetHash(systemName);
+		uint32_t nameHash = Core::StringHashing::GetHash(systemName);
 		SDE_ASSERT(m_systemMap.find(nameHash) == m_systemMap.end(), "A system already exists with this name");
 		m_systems.push_back(theSystem);
 		m_systemMap.insert(SystemPair(nameHash, theSystem));
@@ -29,7 +29,7 @@ namespace Core
 
 	ISystem* SystemManager::GetSystem(const char* systemName)
 	{
-		SystemMap::iterator it = m_systemMap.find(StringHashing::GetHash(systemName));
+		SystemMap::iterator it = m_systemMap.find(Core::StringHashing::GetHash(systemName));
 		if (it != m_systemMap.end())
 		{
 			return it->second;

@@ -14,6 +14,7 @@
   <ItemGroup>
     <ClInclude Include="private\render\utils.h" />
     <ClInclude Include="public\render\camera.h" />
+    <ClInclude Include="public\render\dds_loader.h" />
     <ClInclude Include="public\render\device.h" />
     <ClInclude Include="public\render\material.h" />
     <ClInclude Include="public\render\material_asset.h" />
@@ -26,10 +27,13 @@
     <ClInclude Include="public\render\shader_binary.h" />
     <ClInclude Include="public\render\shader_program.h" />
     <ClInclude Include="public\render\shader_program_asset.h" />
+    <ClInclude Include="public\render\texture_source.h" />
+    <ClInclude Include="public\render\uniform_buffer.h" />
     <ClInclude Include="public\render\vertex_array.h" />
     <ClInclude Include="public\render\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="private\render\dds_loader.cpp" />
     <ClCompile Include="private\render\device.cpp" />
     <ClCompile Include="private\render\material.cpp" />
     <ClCompile Include="private\render\material_asset.cpp" />
@@ -40,10 +44,12 @@
     <ClCompile Include="private\render\shader_binary.cpp" />
     <ClCompile Include="private\render\shader_program.cpp" />
     <ClCompile Include="private\render\shader_program_asset.cpp" />
+    <ClCompile Include="private\render\uniform_buffer.cpp" />
     <ClCompile Include="private\render\vertex_array.cpp" />
     <ClCompile Include="private\render\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="public\render\camera.inl" />
+    <None Include="public\render\texture_source.inl" />
   </ItemGroup>
 </Project>

@@ -125,6 +125,13 @@ namespace Render
 		SDE_RENDER_PROCESS_GL_ERRORS("glUniformMatrix4fv");
 	}
 
+	void Device::SetUniformValue(uint32_t uniformHandle, const glm::vec4& val)
+	{
+		SDE_ASSERT(uniformHandle != -1);
+		glUniform4fv(uniformHandle, 1, glm::value_ptr(val));
+		SDE_RENDER_PROCESS_GL_ERRORS("glUniform4fv");
+	}
+
 	void Device::BindShaderProgram(const ShaderProgram& program)
 	{
 		glUseProgram(program.GetHandle());

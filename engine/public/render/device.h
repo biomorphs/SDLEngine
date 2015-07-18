@@ -33,6 +33,7 @@ namespace Render
 		void SetDepthState(bool enabled, bool writeEnabled);
 		void ClearColourDepthTarget(const glm::vec4& colour);
 		void SetUniformValue(uint32_t uniformHandle, const glm::mat4& matrix);
+		void SetUniformValue(uint32_t uniformHandle, const glm::vec4& val);
 		void BindShaderProgram(const ShaderProgram& program);
 		void BindVertexArray(const VertexArray& srcArray);
 		void DrawPrimitives(PrimitiveType primitive, uint32_t vertexStart, uint32_t vertexCount);

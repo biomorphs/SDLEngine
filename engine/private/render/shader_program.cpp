@@ -5,6 +5,7 @@ Matt Hoyle
 #include "shader_program.h"
 #include "shader_binary.h"
 #include "utils.h"
+#include "core/string_hashing.h"
 
 namespace Render
 {
@@ -50,12 +51,29 @@ namespace Render
 		return linkResult == GL_TRUE;
 	}
 
-	uint32_t ShaderProgram::GetUniformHandle(const char* uniformName) const
+	void ShaderProgram::AddUniform(const char* uniformName)
 	{
 		SDE_ASSERT(m_handle != 0);
+		const uint32_t uniformHash = Core::StringHashing::GetHash(uniformName);
+#ifdef SDE_DEBUG
+		SDE_ASSERT(m_uniformHandles.find(uniformHash) == m_uniformHandles.end());
+#endif
 		uint32_t result = glGetUniformLocation(m_handle, uniformName);
 		SDE_RENDER_PROCESS_GL_ERRORS("glGetUniformLocation");
-		return result;
+		m_uniformHandles[uniformHash] = result;
+	}
+
+	uint32_t ShaderProgram::GetUniformHandle(uint32_t nameHash) const
+	{
+		auto it = m_uniformHandles.find(nameHash);
+		SDE_ASSERT(it != m_uniformHandles.end());
+		return it->second;
+	}
+
+	uint32_t ShaderProgram::GetUniformHandle(const char* uniformName) const
+	{
+		const uint32_t uniformHash = Core::StringHashing::GetHash(uniformName);
+		return GetUniformHandle(uniformHash);
 	}
 
 	void ShaderProgram::Destroy()

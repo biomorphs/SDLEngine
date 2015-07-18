@@ -6,20 +6,23 @@ Matt Hoyle
 
 #include "kernel/base_types.h"
 
-class StringHashing
+namespace Core
 {
-public:
-	// djb2 hash
-	static inline uint32_t GetHash(const char* str)
+	class StringHashing
 	{
-		uint32_t hash = 5381;
-
-		int c=0;
-		while( c = *str++ )
+	public:
+		// djb2 hash
+		static inline uint32_t GetHash(const char* str)
 		{
-			hash = ((hash << 5) + hash) + c;
-		}
+			uint32_t hash = 5381;
 
-		return hash;
-	}
-};
+			int c = 0;
+			while (c = *str++)
+			{
+				hash = ((hash << 5) + hash) + c;
+			}
+
+			return hash;
+		}
+	};
+}
