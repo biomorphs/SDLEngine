@@ -20,6 +20,9 @@ namespace SDE
 		virtual ~DebugCameraController();
 		virtual void ApplyToCamera(Render::Camera& target);
 		void Update(const Input::ControllerRawState& controllerState, double timeDelta);
+		inline void SetPosition(const glm::vec3& pos) { m_position = pos; }
+		inline void SetYaw(float y) { m_yaw = y; }
+		inline void SetPitch(float p) { m_pitch = p; }
 
 	private:
 		glm::vec3 m_position;

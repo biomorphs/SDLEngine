@@ -66,6 +66,12 @@
     <ClInclude Include="public\render\uniform_buffer.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\render\texture.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="public\render\texture_asset.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\render\window.cpp">
@@ -108,6 +114,12 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\render\uniform_buffer.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\render\texture.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="public\render\texture_asset.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

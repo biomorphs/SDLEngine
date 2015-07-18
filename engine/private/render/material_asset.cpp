@@ -6,7 +6,7 @@ Matt Hoyle
 #include "material_asset.h"
 #include "material.h"
 #include "shader_program_asset.h"
-#include "shader_program.h"
+#include "texture_asset.h"
 #include "assets/asset_database.h"
 #include <glm.hpp>
 
@@ -62,6 +62,22 @@ namespace Render
 				glm::vec4 value(0.0f);
 				ParseVec4(valueStr, value);
 				m_renderMaterial->GetUniforms().SetValue(name, value);
+			}
+		}
+
+		auto& uniformsTextures = assetNode.FindMember("uniforms_textures");
+		if (uniformsTextures != assetNode.MemberEnd())
+		{
+			SDE_ASSERT(uniformsTextures->value.IsObject());
+			for (auto uni = uniformsTextures->value.MemberBegin();
+			uni != uniformsTextures->value.MemberEnd();
+				++uni)
+			{
+				const char* samplerName = uni->name.GetString();
+				auto theTexture = db.GetAsset(uni->value.GetString());
+				SDE_ASSERT(theTexture != nullptr);
+				auto textureAsset = static_cast<TextureAsset*>(theTexture.get());
+				m_renderMaterial->GetUniforms().SetValue(samplerName, textureAsset->GetTexture());
 			}
 		}
 
