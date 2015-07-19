@@ -13,6 +13,7 @@ namespace Render
 	class Mesh;
 	class Material;
 	class RenderPass;
+	class Camera;
 }
 
 namespace SDE
@@ -26,7 +27,7 @@ namespace SDE
 
 		bool Create(uint32_t maxVertices = 16384);
 		void Destroy();
-		void PushToRenderPass(Render::RenderPass& targetPass);
+		void PushToRenderPass(Render::Camera& camera, Render::RenderPass& targetPass);
 
 		void AddLine(const glm::vec3& v0, const glm::vec3& v1);
 		void AddLine(const glm::vec3& v0, const glm::vec3& v1, const glm::vec4& c0, const glm::vec4& c1);

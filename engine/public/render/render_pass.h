@@ -12,15 +12,23 @@ namespace Render
 	class Device;
 	class ShaderProgram;
 	class Material;
+	class UniformBuffer;
 
 	struct RenderState
 	{
 		RenderState()
-			: m_depthTestEnabled(true), m_depthWritingEnabled(true), m_backfaceCullEnabled(true), m_frontFaceOrderCCW(true) {}
+			: m_depthTestEnabled(true)
+			, m_depthWritingEnabled(true)
+			, m_backfaceCullEnabled(true)
+			, m_frontFaceOrderCCW(true)
+			, m_blendingEnabled(false) 
+			, m_scissorEnabled(false) {}
 		bool m_depthTestEnabled;
 		bool m_depthWritingEnabled;
 		bool m_backfaceCullEnabled;
 		bool m_frontFaceOrderCCW;
+		bool m_blendingEnabled;
+		bool m_scissorEnabled;
 	};
 
 	// Contains everything required to draw a set of instances in one pass
@@ -30,19 +38,18 @@ namespace Render
 		RenderPass();
 		~RenderPass();
 
-		inline Camera& GetCamera()	{ return m_camera; }
 		inline RenderState& GetRenderState() { return m_renderState; }
 
-		inline void AddInstance(const Mesh* mesh, const glm::mat4& transform)	{ m_instances.AddInstance(mesh, transform); }
+		void AddInstance(const Mesh* mesh);
+		void AddInstance(const Mesh* mesh, UniformBuffer&& instanceUniforms);
 		void Reset();
 		void RenderAll(Device& device);
 
 	private:
 		void ApplyRenderState(Device& d);
-		void ApplyMaterialUniforms(Device& d, const ShaderProgram& p, const Material& m);
+		void ApplyUniforms(Device& d, const ShaderProgram& p, const UniformBuffer& uniforms);
 
 		RenderState m_renderState;
-		Camera m_camera;
 		InstanceQueue m_instances;
 	};
 }

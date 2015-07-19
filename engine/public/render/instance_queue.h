@@ -9,6 +9,8 @@ Matt Hoyle
 
 namespace Render
 {
+	class UniformBuffer;
+
 	// This contains a queue of mesh instances to be rendered
 	class InstanceQueue
 	{
@@ -19,9 +21,14 @@ namespace Render
 		}
 		~InstanceQueue()	{ }
 
-		inline void AddInstance(const Mesh* mesh, const glm::mat4& transform)
+		inline void AddInstance(const Mesh* mesh, uint32_t startChunk, uint32_t endChunk)
 		{
-			m_instances.emplace_back(mesh, transform);
+			m_instances.emplace_back(mesh, startChunk, endChunk);
+		}
+
+		inline void AddInstance(const Mesh* mesh, uint32_t startChunk, uint32_t endChunk, UniformBuffer&& uniforms)
+		{
+			m_instances.emplace_back(mesh, startChunk, endChunk, std::move(uniforms));
 		}
 
 		inline void Clear()

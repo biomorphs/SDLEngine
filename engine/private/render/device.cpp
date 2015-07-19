@@ -77,6 +77,37 @@ namespace Render
 		}
 	}
 
+	void Device::SetScissorEnabled(bool enabled)
+	{
+		if (enabled)
+		{
+			glEnable(GL_SCISSOR_TEST);
+		}
+		else
+		{
+			glDisable(GL_SCISSOR_TEST);
+		}
+	}
+
+	void Device::SetBlending(bool enabled)
+	{
+		if (enabled)
+		{
+			// Todo - separate
+			glEnable(GL_BLEND);
+			SDE_RENDER_PROCESS_GL_ERRORS("glEnable");
+			glBlendEquation(GL_FUNC_ADD);
+			SDE_RENDER_PROCESS_GL_ERRORS("glBlendEquation");
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			SDE_RENDER_PROCESS_GL_ERRORS("glBlendFunc");
+		}
+		else
+		{
+			glDisable(GL_BLEND);
+			SDE_RENDER_PROCESS_GL_ERRORS("glDisable");
+		}
+	}
+
 	void Device::SetBackfaceCulling(bool enabled, bool frontFaceCCW)
 	{
 		if (enabled)

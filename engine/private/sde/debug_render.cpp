@@ -227,12 +227,15 @@ namespace SDE
 		m_linesToDraw.clear();
 	}
 
-	void DebugRender::PushToRenderPass(Render::RenderPass& targetPass)
+	void DebugRender::PushToRenderPass(Render::Camera& camera, Render::RenderPass& targetPass)
 	{
 		PushLinesToMesh(*m_renderMesh[m_currentWriteMesh]);
 		
 		// render newly written mesh
-		targetPass.AddInstance(m_renderMesh[m_currentWriteMesh].get(), glm::mat4());
+		const glm::mat4 mvp = camera.ProjectionMatrix() * camera.ViewMatrix();
+		Render::UniformBuffer instanceUniforms;
+		instanceUniforms.SetValue("MVP", mvp);
+		targetPass.AddInstance(m_renderMesh[m_currentWriteMesh].get(), std::move(instanceUniforms));
 		
 		// flip buffers
 		m_currentWriteMesh = (m_currentWriteMesh + 1) & 1;

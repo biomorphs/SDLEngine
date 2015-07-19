@@ -8,22 +8,27 @@ Matt Hoyle
 
 namespace Render
 {
+	void UniformBuffer::SetValue(const char* name, const glm::mat4& value)
+	{
+		const uint32_t hash = Core::StringHashing::GetHash(name);
+		m_mat4Values[hash] = value;
+	}
+
 	void UniformBuffer::SetValue(const char* name, const glm::vec4& value)
 	{
 		const uint32_t hash = Core::StringHashing::GetHash(name);
 		m_vec4Values[hash] = value;
 	}
 
-	void UniformBuffer::SetValue(const char* name, const Texture* tex)
+	void UniformBuffer::SetSampler(const char* name, uint32_t handle)
 	{
 		const uint32_t hash = Core::StringHashing::GetHash(name);
-		if (tex->IsArray())
-		{
-			m_textureArraySamplers[hash] = tex->GetHandle();
-		}
-		else
-		{
-			m_textureSamplers[hash] = tex->GetHandle();
-		}
+		m_textureSamplers[hash] = handle;
+	}
+
+	void UniformBuffer::SetArraySampler(const char* name, uint32_t handle)
+	{
+		const uint32_t hash = Core::StringHashing::GetHash(name);
+		m_textureArraySamplers[hash] = handle;
 	}
 }

@@ -22,8 +22,9 @@ namespace Render
 		inline bool IsArray() const { return m_isArray; }
 
 	private:
-		bool CreateSimpleTexture(const TextureSource& src);
-		bool CreateArrayTexture(const std::vector<TextureSource>& src);
+		bool CreateSimpleUncompressedTexture(const TextureSource& src);
+		bool CreateSimpleCompressedTexture(const TextureSource& src);
+		bool CreateArrayCompressedTexture(const std::vector<TextureSource>& src);
 		bool ValidateSource(const std::vector<TextureSource>& src);
 
 		bool m_isArray;

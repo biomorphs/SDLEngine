@@ -29,12 +29,20 @@ namespace Render
 	{
 		d.SetDepthState(m_renderState.m_depthTestEnabled, m_renderState.m_depthWritingEnabled);
 		d.SetBackfaceCulling(m_renderState.m_backfaceCullEnabled, m_renderState.m_frontFaceOrderCCW);
+		d.SetBlending(m_renderState.m_blendingEnabled);
+		d.SetScissorEnabled(m_renderState.m_scissorEnabled);
 	}
 
-	void RenderPass::ApplyMaterialUniforms(Device& d, const ShaderProgram& p, const Material& m)
+	void RenderPass::ApplyUniforms(Device& d, const ShaderProgram& p, const UniformBuffer& uniforms)
 	{
-		auto& uniforms = m.GetUniforms();
 		for (auto& it : uniforms.Vec4Values())
+		{
+			// Find the uniform handle in the program
+			auto uniformHandle = p.GetUniformHandle(it.first);
+			d.SetUniformValue(uniformHandle, it.second);
+		}
+
+		for (auto& it : uniforms.Mat4Values())
 		{
 			// Find the uniform handle in the program
 			auto uniformHandle = p.GetUniformHandle(it.first);
@@ -57,19 +65,26 @@ namespace Render
 		}
 	}
 
+	void RenderPass::AddInstance(const Mesh* mesh)
+	{ 
+		m_instances.AddInstance(mesh, 0, (uint32_t)mesh->GetChunks().size()); 
+	}
+
+	void RenderPass::AddInstance(const Mesh* mesh, UniformBuffer&& instanceUniforms)
+	{
+		m_instances.AddInstance(mesh, 0, (uint32_t)mesh->GetChunks().size(), std::move(instanceUniforms));
+	}
+
 	void RenderPass::RenderAll(Device& device)
 	{
 		// Shadow current state to save driver overhead
 		const Mesh* currentMesh = nullptr;
 		const ShaderProgram* currentProgram = nullptr;
 		const Material* currentMaterial = nullptr;
-		const glm::mat4 projectionMatrix = m_camera.ProjectionMatrix();
-		const glm::mat4 viewMatrix = m_camera.ViewMatrix();
-		uint32_t mvpHandle = -1;
+
 		ApplyRenderState(device);	// Apply any global render state
 		for (auto it : m_instances)
 		{
-			const glm::mat4& modelTransform = it.GetTransform();
 			const Mesh* theMesh = it.GetMesh();
 			if (theMesh == nullptr)
 			{
@@ -81,19 +96,17 @@ namespace Render
 			if (theShader != currentProgram)
 			{
 				currentProgram = theShader;
-				mvpHandle = currentProgram->GetUniformHandle("MVP");	// global param handles updated per program
 				device.BindShaderProgram(*theShader);
 			}
 
 			if(theMaterial != currentMaterial)
 			{
 				currentMaterial = theMaterial;
-				ApplyMaterialUniforms(device, *currentProgram, *theMaterial);
+				ApplyUniforms(device, *currentProgram, theMaterial->GetUniforms());
 			}
 
-			// set any global params
-			const glm::mat4 modelViewProjection = projectionMatrix * viewMatrix * modelTransform;
-			device.SetUniformValue(mvpHandle, modelViewProjection);
+			// apply instance uniforms
+			ApplyUniforms(device, *currentProgram, it.GetUniforms());
 
 			if (theMesh != currentMesh)
 			{
@@ -101,9 +114,10 @@ namespace Render
 				device.BindVertexArray(theMesh->GetVertexArray());
 			}
 
-			for (auto it : theMesh->GetChunks())
+			for (uint32_t c = it.GetStartChunk(); c < it.GetEndChunk(); ++c)
 			{
-				device.DrawPrimitives(it.m_primitiveType, it.m_firstVertex, it.m_vertexCount);
+				const auto& thisChunk = theMesh->GetChunks()[c];
+				device.DrawPrimitives(thisChunk.m_primitiveType, thisChunk.m_firstVertex, thisChunk.m_vertexCount);
 			}
 		}
 	}

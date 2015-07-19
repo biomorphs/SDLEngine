@@ -7,6 +7,7 @@ Matt Hoyle
 #include "material.h"
 #include "shader_program_asset.h"
 #include "texture_asset.h"
+#include "texture.h"
 #include "assets/asset_database.h"
 #include <glm.hpp>
 
@@ -77,7 +78,14 @@ namespace Render
 				auto theTexture = db.GetAsset(uni->value.GetString());
 				SDE_ASSERT(theTexture != nullptr);
 				auto textureAsset = static_cast<TextureAsset*>(theTexture.get());
-				m_renderMaterial->GetUniforms().SetValue(samplerName, textureAsset->GetTexture());
+				if (textureAsset->GetTexture()->IsArray())
+				{
+					m_renderMaterial->GetUniforms().SetArraySampler(samplerName, textureAsset->GetTexture()->GetHandle());
+				}
+				else
+				{
+					m_renderMaterial->GetUniforms().SetSampler(samplerName, textureAsset->GetTexture()->GetHandle());
+				}
 			}
 		}
 
