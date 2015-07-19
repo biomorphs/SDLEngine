@@ -33,9 +33,6 @@
     <ClInclude Include="public\sde\job_queue.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="public\sde\render_2d.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="public\sde\font_asset.h">
       <Filter>public</Filter>
     </ClInclude>

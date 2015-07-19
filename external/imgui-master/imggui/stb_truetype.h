@@ -1854,8 +1854,8 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
 static void stbtt__handle_clipped_edge(float *scanline, int x, stbtt__active_edge *e, float x0, float y0, float x1, float y1)
 {
    if (y0 == y1) return;
-   assert(y0 < y1);
-   assert(e->sy <= e->ey);
+   STBTT_assert(y0 < y1);
+   STBTT_assert(e->sy <= e->ey);
    if (y0 > e->ey) return;
    if (y1 < e->sy) return;
    if (y0 < e->sy) {
@@ -1868,22 +1868,32 @@ static void stbtt__handle_clipped_edge(float *scanline, int x, stbtt__active_edg
    }
 
    if (x0 == x)
-      assert(x1 <= x+1);
-   else if (x0 == x+1)
-      assert(x1 >= x);
+   {
+	   STBTT_assert(x1 <= x + 1);
+   }
+   else if (x0 == x + 1)
+   {
+	   STBTT_assert(x1 >= x);
+   }
    else if (x0 <= x)
-      assert(x1 <= x);
-   else if (x0 >= x+1)
-      assert(x1 >= x+1);
+   {
+	   STBTT_assert(x1 <= x);
+   }
+   else if (x0 >= x + 1)
+   {
+	   STBTT_assert(x1 >= x + 1);
+   }
    else
-      assert(x1 >= x && x1 <= x+1);
+   {
+	   STBTT_assert(x1 >= x && x1 <= x + 1);
+   }
 
    if (x0 <= x && x1 <= x)
       scanline[x] += e->direction * (y1-y0);
    else if (x0 >= x+1 && x1 >= x+1)
       ;
    else {
-      assert(x0 >= x && x0 <= x+1 && x1 >= x && x1 <= x+1);
+	   STBTT_assert(x0 >= x && x0 <= x+1 && x1 >= x && x1 <= x+1);
       scanline[x] += e->direction * (y1-y0) * (1-((x0-x)+(x1-x))/2); // coverage = 1 - average x position
    }
 }
@@ -1896,7 +1906,7 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
       // brute force every pixel
 
       // compute intersection points with top & bottom
-      assert(e->ey >= y_top);
+	   STBTT_assert(e->ey >= y_top);
 
       if (e->fdx == 0) {
          float x0 = e->fx;
@@ -1915,7 +1925,7 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
          float x_top, x_bottom;
          float y0,y1;
          float dy = e->fdy;
-         assert(e->sy <= y_bottom && e->ey >= y_top);
+		 STBTT_assert(e->sy <= y_bottom && e->ey >= y_top);
 
          // compute endpoints of line segment clipped to this scanline (if the
          // line segment starts on this scanline. x0 is the intersection of the
@@ -1943,7 +1953,7 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
                // simple case, only spans one pixel
                int x = (int) x_top;
                height = y1 - y0;
-               assert(x >= 0 && x < len);
+			   STBTT_assert(x >= 0 && x < len);
                scanline[x] += e->direction * (1-((x_top - x) + (x_bottom-x))/2)  * height;
                scanline_fill[x] += e->direction * height; // everything right of this pixel is filled
             } else {
@@ -1980,7 +1990,7 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
                }
                y_crossing += dy * (x2 - (x1+1));
 
-               assert(fabs(area) <= 1.01f);
+			   STBTT_assert(fabs(area) <= 1.01f);
 
                scanline[x2] += area + sign * (1-((x2-x2)+(x_bottom-x2))/2) * (y1-y_crossing);
 
@@ -2082,7 +2092,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
       // insert all edges that start before the bottom of this scanline
       while (e->y0 <= scan_y_bottom) {
          stbtt__active_edge *z = stbtt__new_active(&hh, e, off_x, scan_y_top, userdata);
-         assert(z->ey >= scan_y_top);
+		 STBTT_assert(z->ey >= scan_y_top);
          // insert at front
          z->next = active;
          active = z;

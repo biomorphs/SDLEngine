@@ -20,7 +20,6 @@
     <ClInclude Include="public\sde\job.h" />
     <ClInclude Include="public\sde\job_queue.h" />
     <ClInclude Include="public\sde\job_system.h" />
-    <ClInclude Include="public\sde\render_2d.h" />
     <ClInclude Include="public\sde\render_system.h" />
   </ItemGroup>
   <ItemGroup>

@@ -6,8 +6,10 @@
 
 #pragma once
 
+#include "kernel/assert.h"
+
 //---- Define assertion handler. Defaults to calling assert().
-//#define IM_ASSERT(_EXPR)  MyAssert(_EXPR)
+#define IM_ASSERT(_EXPR)  SDE_ASSERT(_EXPR)
 
 //---- Define attributes of all API symbols declarations, e.g. for DLL under Windows.
 //#define IMGUI_API __declspec( dllexport )
@@ -20,8 +22,8 @@
 //#define IMGUI_INCLUDE_IMGUI_USER_H
 
 //---- Don't implement default handlers for Windows (so as not to link with OpenClipboard() and others Win32 functions)
-//#define IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCS
-//#define IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS
+#define IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCS
+#define IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCS
 
 //---- Don't implement help and test window functionality (ShowUserGuide()/ShowStyleEditor()/ShowTestWindow() methods will be empty)
 //#define IMGUI_DISABLE_TEST_WINDOWS

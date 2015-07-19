@@ -6,6 +6,7 @@ Matt Hoyle
 #include "kernel/assert.h"
 #include <SDL_joystick.h>
 #include <SDL_gamecontroller.h>
+#include <SDL_mouse.h>
 
 namespace Input
 {
@@ -21,13 +22,37 @@ namespace Input
 	bool InputSystem::Tick()
 	{
 		UpdateControllerState();
+		UpdateMouseState();
 		return true;
+	}
+
+	const MouseRawState& InputSystem::MouseState() const
+	{
+		return m_mouseState;
 	}
 
 	const ControllerRawState* InputSystem::ControllerState(uint32_t padIndex) const
 	{
 		SDE_ASSERT(padIndex < m_controllers.size());
 		return &m_controllers[padIndex].m_padState;
+	}
+
+	void InputSystem::UpdateMouseState()
+	{
+		m_mouseState.m_buttonState = 0;
+		uint32_t mouseButtons = SDL_GetMouseState(&m_mouseState.m_cursorX, &m_mouseState.m_cursorY);
+		if (mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT))
+		{
+			m_mouseState.m_buttonState |= MouseButtons::LeftButton;
+		}
+		if (mouseButtons & SDL_BUTTON(SDL_BUTTON_MIDDLE))
+		{
+			m_mouseState.m_buttonState |= MouseButtons::MiddleButton;
+		}
+		if (mouseButtons & SDL_BUTTON(SDL_BUTTON_RIGHT))
+		{
+			m_mouseState.m_buttonState |= MouseButtons::RightButton;
+		}
 	}
 
 	void InputSystem::UpdateControllerState()

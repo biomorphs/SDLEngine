@@ -7,6 +7,9 @@
     <ClInclude Include="public\input\input_system.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\input\mouse_state.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="public">

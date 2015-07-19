@@ -14,6 +14,7 @@
   <ItemGroup>
     <ClInclude Include="public\input\controller_state.h" />
     <ClInclude Include="public\input\input_system.h" />
+    <ClInclude Include="public\input\mouse_state.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\input\input_system.cpp" />
