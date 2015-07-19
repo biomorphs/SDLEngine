@@ -28,8 +28,8 @@ namespace Render
 			return GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
 		case TextureSource::Format::DXT5:
 			return GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-		case TextureSource::Format::AlphaOneByte:
-			return GL_R8;
+		case TextureSource::Format::RGBA8:
+			return GL_RGBA8;
 		default:
 			return -1;
 		}
@@ -39,7 +39,7 @@ namespace Render
 	{
 		switch (f)
 		{
-		case TextureSource::Format::AlphaOneByte:
+		case TextureSource::Format::RGBA8:
 			return GL_UNSIGNED_BYTE;
 		default:
 			return -1;
@@ -50,8 +50,8 @@ namespace Render
 	{
 		switch (f)
 		{
-		case TextureSource::Format::AlphaOneByte:
-			return GL_ALPHA;
+		case TextureSource::Format::RGBA8:
+			return GL_RGBA;
 		default:
 			return -1;
 		}
@@ -200,9 +200,9 @@ namespace Render
 		mipBuffer.clear();
 
 		// This should probably be tied to sampler state, but for now we will just use bilinear for everything
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		SDE_RENDER_PROCESS_GL_ERRORS_RET("glTexParameteri");
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipCount > 1 ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, mipCount > 1 ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 		SDE_RENDER_PROCESS_GL_ERRORS_RET("glTexParameteri");
 
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);

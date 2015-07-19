@@ -75,6 +75,11 @@ namespace Render
 		m_instances.AddInstance(mesh, 0, (uint32_t)mesh->GetChunks().size(), std::move(instanceUniforms));
 	}
 
+	void RenderPass::AddInstance(const Mesh* mesh, UniformBuffer&& instanceUniforms, uint32_t startChunk, uint32_t endChunk)
+	{
+		m_instances.AddInstance(mesh, startChunk, endChunk, std::move(instanceUniforms));
+	}
+
 	void RenderPass::RenderAll(Device& device)
 	{
 		// Shadow current state to save driver overhead

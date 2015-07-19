@@ -42,6 +42,7 @@ namespace Render
 
 		void AddInstance(const Mesh* mesh);
 		void AddInstance(const Mesh* mesh, UniformBuffer&& instanceUniforms);
+		void AddInstance(const Mesh* mesh, UniformBuffer&& instanceUniforms, uint32_t startChunk, uint32_t endChunk);
 		void Reset();
 		void RenderAll(Device& device);
 

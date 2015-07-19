@@ -17,7 +17,7 @@ namespace Render
 			DXT1,
 			DXT3,
 			DXT5,
-			AlphaOneByte,
+			RGBA8,
 			Unsupported
 		};
 		struct MipDesc
