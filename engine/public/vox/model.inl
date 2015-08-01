@@ -7,6 +7,7 @@ namespace Vox
 {
 	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	Model<DataType, t_blockDimensionVx, BlockAllocator>::Model()
+		: m_totalBounds(glm::vec3(100000.0f), glm::vec3(-100000.0f))
 	{
 	}
 
@@ -78,5 +79,26 @@ namespace Vox
 				}
 			}
 		}
+	}
+
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	const typename Model<DataType, t_blockDimensionVx, BlockAllocator>::BlockType* 
+		Model<DataType, t_blockDimensionVx, BlockAllocator>::BlockAt(const glm::ivec3& blockIndex) const
+	{
+		return m_voxelData.BlockAt(blockIndex); 
+	}
+
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	typename Model<DataType, t_blockDimensionVx, BlockAllocator>::BlockType* 
+		Model<DataType, t_blockDimensionVx, BlockAllocator>::BlockAt(const glm::ivec3& blockIndex, bool createNew)
+	{ 
+		if (createNew)
+		{
+			const glm::vec3 blockBoundsMin = m_blockDimensions * glm::vec3(blockIndex);
+			const glm::vec3 blockBoundsMax = blockBoundsMin + m_blockDimensions;
+			m_totalBounds.Min() = glm::min(m_totalBounds.Min(), blockBoundsMin);
+			m_totalBounds.Max() = glm::max(m_totalBounds.Max(), blockBoundsMax);
+		}
+		return m_voxelData.BlockAt(blockIndex, createNew); 
 	}
 }

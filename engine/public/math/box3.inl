@@ -21,7 +21,6 @@ namespace Math
 	{
 		m_min = min;
 		m_max = max;
-		Validate();
 	}
 
 	inline Box3::Box3(const Box3& other)

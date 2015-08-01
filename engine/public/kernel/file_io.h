@@ -14,5 +14,6 @@ namespace Kernel
 	{
 		bool LoadTextFromFile(const char* fileSrcPath, std::string& resultBuffer);
 		bool LoadBinaryFile(const char* fileSrcPath, std::vector<uint8_t>& resultBuffer);
+		bool SaveBinaryFile(const char* filePath, const std::vector<uint8_t>& src);
 	}
 }

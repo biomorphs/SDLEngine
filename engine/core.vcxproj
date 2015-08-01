@@ -14,6 +14,7 @@
   <ItemGroup>
     <ClInclude Include="public\core\list.h" />
     <ClInclude Include="public\core\object_pool.h" />
+    <ClInclude Include="public\core\run_length_encoding.h" />
     <ClInclude Include="public\core\shortname.h" />
     <ClInclude Include="public\core\string_hashing.h" />
     <ClInclude Include="public\core\system.h" />
@@ -24,6 +25,7 @@
     <ClInclude Include="public\core\timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="private\core\run_length_encoding.cpp" />
     <ClCompile Include="private\core\system_manager.cpp" />
     <ClCompile Include="private\core\thread_pool.cpp" />
     <ClCompile Include="private\core\timer.cpp" />

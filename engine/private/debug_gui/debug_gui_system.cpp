@@ -62,9 +62,9 @@ namespace DebugGui
 		// Setup inputs
 		const auto& mouseState = m_initParams.m_inputSystem->MouseState();
 		io.MousePos = ImVec2((float)mouseState.m_cursorX, (float)mouseState.m_cursorY);
-		io.MouseDown[0] = mouseState.m_buttonState & Input::MouseButtons::LeftButton;
-		io.MouseDown[1] = mouseState.m_buttonState & Input::MouseButtons::MiddleButton;
-		io.MouseDown[2] = mouseState.m_buttonState & Input::MouseButtons::RightButton;
+		io.MouseDown[0] = (mouseState.m_buttonState & Input::MouseButtons::LeftButton) != 0;
+		io.MouseDown[1] = (mouseState.m_buttonState & Input::MouseButtons::MiddleButton) != 0;
+		io.MouseDown[2] = (mouseState.m_buttonState & Input::MouseButtons::RightButton) != 0;
 	}
 
 	bool DebugGuiSystem::Tick()
@@ -73,6 +73,8 @@ namespace DebugGui
 		ImGui::Text("Hello, world!");
 		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 		ImGui::ColorEdit3("clear color", (float*)&clear_color);
+
+		ImGui::ShowTestWindow();
 
 		m_renderer->RebuildMesh();		// Update UI mesh for last frame
 

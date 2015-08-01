@@ -39,6 +39,9 @@
     <ClInclude Include="public\core\object_pool.h">
       <Filter>public</Filter>
     </ClInclude>
+    <ClInclude Include="public\core\run_length_encoding.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\core\system_manager.cpp">
@@ -48,6 +51,9 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\core\thread_pool.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\core\run_length_encoding.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>
