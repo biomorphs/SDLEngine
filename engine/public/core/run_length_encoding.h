@@ -20,4 +20,13 @@ namespace Core
 		uint8_t m_byteToWrite;
 		int32_t m_repeatCount;
 	};
+
+	class RunLengthDecoder
+	{
+	public:
+		RunLengthDecoder();
+		~RunLengthDecoder();
+		void ReadData(const uint8_t* inBuffer, size_t inBufferSize, std::vector<uint8_t>& outBuffer);
+	private:
+	};
 }

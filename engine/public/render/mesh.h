@@ -43,10 +43,22 @@ namespace Render
 		inline VertexArray& GetVertexArray()						{ return m_vertices; }		
 		inline std::vector<MeshChunk>& GetChunks()					{ return m_chunks; }
 
+		inline size_t TotalVertexBufferBytes() const;
+
 	private:
 		VertexArray m_vertices;
 		const Material* m_material;
 		std::vector<RenderBuffer> m_vertexStreams;
 		std::vector<MeshChunk> m_chunks;
 	};
+
+	inline size_t Mesh::TotalVertexBufferBytes() const
+	{
+		size_t total = 0;
+		for (const auto& stream : m_vertexStreams)
+		{
+			total += stream.GetSize();
+		}
+		return total;
+	}
 }

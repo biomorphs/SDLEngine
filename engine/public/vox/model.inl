@@ -63,6 +63,13 @@ namespace Vox
 	}
 
 	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
+	void Model<DataType, t_blockDimensionVx, BlockAllocator>::RemoveAllBlocks()
+	{
+		m_voxelData.Clear();
+		m_totalBounds = Math::Box3(glm::vec3(100000.0f), glm::vec3(-100000.0f));
+	}
+
+	template< class DataType, uint32_t t_blockDimensionVx, class BlockAllocator >
 	void Model<DataType, t_blockDimensionVx, BlockAllocator>::
 		PreallocateMemory(Math::Box3 modelSpaceBounds)
 	{

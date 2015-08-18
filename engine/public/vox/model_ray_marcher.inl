@@ -74,7 +74,7 @@ namespace Vox
 					blockRayStart -= blockStartCoord;
 					blockRayEnd -= blockStartCoord;
 
-					ModelRaymarcherParams<ModelType> params(&accessor, p, blockBounds, voxelSize);
+					ModelRaymarcherParams<ModelType> params(&accessor, p, blockBounds, voxelSize, m_rayStart, m_rayEnd);
 
 					// Run DDA for this block at voxel resolution
 					ModelVoxelRaymarcher<ModelType> voxelRaymarch(params, m_it);

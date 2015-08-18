@@ -180,7 +180,7 @@ namespace SDE
 		m_linesToDraw.push_back(lineDef);
 	}
 
-	void DebugRender::AddAxisAtPoint(glm::vec3 point, float scale)
+	void DebugRender::AddAxisAtPoint(const glm::vec3& point, float scale)
 	{
 		const glm::vec3 xAxis(scale, 0.0f, 0.0f);
 		const glm::vec3 yAxis(0.0f, scale, 0.0f);

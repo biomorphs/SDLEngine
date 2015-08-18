@@ -119,9 +119,9 @@ namespace Render
 		}		
 	}
 
-	bool MeshBuilder::ShouldRecreateMesh(Mesh& target)
+	bool MeshBuilder::ShouldRecreateMesh(Mesh& target, size_t minVbSize)
 	{
-		const size_t c_maximumWaste = 8 * 1024;
+		const size_t c_maximumWaste = minVbSize;
 		// If the mesh streams match, and the stream buffers are big enough, then we don't need to do anything
 		auto& streams = target.GetStreams();
 		auto& vertexArray = target.GetVertexArray();
@@ -137,7 +137,8 @@ namespace Render
 
 		for (int32_t streamIndex = 0; streamIndex < streams.size(); ++streamIndex)
 		{
-			const auto thisStreamSize = m_streams[streamIndex].m_streamData.size() * sizeof(float);
+			auto thisStreamSize = m_streams[streamIndex].m_streamData.size() * sizeof(float);
+
 			if (streams[streamIndex].GetSize() < thisStreamSize)
 			{
 				return true;
@@ -163,7 +164,7 @@ namespace Render
 		return false;
 	}
 
-	void MeshBuilder::RecreateMesh(Mesh& target)
+	void MeshBuilder::RecreateMesh(Mesh& target, size_t minVbSize)
 	{
 		auto& streams = target.GetStreams();
 		auto& vertexArray = target.GetVertexArray();
@@ -179,7 +180,15 @@ namespace Render
 		{
 			auto& theBuffer = streams[streamIndex];
 			auto streamSize = streamIt.m_streamData.size() * sizeof(float);
-			theBuffer.Create(streamSize, RenderBufferType::VertexData, RenderBufferModification::Static);
+			if (streamSize < minVbSize)
+			{
+				streamSize = minVbSize;
+			}
+
+			// round up stream size to next minVbSize
+			streamSize += (streamSize % minVbSize);
+
+			theBuffer.Create(streamSize, RenderBufferType::VertexData, RenderBufferModification::Dynamic);
 			++streamIndex;
 		}
 
@@ -193,15 +202,15 @@ namespace Render
 		vertexArray.Create();
 	}
 
-	bool MeshBuilder::CreateMesh(Mesh& target)
+	bool MeshBuilder::CreateMesh(Mesh& target, size_t minVbSize)
 	{
 		auto& streams = target.GetStreams();
 		auto& vertexArray = target.GetVertexArray();
 		auto& chunks = target.GetChunks();
 
-		if (ShouldRecreateMesh(target))
+		if (ShouldRecreateMesh(target, minVbSize))
 		{
-			RecreateMesh(target);
+			RecreateMesh(target, minVbSize);
 		}
 
 		// Fill buffers

@@ -26,7 +26,7 @@ namespace Vox
 	inline uint64_t PagedBlocks<BlockType>::TotalVoxelMemory() const
 	{ 
 		return m_blockData.size() * sizeof(typename BlockType::VoxelDataType) *
-			(typename BlockType::BlockDimensions * typename BlockType::BlockDimensions * typename BlockType::BlockDimensions);
+			(typename BlockType::VoxelDimensions * typename BlockType::VoxelDimensions * typename BlockType::VoxelDimensions);
 	}
 
 	template< class BlockType >

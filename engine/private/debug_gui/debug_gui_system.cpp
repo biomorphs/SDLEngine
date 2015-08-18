@@ -67,15 +67,28 @@ namespace DebugGui
 		io.MouseDown[2] = (mouseState.m_buttonState & Input::MouseButtons::RightButton) != 0;
 	}
 
+	void DebugGuiSystem::BeginWindow(bool& windowOpen, const char* windowName)
+	{
+		ImGui::Begin(windowName, &windowOpen, ImGuiWindowFlags_AlwaysAutoResize);
+	}
+
+	void DebugGuiSystem::EndWindow()
+	{
+		ImGui::End();
+	}
+
+	void DebugGuiSystem::Text(const char* txt)
+	{
+		ImGui::Text(txt);
+	}
+
+	void DebugGuiSystem::Separator()
+	{
+		ImGui::Separator();
+	}
+
 	bool DebugGuiSystem::Tick()
 	{
-		float f, clear_color[3];
-		ImGui::Text("Hello, world!");
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-		ImGui::ColorEdit3("clear color", (float*)&clear_color);
-
-		ImGui::ShowTestWindow();
-
 		m_renderer->RebuildMesh();		// Update UI mesh for last frame
 
 		// Submit last frame to renderer

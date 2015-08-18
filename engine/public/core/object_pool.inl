@@ -23,6 +23,33 @@ namespace Core
 	}
 
 	template<class ObjectType>
+	bool ObjectPool<ObjectType>::OwnsPtr(ObjectType* ptr) const
+	{
+		uintptr_t ptrAddr = reinterpret_cast<uintptr_t>(ptr);
+		uintptr_t startAddr = reinterpret_cast<uintptr_t>(m_objectStorage.data());
+		uintptr_t endAddr = reinterpret_cast<uintptr_t>(m_objectStorage.data() + m_objectStorage.size());
+		return ptr != nullptr && (ptrAddr >= startAddr) && (ptrAddr < endAddr);
+	}
+
+	template<class ObjectType>
+	uint32_t ObjectPool<ObjectType>::ObjectsAllocated()
+	{
+		return m_usedList.GetSize();
+	}
+
+	template<class ObjectType>
+	uint32_t ObjectPool<ObjectType>::ObjectsFree()
+	{
+		return m_freeList.GetSize();
+	}
+
+	template<class ObjectType>
+	uint32_t ObjectPool<ObjectType>::PoolSize()
+	{
+		return (uint32_t)m_objectStorage.size();
+	}
+
+	template<class ObjectType>
 	ObjectType* ObjectPool<ObjectType>::Allocate()
 	{
 		SDE_ASSERT(m_usedList.GetSize() + m_freeList.GetSize() == m_objectStorage.size());

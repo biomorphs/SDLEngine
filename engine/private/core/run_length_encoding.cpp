@@ -65,4 +65,28 @@ namespace Core
 
 		m_byteToWrite = firstValue;
 	}
+
+	RunLengthDecoder::RunLengthDecoder()
+	{
+
+	}
+
+	RunLengthDecoder::~RunLengthDecoder()
+	{
+
+	}
+
+	void RunLengthDecoder::ReadData(const uint8_t* inBuffer, size_t inBufferSize, std::vector<uint8_t>& outBuffer)
+	{
+		SDE_ASSERT(inBuffer != nullptr);
+		SDE_ASSERT(inBufferSize > 2);
+
+		for (size_t offs = 0; offs < inBufferSize; offs += 2)
+		{
+			uint8_t repeatCount = inBuffer[offs];
+			uint8_t thisChar = inBuffer[offs + 1];
+			outBuffer.resize(outBuffer.size() + repeatCount);
+			memset(&outBuffer[outBuffer.size() - repeatCount], thisChar, repeatCount);
+		}
+	}
 }

@@ -20,6 +20,10 @@ namespace Core
 		ObjectType* Allocate();
 		ObjectType* Allocate(const ObjectType& other);	// copy-construct
 		void Free(ObjectType* o);
+		bool OwnsPtr(ObjectType* ptr) const;
+		uint32_t ObjectsAllocated();
+		uint32_t ObjectsFree();
+		uint32_t PoolSize();
 
 	private:
 		struct ObjectNodeData

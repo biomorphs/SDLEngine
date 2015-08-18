@@ -33,6 +33,9 @@ namespace Vox
 		glm::vec3 GetVoxelCenterPosition(const glm::ivec3& blockIndex, const glm::ivec3& voxelIndex)  const;
 
 		void PreallocateMemory(Math::Box3 modelSpaceBounds);
+		void RemoveAllBlocks();
+
+		inline uint64_t TotalVoxelMemory() const { return m_voxelData.TotalVoxelMemory(); }
 
 	private:
 		glm::ivec3 ModelspaceToBlockIndices(const glm::vec3& coordinate) const;

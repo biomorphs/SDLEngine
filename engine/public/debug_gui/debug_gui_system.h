@@ -43,6 +43,10 @@ namespace DebugGui
 		virtual bool PostInit() override;
 		virtual bool Tick() override;
 		virtual void Shutdown() override;
+		void BeginWindow(bool& windowOpen, const char* windowName);
+		void EndWindow();
+		void Text(const char* txt);
+		void Separator();
 
 	private:
 		void UpdateImgGuiInputState();

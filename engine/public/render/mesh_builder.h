@@ -39,11 +39,11 @@ namespace Render
 		void EndChunk();
 
 		// Step 5: Mesh creation
-		bool CreateMesh(Mesh& target);
+		bool CreateMesh(Mesh& target, size_t minVbSize = 0);
 
 	private:
-		bool ShouldRecreateMesh(Mesh& target);
-		void RecreateMesh(Mesh& target);
+		bool ShouldRecreateMesh(Mesh& target, size_t minVbSize);
+		void RecreateMesh(Mesh& target, size_t minVbSize);
 
 		struct StreamDesc
 		{
