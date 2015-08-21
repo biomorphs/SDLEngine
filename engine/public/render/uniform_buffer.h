@@ -4,7 +4,7 @@ Matt Hoyle
 */
 #pragma once
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include <unordered_map>
 
 namespace Render

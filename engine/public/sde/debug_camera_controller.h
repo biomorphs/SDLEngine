@@ -3,7 +3,7 @@ SDLEngine
 Matt Hoyle
 */
 #pragma once
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include "camera_controller.h"
 
 namespace Input

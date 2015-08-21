@@ -4,6 +4,7 @@ Matt Hoyle
 */
 #include "debug_gui_system.h"
 #include "debug_gui_render.h"
+#include "graph_data_buffer.h"
 #include "sde/render_system.h"
 #include "render/mesh.h"
 #include "render/shader_binary.h"
@@ -69,7 +70,7 @@ namespace DebugGui
 
 	void DebugGuiSystem::BeginWindow(bool& windowOpen, const char* windowName)
 	{
-		ImGui::Begin(windowName, &windowOpen, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(windowName, &windowOpen, 0);
 	}
 
 	void DebugGuiSystem::EndWindow()
@@ -87,6 +88,18 @@ namespace DebugGui
 		ImGui::Separator();
 	}
 
+	void DebugGuiSystem::GraphLines(const char* label, glm::vec2 size, GraphDataBuffer& buffer)
+	{
+		ImVec2 graphSize(size.x, size.y);
+		ImGui::PlotLines("", buffer.GetValues(), buffer.ValueCount(), 0, label, FLT_MAX, FLT_MAX, graphSize);
+	}
+
+	void DebugGuiSystem::GraphHistogram(const char* label, glm::vec2 size, GraphDataBuffer& buffer)
+	{
+		ImVec2 graphSize(size.x, size.y);
+		ImGui::PlotHistogram("", buffer.GetValues(), buffer.ValueCount(), 0, label, FLT_MAX, FLT_MAX, graphSize);
+	}
+
 	bool DebugGuiSystem::Tick()
 	{
 		m_renderer->RebuildMesh();		// Update UI mesh for last frame
@@ -98,6 +111,8 @@ namespace DebugGui
 		// Start next frame
 		UpdateImgGuiInputState();
 		ImGui::NewFrame();
+
+		ImGui::ShowMetricsWindow();
 
 		return true;
 	}

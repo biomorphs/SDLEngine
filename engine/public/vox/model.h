@@ -6,7 +6,7 @@ Matt Hoyle
 
 #include "paged_blocks.h"
 #include "math/box3.h"
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include <functional>
 
 namespace Vox

@@ -12,8 +12,8 @@ Matt Hoyle
 #include "render/mesh_builder.h"
 #include "render/render_pass.h"
 #include <imggui\imgui.h>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace DebugGui
 {

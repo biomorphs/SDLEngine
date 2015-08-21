@@ -7,7 +7,7 @@ Matt Hoyle
 #include "assets/asset.h"
 #include "assets/asset_factory.h"
 #include <vector>
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 namespace SDE
 {

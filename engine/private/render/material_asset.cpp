@@ -9,7 +9,7 @@ Matt Hoyle
 #include "texture_asset.h"
 #include "texture.h"
 #include "assets/asset_database.h"
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 namespace Render
 {

@@ -10,18 +10,20 @@ Matt Hoyle
 #include "render/mesh.h"
 #include "render/render_pass.h"
 #include "kernel/log.h"
-#include <gtc/type_ptr.hpp>
+#include "kernel/assert.h"
+#include <glm/gtc/type_ptr.hpp>
+#include <algorithm>
 
 namespace SDE
 {
 	static const char* c_vertexShader = "#version 330 core\r\n"
-		"layout(location = 0) in vec3 pos_modelSpace;\r\n"
+		"layout(location = 0) in vec4 pos_modelSpace;\r\n"
 		"layout(location = 1) in vec4 colour;\r\n"
 		"uniform mat4 MVP;\r\n"
 		"out vec4 colourV;\r\n"
 		"void main()\r\n"
 		"{\r\n"
-		"	vec4 v = vec4(pos_modelSpace, 1);\r\n"
+		"	vec4 v = vec4(pos_modelSpace.xyz, 1);\r\n"
 		"	gl_Position = MVP * v;\r\n"
 		"	colourV = colour;\r\n"
 		"}\r\n";
@@ -33,10 +35,18 @@ namespace SDE
 										  "}";
 
 	DebugRender::DebugRender()
+		: m_currentLines(0)
 	{
-		m_linesToDraw.reserve(1024);
-		m_tempWriteBuffers[0].reserve(4 * 1024 * sizeof(float) * 3);
-		m_tempWriteBuffers[1].reserve(4 * 1024 * sizeof(float) * 4);
+		auto deleter = [](glm::vec4* p)
+		{
+			_aligned_free(p);
+		};
+
+		void* rawBuffer = _aligned_malloc(c_maxLines * sizeof(glm::vec4) * 2, 16);
+		m_posBuffer = std::unique_ptr<glm::vec4, decltype(deleter)>((glm::vec4*)rawBuffer, deleter);
+
+		rawBuffer = _aligned_malloc(c_maxLines * sizeof(glm::vec4) * 2, 16);
+		m_colBuffer = std::unique_ptr<glm::vec4, decltype(deleter)>((glm::vec4*)rawBuffer, deleter);
 	}
 
 	DebugRender::~DebugRender()
@@ -72,7 +82,7 @@ namespace SDE
 		return true;
 	}
 
-	bool DebugRender::CreateMesh(uint32_t maxVertices)
+	bool DebugRender::CreateMesh()
 	{
 		for (uint32_t i = 0; i < 2; ++i)
 		{
@@ -85,17 +95,17 @@ namespace SDE
 			// init vertex streams and vertex array
 			streams.resize(2);
 			Render::RenderBuffer &posBuffer = streams[0], &colourBuffer = streams[1];
-			if (!posBuffer.Create(maxVertices * 3 * sizeof(float), Render::RenderBufferType::VertexData, Render::RenderBufferModification::Dynamic))
+			if (!posBuffer.Create(c_maxLines * sizeof(glm::vec4) * 2, Render::RenderBufferType::VertexData, Render::RenderBufferModification::Dynamic))
 			{
 				SDE_LOGC(SDE, "Failed to create debug pos buffer");
 				return false;
 			}
-			if (!colourBuffer.Create(maxVertices * 4 * sizeof(float), Render::RenderBufferType::VertexData, Render::RenderBufferModification::Dynamic))
+			if (!colourBuffer.Create(c_maxLines * sizeof(glm::vec4) * 2, Render::RenderBufferType::VertexData, Render::RenderBufferModification::Dynamic))
 			{
 				SDE_LOGC(SDE, "Failed to create debug colour buffer");
 				return false;
 			}
-			vertexArray.AddBuffer(0, &streams[0], Render::VertexDataType::Float, 3);
+			vertexArray.AddBuffer(0, &streams[0], Render::VertexDataType::Float, 4);
 			vertexArray.AddBuffer(1, &streams[1], Render::VertexDataType::Float, 4);
 			if (!vertexArray.Create())
 			{
@@ -111,7 +121,7 @@ namespace SDE
 		return true;
 	}
 
-	bool DebugRender::Create(uint32_t maxVertices)
+	bool DebugRender::Create()
 	{
 		// Set up the shader and material first
 		if (!CreateMaterial())
@@ -120,7 +130,7 @@ namespace SDE
 			return false;
 		}
 
-		if (!CreateMesh(maxVertices))
+		if (!CreateMesh())
 		{
 			Destroy();
 			return false;
@@ -139,15 +149,23 @@ namespace SDE
 		m_shader = nullptr;
 	}
 
-	void DebugRender::AddLine(const glm::vec3& v0, const glm::vec3& v1)
+	void DebugRender::AddLines(const glm::vec4* v, const glm::vec4* c, uint32_t count)
 	{
-		const glm::vec4 c_colour(1.0f);
-		LineDefinition lineDef;
-		lineDef.m_points[0] = v0;
-		lineDef.m_points[1] = v1;
-		lineDef.m_colours[0] = c_colour;
-		lineDef.m_colours[1] = c_colour;
-		m_linesToDraw.push_back(lineDef);
+		uint32_t toAdd = count;
+		if ((m_currentLines + count) > c_maxLines)
+		{
+			toAdd = c_maxLines - m_currentLines;
+		}
+
+		if (count > 0)
+		{
+			glm::vec4* posData = m_posBuffer.get() + (m_currentLines * 2);
+			glm::vec4* colData = m_colBuffer.get() + (m_currentLines * 2);
+			memcpy(posData, v, toAdd * sizeof(glm::vec4) * 2);
+			memcpy(colData, c, toAdd * sizeof(glm::vec4) * 2);
+			m_currentLines += toAdd;
+		}
+		SDE_ASSERT(m_currentLines < c_maxLines);
 	}
 
 	void DebugRender::AddBox(const glm::vec3& boxCenter, const glm::vec3& boxSize, const glm::vec4& colour)
@@ -156,41 +174,45 @@ namespace SDE
 		const glm::vec3 bl = boxCenter - halfSize;
 		const glm::vec3 tr = boxCenter + halfSize;
 
-		AddLine(glm::vec3(bl.x, bl.y, bl.z), glm::vec3(tr.x, bl.y, bl.z), colour, colour);
-		AddLine(glm::vec3(tr.x, bl.y, bl.z), glm::vec3(tr.x, tr.y, bl.z), colour, colour);
-		AddLine(glm::vec3(tr.x, tr.y, bl.z), glm::vec3(bl.x, tr.y, bl.z), colour, colour);
-		AddLine(glm::vec3(bl.x, tr.y, bl.z), glm::vec3(bl.x, bl.y, bl.z), colour, colour);
-		AddLine(glm::vec3(bl.x, bl.y, tr.z), glm::vec3(tr.x, bl.y, tr.z), colour, colour);
-		AddLine(glm::vec3(tr.x, bl.y, tr.z), glm::vec3(tr.x, tr.y, tr.z), colour, colour);
-		AddLine(glm::vec3(tr.x, tr.y, tr.z), glm::vec3(bl.x, tr.y, tr.z), colour, colour);
-		AddLine(glm::vec3(bl.x, tr.y, tr.z), glm::vec3(bl.x, bl.y, tr.z), colour, colour);
-		AddLine(glm::vec3(bl.x, bl.y, bl.z), glm::vec3(bl.x, bl.y, tr.z), colour, colour);
-		AddLine(glm::vec3(tr.x, bl.y, bl.z), glm::vec3(tr.x, bl.y, tr.z), colour, colour);
-		AddLine(glm::vec3(bl.x, tr.y, bl.z), glm::vec3(bl.x, tr.y, tr.z), colour, colour);
-		AddLine(glm::vec3(tr.x, tr.y, bl.z), glm::vec3(tr.x, tr.y, tr.z), colour, colour);
+		/*AddLine(glm::vec4(bl.x, bl.y, bl.z, 0.0f), glm::vec4(tr.x, bl.y, bl.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(tr.x, bl.y, bl.z, 0.0f), glm::vec4(tr.x, tr.y, bl.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(tr.x, tr.y, bl.z, 0.0f), glm::vec4(bl.x, tr.y, bl.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(bl.x, tr.y, bl.z, 0.0f), glm::vec4(bl.x, bl.y, bl.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(bl.x, bl.y, tr.z, 0.0f), glm::vec4(tr.x, bl.y, tr.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(tr.x, bl.y, tr.z, 0.0f), glm::vec4(tr.x, tr.y, tr.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(tr.x, tr.y, tr.z, 0.0f), glm::vec4(bl.x, tr.y, tr.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(bl.x, tr.y, tr.z, 0.0f), glm::vec4(bl.x, bl.y, tr.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(bl.x, bl.y, bl.z, 0.0f), glm::vec4(bl.x, bl.y, tr.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(tr.x, bl.y, bl.z, 0.0f), glm::vec4(tr.x, bl.y, tr.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(bl.x, tr.y, bl.z, 0.0f), glm::vec4(bl.x, tr.y, tr.z, 0.0f), colour, colour);
+		AddLine(glm::vec4(tr.x, tr.y, bl.z, 0.0f), glm::vec4(tr.x, tr.y, tr.z, 0.0f), colour, colour);*/
 	}
 
-	void DebugRender::AddLine(const glm::vec3& v0, const glm::vec3& v1, const glm::vec4& c0, const glm::vec4& c1)
+	void DebugRender::AddAxisAtPoint(const glm::vec4& point, float scale)
 	{
-		LineDefinition lineDef;
-		lineDef.m_points[0] = v0;
-		lineDef.m_points[1] = v1;
-		lineDef.m_colours[0] = c0;
-		lineDef.m_colours[1] = c1;
-		m_linesToDraw.push_back(lineDef);
-	}
+		__declspec(align(16)) const glm::vec4 c_positions[] = {
+			point, point + glm::vec4(1.0f,0.0f,0.0f,0.0f),
+			point, point + glm::vec4(0.0f,1.0f,0.0f,0.0f),
+			point, point + glm::vec4(0.0f,0.0f,1.0f,0.0f)
+		};
+		__declspec(align(16)) const glm::vec4 c_colours[] = {
+			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
+			glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
+			glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)
+		};
 
-	void DebugRender::AddAxisAtPoint(const glm::vec3& point, float scale)
-	{
-		const glm::vec3 xAxis(scale, 0.0f, 0.0f);
-		const glm::vec3 yAxis(0.0f, scale, 0.0f);
-		const glm::vec3 zAxis(0.0f, 0.0f, scale);
-		const glm::vec4 xColour(1.0f, 0.0f, 0.0f, 1.0f);
-		const glm::vec4 yColour(0.0f, 1.0f, 0.0f, 1.0f);
-		const glm::vec4 zColour(0.0f, 0.0f, 1.0f, 1.0f);
-		AddLine(point, point + xAxis, xColour, xColour);
-		AddLine(point, point + yAxis, yColour, yColour);
-		AddLine(point, point + zAxis, zColour, zColour);
+		const glm::vec4 xAxis(scale, 0.0f, 0.0f, 0.0f);
+		const glm::vec4 yAxis(0.0f, scale, 0.0f, 0.0f);
+		const glm::vec4 zAxis(0.0f, 0.0f, scale, 0.0f);
+		const size_t posCount = sizeof(c_positions) / sizeof(c_positions[0]);
+		const size_t lineCount = posCount / 2;
+
+		__declspec(align(16)) glm::vec4 positions[posCount];
+		positions[0] = point;	positions[1] = point + xAxis;
+		positions[2] = point;	positions[3] = point + yAxis;
+		positions[4] = point;	positions[5] = point + zAxis;
+
+		AddLines(positions, c_colours, lineCount);
 	}
 
 	void DebugRender::PushLinesToMesh(Render::Mesh& target)
@@ -199,32 +221,16 @@ namespace SDE
 		auto& posStream = target.GetStreams()[0];
 		auto& colourStream = target.GetStreams()[1];
 
-		// reset write buffers
-		m_tempWriteBuffers[0].clear();
-		m_tempWriteBuffers[0].reserve(m_linesToDraw.size() * 2 * sizeof(float) * 3);
-		m_tempWriteBuffers[1].clear();
-		m_tempWriteBuffers[1].reserve(m_linesToDraw.size() * 2 * sizeof(float) * 4);
-
-		for (auto& line : m_linesToDraw)
-		{
-			// position
-			m_tempWriteBuffers[0].insert(m_tempWriteBuffers[0].end(), glm::value_ptr(line.m_points[0]), glm::value_ptr(line.m_points[0]) + 3);
-			m_tempWriteBuffers[0].insert(m_tempWriteBuffers[0].end(), glm::value_ptr(line.m_points[1]), glm::value_ptr(line.m_points[1]) + 3);
-			//colour
-			m_tempWriteBuffers[1].insert(m_tempWriteBuffers[1].end(), glm::value_ptr(line.m_colours[0]), glm::value_ptr(line.m_colours[0]) + 4);
-			m_tempWriteBuffers[1].insert(m_tempWriteBuffers[1].end(), glm::value_ptr(line.m_colours[1]), glm::value_ptr(line.m_colours[1]) + 4);
-		}
-
 		// push data to gpu
-		posStream.SetData(0, m_tempWriteBuffers[0].size() * sizeof(float), m_tempWriteBuffers[0].data());
-		colourStream.SetData(0, m_tempWriteBuffers[1].size() * sizeof(float), m_tempWriteBuffers[1].data());
+		posStream.SetData(0, m_currentLines * sizeof(glm::vec4) * 2, m_posBuffer.get());
+		colourStream.SetData(0, m_currentLines * sizeof(glm::vec4) * 2, m_colBuffer.get());
 
 		// update chunk
 		theChunk.m_firstVertex = 0;
-		theChunk.m_vertexCount = (uint32_t)m_linesToDraw.size() * 2;
+		theChunk.m_vertexCount = m_currentLines * 2;
 
 		// remove old lines
-		m_linesToDraw.clear();
+		m_currentLines = 0;
 	}
 
 	void DebugRender::PushToRenderPass(Render::Camera& camera, Render::RenderPass& targetPass)
@@ -232,10 +238,11 @@ namespace SDE
 		PushLinesToMesh(*m_renderMesh[m_currentWriteMesh]);
 		
 		// render newly written mesh
+		auto currentRenderMesh = (m_currentWriteMesh + 1) & 1;
 		const glm::mat4 mvp = camera.ProjectionMatrix() * camera.ViewMatrix();
 		Render::UniformBuffer instanceUniforms;
 		instanceUniforms.SetValue("MVP", mvp);
-		targetPass.AddInstance(m_renderMesh[m_currentWriteMesh].get(), std::move(instanceUniforms));
+		targetPass.AddInstance(m_renderMesh[currentRenderMesh].get(), std::move(instanceUniforms));
 		
 		// flip buffers
 		m_currentWriteMesh = (m_currentWriteMesh + 1) & 1;

@@ -5,7 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include "block.h"
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include <unordered_map>
 
 namespace Vox

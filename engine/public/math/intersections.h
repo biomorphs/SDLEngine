@@ -5,7 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include "box3.h"
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 namespace Math
 {

@@ -9,7 +9,7 @@
   <Import Project="props/library_build.props" />
   <Import Project="props/shared_preprocessor.props" />
   <PropertyGroup>
-    <IncludePath>$(ProjectDir)..\external\imgui-master;$(ProjectDir)..\external\glm-0.9.6.3\glm\glm;$(ProjectDir)public\;$(ProjectDir)public\debug_gui\;$(ProjectDir)private\debug_gui\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\external\imgui-master;$(ProjectDir)..\external\glm-0.9.6.3\glm;$(ProjectDir)public\;$(ProjectDir)public\debug_gui\;$(ProjectDir)private\debug_gui\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile />
@@ -27,11 +27,13 @@
     <ClInclude Include="..\external\imgui-master\imggui\stb_truetype.h" />
     <ClInclude Include="private\debug_gui\debug_gui_render.h" />
     <ClInclude Include="public\debug_gui\debug_gui_system.h" />
+    <ClInclude Include="public\debug_gui\graph_data_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\imgui-master\imggui\imgui.cpp" />
     <ClCompile Include="private\debug_gui\debug_gui_render.cpp" />
     <ClCompile Include="private\debug_gui\debug_gui_system.cpp" />
+    <ClCompile Include="private\debug_gui\graph_data_buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="input.vcxproj">

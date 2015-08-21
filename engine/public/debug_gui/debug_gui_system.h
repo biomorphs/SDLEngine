@@ -7,6 +7,7 @@ Matt Hoyle
 #include "core/system.h"
 #include "core/timer.h"
 #include "kernel/base_types.h"
+#include <glm/glm.hpp>
 #include <memory>
 
 namespace Input
@@ -22,6 +23,7 @@ namespace SDE
 namespace DebugGui
 {
 	class DebugGuiRender;
+	class GraphDataBuffer;
 	class DebugGuiSystem : public Core::ISystem
 	{
 	public:
@@ -47,6 +49,8 @@ namespace DebugGui
 		void EndWindow();
 		void Text(const char* txt);
 		void Separator();
+		void GraphLines(const char* label, glm::vec2 size, GraphDataBuffer& buffer);
+		void GraphHistogram(const char* label, glm::vec2 size, GraphDataBuffer& buffer);
 
 	private:
 		void UpdateImgGuiInputState();

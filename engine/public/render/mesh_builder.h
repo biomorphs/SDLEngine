@@ -5,7 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include "kernel/base_types.h"
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include "mesh.h"
 
 namespace Render

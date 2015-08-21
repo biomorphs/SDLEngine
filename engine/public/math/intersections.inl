@@ -3,7 +3,7 @@ SDLEngine
 Matt Hoyle
 */
 
-#include <gtx/component_wise.hpp>
+#include <glm/gtx/component_wise.hpp>
 
 namespace Math
 {

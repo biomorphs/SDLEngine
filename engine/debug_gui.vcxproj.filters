@@ -33,6 +33,9 @@
     <ClInclude Include="private\debug_gui\debug_gui_render.h">
       <Filter>private</Filter>
     </ClInclude>
+    <ClInclude Include="public\debug_gui\graph_data_buffer.h">
+      <Filter>public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\imgui-master\imggui\imgui.cpp">
@@ -42,6 +45,9 @@
       <Filter>private</Filter>
     </ClCompile>
     <ClCompile Include="private\debug_gui\debug_gui_render.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+    <ClCompile Include="private\debug_gui\graph_data_buffer.cpp">
       <Filter>private</Filter>
     </ClCompile>
   </ItemGroup>

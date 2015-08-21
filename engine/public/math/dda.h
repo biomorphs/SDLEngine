@@ -3,7 +3,7 @@ SDLEngine
 Matt Hoyle
 */
 #pragma once
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 // Implementation of the 3d-DDA algorithm described in 
 // "Efficient implementation of the 3D-DDA ray traversal algorithm

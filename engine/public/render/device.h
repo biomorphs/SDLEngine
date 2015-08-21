@@ -5,7 +5,7 @@ Matt Hoyle
 #pragma once
 
 #include "kernel/base_types.h"
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 namespace Render
 {
@@ -17,7 +17,8 @@ namespace Render
 	enum class PrimitiveType : uint32_t
 	{
 		Triangles,
-		Lines
+		Lines,
+		PointSprites
 	};
 
 	// This represents the GL context for a window

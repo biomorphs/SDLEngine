@@ -10,7 +10,7 @@ Matt Hoyle
 #include "shader_program.h"
 #include <SDL.h>
 #include <glew.h>
-#include <gtc/type_ptr.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Render
 {

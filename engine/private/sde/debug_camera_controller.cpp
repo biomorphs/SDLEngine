@@ -5,7 +5,7 @@ Matt Hoyle
 #include "debug_camera_controller.h"
 #include "input/controller_state.h"
 #include "render/camera.h"
-#include <gtx\rotate_vector.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 #define PI 3.14159265358f
 
