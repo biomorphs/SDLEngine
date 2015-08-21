@@ -37,6 +37,7 @@ namespace SDE
 		bool CreateMaterial();
 		bool CreateMesh();
 		void PushLinesToMesh(Render::Mesh& target);
+		void AddLinesInternal(const __m128* posBuffer, const __m128* colBuffer, uint32_t count);
 
 		std::unique_ptr<glm::vec4, std::function<void(glm::vec4*)>> m_posBuffer;
 		std::unique_ptr<glm::vec4, std::function<void(glm::vec4*)>> m_colBuffer;

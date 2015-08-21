@@ -29,7 +29,6 @@ namespace Render
 		~Device();
 		void Present();
 		void* GetGLContext();
-
 		void SetScissorEnabled(bool enabled);
 		void SetBlending(bool enabled);
 		void SetBackfaceCulling(bool enabled, bool frontFaceCCW);

@@ -46,6 +46,10 @@ namespace Render
 			glErrorPop = glGetError();
 		}
 		SDE_RENDER_PROCESS_GL_ERRORS("Device Initialise");
+
+		// Setting this here allows all point sprite shaders to set the sprite size
+		// dynamically.
+		glEnable(GL_PROGRAM_POINT_SIZE);
 	}
 
 	Device::~Device()
@@ -72,6 +76,8 @@ namespace Render
 			return GL_TRIANGLES;
 		case PrimitiveType::Lines:
 			return GL_LINES;
+		case PrimitiveType::PointSprites:
+			return GL_POINTS;
 		default:
 			return -1;
 		}

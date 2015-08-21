@@ -36,6 +36,7 @@ namespace SDE
 
 	DebugRender::DebugRender()
 		: m_currentLines(0)
+		, m_currentWriteMesh(0)
 	{
 		auto deleter = [](glm::vec4* p)
 		{
@@ -149,6 +150,25 @@ namespace SDE
 		m_shader = nullptr;
 	}
 
+	void DebugRender::AddLinesInternal(const __m128* posBuffer, const __m128* colBuffer, uint32_t count)
+	{
+		uint32_t toAdd = count;
+		if ((m_currentLines + count) > c_maxLines)
+		{
+			toAdd = c_maxLines - m_currentLines;
+		}
+
+		if (count > 0)
+		{
+			glm::vec4* posData = m_posBuffer.get() + (m_currentLines * 2);
+			glm::vec4* colData = m_colBuffer.get() + (m_currentLines * 2);
+			memcpy(posData, posBuffer, toAdd * sizeof(glm::vec4) * 2);
+			memcpy(colData, colBuffer, toAdd * sizeof(glm::vec4) * 2);
+			m_currentLines += toAdd;
+		}
+		SDE_ASSERT(m_currentLines < c_maxLines);
+	}
+
 	void DebugRender::AddLines(const glm::vec4* v, const glm::vec4* c, uint32_t count)
 	{
 		uint32_t toAdd = count;
@@ -190,29 +210,26 @@ namespace SDE
 
 	void DebugRender::AddAxisAtPoint(const glm::vec4& point, float scale)
 	{
-		__declspec(align(16)) const glm::vec4 c_positions[] = {
-			point, point + glm::vec4(1.0f,0.0f,0.0f,0.0f),
-			point, point + glm::vec4(0.0f,1.0f,0.0f,0.0f),
-			point, point + glm::vec4(0.0f,0.0f,1.0f,0.0f)
+		const __m128 c_xAxis = { scale, 0.0f, 0.0f, 0.0f };
+		const __m128 c_yAxis = { 0.0f, scale, 0.0f, 0.0f };
+		const __m128 c_zAxis = { 0.0f, 0.0f, scale, 0.0f };
+		__declspec(align(16)) glm::vec4 pointAligned = point;
+		const __m128 c_point = _mm_load_ps(glm::value_ptr(pointAligned));
+		const __m128 c_xColour = { 1.0f, 0.0f, 0.0f, 1.0f };
+		const __m128 c_yColour = { 0.0f, 1.0f, 0.0f, 1.0f };
+		const __m128 c_zColour = { 0.0f, 0.0f, 1.0f, 1.0f };
+		__declspec(align(16)) const __m128 c_colours[] = {
+			c_xColour, c_xColour,
+			c_yColour, c_yColour,
+			c_zColour, c_zColour
 		};
-		__declspec(align(16)) const glm::vec4 c_colours[] = {
-			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
-			glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
-			glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)
-		};
 
-		const glm::vec4 xAxis(scale, 0.0f, 0.0f, 0.0f);
-		const glm::vec4 yAxis(0.0f, scale, 0.0f, 0.0f);
-		const glm::vec4 zAxis(0.0f, 0.0f, scale, 0.0f);
-		const size_t posCount = sizeof(c_positions) / sizeof(c_positions[0]);
-		const size_t lineCount = posCount / 2;
+		__declspec(align(16)) __m128 positions[12];
+		positions[0] = c_point;	positions[1] = _mm_add_ps(c_point, c_xAxis);
+		positions[2] = c_point;	positions[3] = _mm_add_ps(c_point, c_yAxis);
+		positions[4] = c_point;	positions[5] = _mm_add_ps(c_point, c_zAxis);
 
-		__declspec(align(16)) glm::vec4 positions[posCount];
-		positions[0] = point;	positions[1] = point + xAxis;
-		positions[2] = point;	positions[3] = point + yAxis;
-		positions[4] = point;	positions[5] = point + zAxis;
-
-		AddLines(positions, c_colours, lineCount);
+		AddLinesInternal(positions, c_colours, 6);
 	}
 
 	void DebugRender::PushLinesToMesh(Render::Mesh& target)
@@ -238,7 +255,7 @@ namespace SDE
 		PushLinesToMesh(*m_renderMesh[m_currentWriteMesh]);
 		
 		// render newly written mesh
-		auto currentRenderMesh = (m_currentWriteMesh + 1) & 1;
+		auto currentRenderMesh = m_currentWriteMesh;
 		const glm::mat4 mvp = camera.ProjectionMatrix() * camera.ViewMatrix();
 		Render::UniformBuffer instanceUniforms;
 		instanceUniforms.SetValue("MVP", mvp);
